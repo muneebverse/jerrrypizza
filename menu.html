@@ -246,7 +246,8 @@ function renderFullMenu() {
   const container = document.getElementById('full-menu-container');
   if (!container) return;
 
-const categories =[
+  container.innerHTML = '';
+  const categories =[
     { key: 'bestPizzas', title: 'SIGNATURE PIZZAS' },
     { key: 'regularPizzas', title: 'CLASSIC PIZZAS' },
     { key: 'burgers', title: 'BURGERS' },
@@ -255,15 +256,8 @@ const categories =[
     { key: 'pasta', title: 'PASTA' },
     { key: 'sandwiches', title: 'SANDWICHES' },
     { key: 'newArrivals', title: 'NEW ARRIVALS' },
-    { key: 'desserts', title: 'DESSERTS & CAKES' }, /* <-- ADDED CAKES HERE */
+    { key: 'desserts', title: 'DESSERTS & CAKES' },
     { key: 'drinksAndIceCream', title: 'DRINKS & ICE CREAM' }
-  ];
-
-  const imgs = [
-    "https://images.unsplash.com/photo-1574071318508-1cdbab80d002?w=400&q=80",
-    "https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=400&q=80",
-    "https://images.unsplash.com/photo-1527477396000-e27163b481c2?w=400&q=80",
-    "https://images.unsplash.com/photo-1555072956-7758afb20e8f?w=400&q=80"
   ];
 
   categories.forEach(cat => {
@@ -280,10 +274,13 @@ const categories =[
 
     const grid = document.getElementById(`grid-${cat.key}`);
     let html = '';
-    MENU_DATA[cat.key].forEach((item, i) => {
-      const price = item.price || item.sizes?.S || 0;
-      const img = imgs[i % imgs.length];
+    MENU_DATA[cat.key].forEach(item => {
+      // Find the price (handling the different ways prices are written in your data)
+      const price = item.price || item.sizes?.S || item.priceHalf || item.price5pc || 0;
       const desc = item.desc || '';
+      
+      // Pull the exact unique image from the menu data
+      const img = item.img || 'https://images.unsplash.com/photo-1513104890138-7c749659a591?w=400&q=80';
 
       html += `
         <div class="menu-card">
