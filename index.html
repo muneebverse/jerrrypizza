@@ -567,20 +567,21 @@ function buildBestSellers() {
   grid.innerHTML = html;
 }
 
-// ---- DEALS PREVIEW ----
 function buildDealsPreview() {
   if (typeof MENU_DATA === 'undefined') return;
   const grid = document.getElementById('deals-preview-grid');
   if (!grid) return;
+  
   const preview = MENU_DATA.deals.slice(0, 6);
   let html = '';
   preview.forEach(deal => {
     html += `
       <div class="deal-card">
-        <div class="deal-num">${deal.id}</div>
+        <img src="${deal.img}" class="deal-thumb" alt="${deal.name}">
         <div class="deal-info">
-          <h4>${deal.name}</h4>
-          <div class="deal-price">Rs. ${deal.price}/- <span>only</span></div>
+          <h4 style="color:var(--gold);">${deal.name}</h4>
+          <p style="font-size: 0.8rem; color: var(--muted); margin: 4px 0 8px; line-height:1.4;">${deal.desc}</p>
+          <div class="deal-price" style="font-size: 1.2rem;">Rs. ${deal.price}/-</div>
         </div>
       </div>`;
   });
