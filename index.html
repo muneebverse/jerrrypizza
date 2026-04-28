@@ -1,0 +1,644 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Jerry Pizza | Family Restaurant — Pakpattan Chowk, Sahiwal</title>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Satisfy&family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+
+<!-- CART OVERLAY -->
+<div class="cart-overlay" id="overlay" onclick="closeAll()"></div>
+
+<!-- CART DRAWER -->
+<aside class="cart-drawer" id="cart-drawer">
+  <div class="cart-header">
+    <h3>YOUR CART</h3>
+    <span class="close-cart" onclick="toggleCartDrawer()"><i class="fa-solid fa-xmark"></i></span>
+  </div>
+  <ul class="cart-items" id="cart-items-list"></ul>
+  <div id="cart-empty-msg" class="cart-empty">
+    <i class="fa-solid fa-pizza-slice" style="font-size:2rem; color:var(--muted); display:block; margin-bottom:12px;"></i>
+    Your cart is empty.<br>Add something delicious!
+  </div>
+  <div class="cart-footer">
+    <div class="cart-total" id="cart-total-row" style="display:none;">
+      <span>Total</span>
+      <span id="cart-total-price">Rs. 0</span>
+    </div>
+    <div class="checkout-form" id="checkout-form" style="display:none;">
+      <input type="text" id="cust-name" placeholder="Your Name" required>
+      <input type="tel" id="cust-phone" placeholder="Phone Number" required>
+      <textarea id="cust-address" placeholder="Delivery Address" rows="2" required></textarea>
+    </div>
+    <button class="btn btn-primary" style="width:100%;justify-content:center;" id="checkout-btn" style="display:none;" onclick="processCheckout()">
+      <i class="fa-brands fa-whatsapp"></i> Place Order
+    </button>
+  </div>
+</aside>
+
+<!-- ===== HEADER ===== -->
+<header class="global-header">
+  <div class="container-nav">
+    <a href="index.html" class="logo">
+      <div class="logo-icon">🍕</div>
+      JERRY <span>PIZZA</span>
+    </a>
+
+    <nav class="main-nav" id="nav-menu">
+      <ul>
+        <li><a href="index.html" class="active">Home</a></li>
+        <li><a href="menu.html">Menu</a></li>
+        <li><a href="deals.html">Deals</a></li>
+        <li><a href="about.html">About Us</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+    </nav>
+
+    <div class="header-actions">
+      <div class="cart-trigger" onclick="toggleCartDrawer()">
+        🛒 <span class="cart-text">Cart</span>
+        <span class="cart-badge" id="global-cart-badge">0</span>
+      </div>
+      <div class="hamburger" id="hamburger" onclick="toggleNav()">
+        <span class="bar"></span>
+        <span class="bar"></span>
+        <span class="bar"></span>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- ===== PIZZA SLIDER HERO ===== -->
+<section class="pizza-hero" id="hero">
+  <div class="slider-bg" id="slider-bg"></div>
+  <div class="hero-stripe"></div>
+
+  <div class="hero-inner">
+    <div class="hero-text">
+      <p class="hero-eyebrow">Pakpattan Chowk, Sahiwal</p>
+      <h1 class="hero-title">
+        Sahiwal's<br>
+        <span>No.1</span><br>
+        Pizza Place
+      </h1>
+      <p class="hero-subtitle" id="hero-pizza-subtitle">
+        Hand-tossed dough, premium toppings, stuffed edges — crafted for the real pizza lover.
+      </p>
+      <div class="hero-btns">
+        <a href="menu.html" class="btn btn-primary"><i class="fa-solid fa-pizza-slice"></i> Order Now</a>
+        <a href="deals.html" class="btn btn-outline"><i class="fa-solid fa-tag"></i> View Deals</a>
+      </div>
+      <div class="slider-dots" id="slider-dots"></div>
+    </div>
+
+    <div class="hero-pizza-area">
+      <div class="pizza-slide-wrapper">
+        <div class="pizza-glow"></div>
+        <div class="pizza-img-frame" id="pizza-frame">
+          <img src="" alt="Pizza" id="pizza-hero-img" />
+        </div>
+        <button class="slider-arrow prev" onclick="changeSlide(-1)"><i class="fa-solid fa-chevron-left"></i></button>
+        <button class="slider-arrow next" onclick="changeSlide(1)"><i class="fa-solid fa-chevron-right"></i></button>
+      </div>
+
+      <div class="pizza-info-card" id="pizza-info-card">
+        <h3 id="pizza-slide-name">—</h3>
+        <p class="tagline" id="pizza-slide-tagline">—</p>
+        <p class="pizza-desc" id="pizza-slide-desc">—</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="scroll-cue">
+    <span>Scroll</span>
+    <i class="fa-solid fa-angles-down"></i>
+  </div>
+</section>
+
+<!-- ===== FLAVORS MARQUEE ===== -->
+<div class="flavors-strip">
+  <div class="flavors-track" id="flavors-track"></div>
+</div>
+
+<!-- ===== FEATURE ZIGZAG ===== -->
+<section class="section-padding" style="background: var(--bg-dark); position:relative; z-index:20; border-top: 2px solid var(--gold);">
+  <div class="container">
+
+    <div class="feature-row anim-fade-up">
+      <div class="feature-text">
+        <span class="section-label">Our Signature</span>
+        <h2>Stuffed-Edge <span>Pizzas</span></h2>
+        <p>Every best pizza at Jerry's comes with cheese-stuffed golden edges — because regular crust is just not enough. From Jerry's Special to Bubble Cheese Stuffer, each bite is packed to the brim.</p>
+        <a href="menu.html" class="btn btn-red">Explore Pizzas</a>
+      </div>
+      <div class="feature-image">
+        <div class="feature-img-circle">
+          <img src="https://images.unsplash.com/photo-1574071318508-1cdbab80d002?w=600&q=80" alt="Stuffed Crust Pizza">
+        </div>
+      </div>
+    </div>
+
+    <div class="feature-row anim-fade-up">
+      <div class="feature-text">
+        <span class="section-label">Beyond Pizza</span>
+        <h2>Zinger <span>Burgers</span> & Wings</h2>
+        <p>Crunchy fried chicken burgers, juicy grilled wings, loaded fries — Jerry Pizza is a full family restaurant. Whether it's a Big Zinger or Saucy Spicy Wings, we've got your craving covered.</p>
+        <a href="menu.html" class="btn btn-red">See Burgers & Wings</a>
+      </div>
+      <div class="feature-image">
+        <div class="feature-img-circle">
+          <img src="https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=600&q=80" alt="Zinger Burger">
+        </div>
+      </div>
+    </div>
+
+    <div class="feature-row anim-fade-up">
+      <div class="feature-text">
+        <span class="section-label">Unbeatable Value</span>
+        <h2>21 <span>Deals</span> to Choose From</h2>
+        <p>From family meals to solo student deals — Jerry Pizza offers 21 curated deals including the MUFTA Deal at just Rs. 2699/- with a large pizza, 2 burgers, pasta, nuggets & drink. Maximum value, every time.</p>
+        <a href="deals.html" class="btn btn-red">View All Deals</a>
+      </div>
+      <div class="feature-image">
+        <div class="feature-img-circle">
+          <img src="https://images.unsplash.com/photo-1555072956-7758afb20e8f?w=600&q=80" alt="Deals">
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ===== BEST SELLERS ===== -->
+<section class="section-padding" style="background: var(--bg-section); position:relative; z-index:20;">
+  <div class="container text-center anim-fade-up">
+    <span class="section-label">Customer Favorites</span>
+    <h2 class="section-title">BEST PIZZAS</h2>
+    <div class="gold-divider"></div>
+    <p class="text-muted" style="max-width:600px; margin: 0 auto 48px; font-size:1rem;">
+      Signature stuffed-edge pizzas that Sahiwal can't stop ordering. Made fresh, loaded with flavor.
+    </p>
+    <div class="menu-grid" id="top-items-grid" style="text-align:left; margin-bottom:40px;"></div>
+    <a href="menu.html" class="btn btn-red">Full Menu <i class="fa-solid fa-arrow-right"></i></a>
+  </div>
+</section>
+
+<!-- ===== HOT DEALS PREVIEW ===== -->
+<section class="section-padding" style="background: var(--bg-dark);">
+  <div class="container text-center anim-fade-up">
+    <span class="section-label">Save More</span>
+    <h2 class="section-title">HOT DEALS</h2>
+    <div class="gold-divider"></div>
+    <p class="text-muted" style="max-width:600px; margin:0 auto 48px; font-size:1rem;">
+      Pick a deal, save big. Free delivery in 2 km area. Minimum order Rs. 700/-
+    </p>
+    <div class="deals-grid" id="deals-preview-grid"></div>
+    <br><br>
+    <a href="deals.html" class="btn btn-outline">All 21 Deals <i class="fa-solid fa-arrow-right"></i></a>
+  </div>
+</section>
+
+<!-- ===== CUSTOMER REVIEWS ===== -->
+<section class="reviews-section">
+  <div class="container anim-fade-up">
+    <div class="text-center" style="margin-bottom: 50px;">
+      <span class="section-label">What Customers Say</span>
+      <h2 class="section-title">CUSTOMER REVIEWS</h2>
+      <div class="gold-divider"></div>
+      <p class="text-muted" style="max-width:600px; margin:0 auto; font-size:1rem;">
+        Real reviews from our happy customers in Sahiwal. Your satisfaction is our success!
+      </p>
+    </div>
+
+    <div class="reviews-grid" id="reviews-grid"></div>
+  </div>
+</section>
+
+<!-- ===== CONTACT BAR ===== -->
+<div class="contact-bar" id="contact">
+  <div class="contact-bar-inner">
+    <div>
+      <h2>CALL & <span>ORDER</span></h2>
+      <p style="color:rgba(255,255,255,0.7); font-size:0.9rem; margin-top:4px;">Free delivery within 2 km · Min order Rs. 700</p>
+    </div>
+    <div class="contact-pills">
+      <a href="tel:03143636434" class="contact-pill">
+        <i class="fa-solid fa-phone"></i> 0314-3636434
+      </a>
+      <a href="tel:03099699986" class="contact-pill">
+        <i class="fa-solid fa-phone"></i> 0309-9699986
+      </a>
+      <div class="contact-pill">
+        <i class="fa-solid fa-location-dot"></i> Pakpattan Chowk, Sahiwal
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== FOOTER ===== -->
+<footer class="site-footer">
+  <div class="footer-main">
+    <div class="footer-col">
+      <h2>JERRY <span>PIZZA</span></h2>
+      <p>Sahiwal's #1 family pizza restaurant. Serving hot, stuffed-edge pizzas, loaded burgers, wings, wraps, pasta, and more at Pakpattan Chowk.</p>
+      <p style="margin-top:12px;"><i class="fa-regular fa-clock" style="color:var(--gold);margin-right:6px;"></i> Open till late</p>
+      <div class="social-icons">
+        <a href="#"><i class="fa-brands fa-facebook-f"></i></a>
+        <a href="#"><i class="fa-brands fa-instagram"></i></a>
+        <a href="#"><i class="fa-brands fa-tiktok"></i></a>
+        <a href="#"><i class="fa-brands fa-youtube"></i></a>
+      </div>
+    </div>
+
+    <div class="footer-col">
+      <h3>QUICK LINKS</h3>
+      <ul>
+        <li><a href="index.html">→ Home</a></li>
+        <li><a href="menu.html">→ Full Menu</a></li>
+        <li><a href="deals.html">→ Deals & Offers</a></li>
+        <li><a href="about.html">→ About Us</a></li>
+        <li><a href="#contact">→ Contact</a></li>
+      </ul>
+    </div>
+
+    <div class="footer-col">
+      <h3>CONTACT US</h3>
+      <p><i class="fa-solid fa-phone" style="color:var(--red);margin-right:6px;"></i> 0314-3636434</p>
+      <p><i class="fa-solid fa-phone" style="color:var(--red);margin-right:6px;"></i> 0309-9699986</p>
+      <p><i class="fa-solid fa-location-dot" style="color:var(--red);margin-right:6px;"></i> Pakpattan Chowk, Sahiwal</p>
+      <p style="margin-top:14px; color:var(--gold); font-weight:700; font-size:0.85rem;">
+        FREE DELIVERY IN 2 KM AREA<br>MINIMUM ORDER RS. 700/-
+      </p>
+    </div>
+  </div>
+
+  <div class="footer-bottom">
+    <p>© 2025 Jerry Pizza Family Restaurant. All rights reserved.</p>
+    <div class="payment-methods">
+      <span class="pay-badge">Bank Transfer</span>
+      <span class="pay-badge">Easypaisa</span>
+      <span class="pay-badge">JazzCash</span>
+      <span class="pay-badge">Cash on Delivery</span>
+    </div>
+  </div>
+</footer>
+
+<script src="menu-data.js"></script>
+<script>
+// ============================================================
+//  JERRY PIZZA — Core App Logic
+// ============================================================
+
+let cart = [];
+let currentSlide = 0;
+let sliderDir = 1;
+
+const PIZZA_IMGS = [
+  "https://images.unsplash.com/photo-1574071318508-1cdbab80d002?w=800&q=80",
+  "https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=800&q=80",
+  "https://images.unsplash.com/photo-1528137871618-79d2761e3fd5?w=800&q=80",
+  "https://images.unsplash.com/photo-1555072956-7758afb20e8f?w=800&q=80",
+  "https://images.unsplash.com/photo-1513104890138-7c749659a591?w=800&q=80",
+  "https://images.unsplash.com/photo-1571407970349-bc81e7e96d47?w=800&q=80"
+];
+
+const REVIEWS = [
+  {
+    name: "Lubna Raheel",
+    initials: "LR",
+    time: "a year ago",
+    rating: 5,
+    text: "Jerry food pizza is too much tasty and enjoying environment"
+  },
+  {
+    name: "Jawad Mirza",
+    initials: "JM",
+    time: "a year ago",
+    rating: 5,
+    text: "Excellent quality food and great customer service. Highly recommended!"
+  },
+  {
+    name: "Muhammad Amir",
+    initials: "MA",
+    time: "a year ago",
+    rating: 5,
+    text: "Excellent Ok. Food quality is outstanding and taste is incredible."
+  },
+  {
+    name: "Natasha Mirza",
+    initials: "NM",
+    time: "10 months ago",
+    rating: 5,
+    text: "Amazing food and friendly staff. Will definitely come back again!"
+  },
+  {
+    name: "Ahmad Shehzad Amir",
+    initials: "AS",
+    time: "2 years ago",
+    rating: 5,
+    text: "Fantastic pizza place. Best in Sahiwal. Highly recommended for everyone."
+  }
+];
+
+// ---- CART FUNCTIONS ----
+function toggleCartDrawer() {
+  document.getElementById('cart-drawer').classList.toggle('open');
+  document.getElementById('overlay').classList.toggle('active');
+}
+
+function closeAll() {
+  document.getElementById('cart-drawer').classList.remove('open');
+  document.getElementById('nav-menu').classList.remove('open');
+  document.getElementById('overlay').classList.remove('active');
+}
+
+function toggleNav() {
+  document.getElementById('nav-menu').classList.toggle('open');
+  document.getElementById('overlay').classList.toggle('active');
+}
+
+function addToCart(name, price) {
+  cart.push({ name, price });
+  renderCart();
+}
+
+function removeFromCart(i) {
+  cart.splice(i, 1);
+  renderCart();
+}
+
+function renderCart() {
+  const list = document.getElementById('cart-items-list');
+  const empty = document.getElementById('cart-empty-msg');
+  const totalRow = document.getElementById('cart-total-row');
+  const checkoutBtn = document.getElementById('checkout-btn');
+  const checkoutForm = document.getElementById('checkout-form');
+  const badge = document.getElementById('global-cart-badge');
+
+  badge.textContent = cart.length;
+  list.innerHTML = '';
+
+  if (cart.length === 0) {
+    empty.style.display = 'block';
+    totalRow.style.display = 'none';
+    checkoutBtn.style.display = 'none';
+    checkoutForm.style.display = 'none';
+  } else {
+    empty.style.display = 'none';
+    totalRow.style.display = 'flex';
+    checkoutBtn.style.display = 'block';
+    checkoutForm.style.display = 'flex';
+
+    let total = 0;
+    cart.forEach((item, i) => {
+      total += item.price;
+      list.innerHTML += `
+        <li class="cart-item">
+          <span class="cart-item-name">${item.name}</span>
+          <span class="cart-item-price">Rs. ${item.price}</span>
+          <span class="cart-item-remove" onclick="removeFromCart(${i})"><i class="fa-solid fa-xmark"></i></span>
+        </li>`;
+    });
+    document.getElementById('cart-total-price').textContent = `Rs. ${total}`;
+  }
+}
+
+function processCheckout() {
+  const name = document.getElementById('cust-name')?.value.trim() || '';
+  const phone = document.getElementById('cust-phone')?.value.trim() || '';
+  const address = document.getElementById('cust-address')?.value.trim() || '';
+
+  if (!name || !phone || !address) {
+    alert("Please fill in your Name, Phone Number, and Delivery Address.");
+    return;
+  }
+
+  let orderText = `*New Order - Jerry Pizza*\n\n`;
+  orderText += `*Customer Details:*\nName: ${name}\nPhone: ${phone}\nAddress: ${address}\n\n`;
+  orderText += `*Order Items:*\n`;
+
+  let total = 0;
+  let cartCounts = {};
+  cart.forEach(item => {
+    let key = item.name;
+    if (!cartCounts[key]) cartCounts[key] = { ...item, qty: 0 };
+    cartCounts[key].qty += 1;
+    total += parseInt(item.price);
+  });
+
+  Object.values(cartCounts).forEach(item => {
+    orderText += `- ${item.qty}x ${item.name} (Rs. ${item.price})\n`;
+  });
+
+  orderText += `\n*Total Estimated: Rs. ${total}*\n`;
+  orderText += `\n_Note: Please confirm final amount and size preferences when called._`;
+
+  const whatsappNumber = "923143636434";
+  const encodedText = encodeURIComponent(orderText);
+  const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${encodedText}`;
+
+  window.open(whatsappUrl, '_blank');
+  cart = [];
+  renderCart();
+  toggleCartDrawer();
+}
+
+// ---- PIZZA SLIDER ----
+function initSlider() {
+  if (typeof PIZZA_SLIDES === 'undefined') return;
+  buildDots();
+  renderSlide(0, true);
+  setInterval(() => changeSlide(1), 5000);
+}
+
+function buildDots() {
+  const container = document.getElementById('slider-dots');
+  container.innerHTML = '';
+  PIZZA_SLIDES.forEach((_, i) => {
+    const dot = document.createElement('div');
+    dot.className = 'dot' + (i === 0 ? ' active' : '');
+    dot.onclick = () => { sliderDir = i > currentSlide ? 1 : -1; goToSlide(i); };
+    container.appendChild(dot);
+  });
+}
+
+function updateDots() {
+  document.querySelectorAll('.dot').forEach((d, i) => {
+    d.classList.toggle('active', i === currentSlide);
+  });
+}
+
+function changeSlide(dir) {
+  sliderDir = dir;
+  let next = (currentSlide + dir + PIZZA_SLIDES.length) % PIZZA_SLIDES.length;
+  goToSlide(next);
+}
+
+function goToSlide(index) {
+  if (index === currentSlide) return;
+  const frame = document.getElementById('pizza-frame');
+  const outClass = sliderDir > 0 ? 'slide-out-left' : 'slide-out-right';
+  const inClass = sliderDir > 0 ? 'slide-in-right' : 'slide-in-left';
+
+  frame.classList.add(outClass);
+  frame.addEventListener('animationend', () => {
+    frame.classList.remove(outClass);
+    currentSlide = index;
+    renderSlide(currentSlide, false);
+    frame.classList.add(inClass);
+    frame.addEventListener('animationend', () => {
+      frame.classList.remove(inClass);
+    }, { once: true });
+  }, { once: true });
+}
+
+function renderSlide(i, initial) {
+  const slide = PIZZA_SLIDES[i];
+  const img = document.getElementById('pizza-hero-img');
+  img.src = PIZZA_IMGS[i];
+  img.alt = slide.name;
+
+  document.getElementById('pizza-slide-name').textContent = slide.name;
+  document.getElementById('pizza-slide-tagline').textContent = slide.tagline;
+  document.getElementById('pizza-slide-desc').textContent = slide.desc;
+  document.getElementById('hero-pizza-subtitle').textContent = slide.desc;
+
+  const bg = document.getElementById('slider-bg');
+  bg.style.background = `linear-gradient(135deg, ${slide.color}22 0%, #0a0a0a 60%)`;
+
+  updateDots();
+}
+
+// ---- MARQUEE ----
+function buildMarquee() {
+  if (typeof MENU_DATA === 'undefined') return;
+  const names = [
+    ...MENU_DATA.bestPizzas.map(p => p.name),
+    ...MENU_DATA.regularPizzas.map(p => p.name),
+    ...MENU_DATA.burgers.map(b => b.name)
+  ];
+  const track = document.getElementById('flavors-track');
+  let html = '';
+  const doubled = [...names, ...names];
+  doubled.forEach(name => {
+    html += `<span class="flavor-item">${name.toUpperCase()}<span class="flavor-dot">•</span></span>`;
+  });
+  track.innerHTML = html;
+}
+
+// ---- BEST PIZZAS GRID ----
+const PIZZA_CARD_IMGS = [
+  "https://images.unsplash.com/photo-1574071318508-1cdbab80d002?w=500&q=80",
+  "https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=500&q=80",
+  "https://images.unsplash.com/photo-1528137871618-79d2761e3fd5?w=500&q=80",
+  "https://images.unsplash.com/photo-1555072956-7758afb20e8f?w=500&q=80",
+  "https://images.unsplash.com/photo-1513104890138-7c749659a591?w=500&q=80",
+  "https://images.unsplash.com/photo-1571407970349-bc81e7e96d47?w=500&q=80"
+];
+
+function buildBestSellers() {
+  if (typeof MENU_DATA === 'undefined') return;
+  const grid = document.getElementById('top-items-grid');
+  if (!grid) return;
+  let html = '';
+  MENU_DATA.bestPizzas.forEach((pizza, i) => {
+    html += `
+      <div class="menu-card">
+        <div class="card-img">
+          <img src="${PIZZA_CARD_IMGS[i % PIZZA_CARD_IMGS.length]}" alt="${pizza.name}" loading="lazy" />
+          <span class="card-tag">${pizza.tag}</span>
+        </div>
+        <div class="card-body">
+          <h4>${pizza.name}</h4>
+          <p>${pizza.desc}</p>
+          <div class="card-footer">
+            <div class="card-price">From <span class="big-price">Rs. ${pizza.sizes.S}</span></div>
+            <button class="btn btn-red" style="padding:8px 16px;font-size:0.8rem;" onclick="addToCart('${pizza.name} (S)',${pizza.sizes.S})">
+              Add <i class="fa-solid fa-plus"></i>
+            </button>
+          </div>
+        </div>
+      </div>`;
+  });
+  grid.innerHTML = html;
+}
+
+// ---- DEALS PREVIEW ----
+function buildDealsPreview() {
+  if (typeof MENU_DATA === 'undefined') return;
+  const grid = document.getElementById('deals-preview-grid');
+  if (!grid) return;
+  const preview = MENU_DATA.deals.slice(0, 6);
+  let html = '';
+  preview.forEach(deal => {
+    html += `
+      <div class="deal-card">
+        <div class="deal-num">${deal.id}</div>
+        <div class="deal-info">
+          <h4>${deal.name}</h4>
+          <div class="deal-price">Rs. ${deal.price}/- <span>only</span></div>
+        </div>
+      </div>`;
+  });
+  grid.innerHTML = html;
+}
+
+// ---- REVIEWS SECTION ----
+function buildReviews() {
+  const grid = document.getElementById('reviews-grid');
+  if (!grid) return;
+  let html = '';
+  REVIEWS.forEach(review => {
+    const stars = '⭐'.repeat(review.rating);
+    html += `
+      <div class="review-card">
+        <div class="review-header">
+          <div class="review-avatar">${review.initials}</div>
+          <div class="review-meta">
+            <h4>${review.name}</h4>
+            <span>${review.time}</span>
+          </div>
+        </div>
+        <div class="review-stars">${stars}</div>
+        <p class="review-text">"${review.text}"</p>
+      </div>`;
+  });
+  grid.innerHTML = html;
+}
+
+// ---- SCROLL ANIMATIONS ----
+function initScrollAnim() {
+  const els = document.querySelectorAll('.anim-fade-up');
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+  }, { threshold: 0.15 });
+  els.forEach(el => io.observe(el));
+}
+
+// ---- INIT ----
+document.addEventListener('DOMContentLoaded', () => {
+  initSlider();
+  buildMarquee();
+  buildBestSellers();
+  buildDealsPreview();
+  buildReviews();
+  initScrollAnim();
+});
+
+// Touch/swipe support
+let touchStartX = 0;
+document.getElementById('pizza-frame')?.addEventListener('touchstart', e => {
+  touchStartX = e.touches[0].clientX;
+}, { passive: true });
+document.getElementById('pizza-frame')?.addEventListener('touchend', e => {
+  const diff = touchStartX - e.changedTouches[0].clientX;
+  if (Math.abs(diff) > 40) changeSlide(diff > 0 ? 1 : -1);
+});
+</script>
+
+</body>
+</html>

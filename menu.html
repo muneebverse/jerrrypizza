@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Menu | Jerry Pizza — Pakpattan Chowk, Sahiwal</title>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Satisfy&family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+
+<!-- CART OVERLAY -->
+<div class="cart-overlay" id="overlay" onclick="closeAll()"></div>
+
+<!-- CART DRAWER -->
+<aside class="cart-drawer" id="cart-drawer">
+  <div class="cart-header">
+    <h3>YOUR CART</h3>
+    <span class="close-cart" onclick="toggleCartDrawer()"><i class="fa-solid fa-xmark"></i></span>
+  </div>
+  <ul class="cart-items" id="cart-items-list"></ul>
+  <div id="cart-empty-msg" class="cart-empty">
+    <i class="fa-solid fa-pizza-slice" style="font-size:2rem; color:var(--muted); display:block; margin-bottom:12px;"></i>
+    Your cart is empty.
+  </div>
+  <div class="cart-footer">
+    <div class="cart-total" id="cart-total-row" style="display:none;">
+      <span>Total</span>
+      <span id="cart-total-price">Rs. 0</span>
+    </div>
+    <div class="checkout-form" id="checkout-form" style="display:none;">
+      <input type="text" id="cust-name" placeholder="Your Name" required>
+      <input type="tel" id="cust-phone" placeholder="Phone Number" required>
+      <textarea id="cust-address" placeholder="Delivery Address" rows="2" required></textarea>
+    </div>
+    <button class="btn btn-primary" style="width:100%;justify-content:center;" id="checkout-btn" style="display:none;" onclick="processCheckout()">
+      <i class="fa-brands fa-whatsapp"></i> Place Order
+    </button>
+  </div>
+</aside>
+
+<!-- ===== HEADER ===== -->
+<header class="global-header" style="margin-bottom: 70px;">
+  <div class="container-nav">
+    <a href="index.html" class="logo">
+      <div class="logo-icon">🍕</div>
+      JERRY <span>PIZZA</span>
+    </a>
+
+    <nav class="main-nav" id="nav-menu">
+      <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="menu.html" class="active">Menu</a></li>
+        <li><a href="deals.html">Deals</a></li>
+        <li><a href="about.html">About Us</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+    </nav>
+
+    <div class="header-actions">
+      <div class="cart-trigger" onclick="toggleCartDrawer()">
+        🛒 <span class="cart-text">Cart</span>
+        <span class="cart-badge" id="global-cart-badge">0</span>
+      </div>
+      <div class="hamburger" id="hamburger" onclick="toggleNav()">
+        <span class="bar"></span>
+        <span class="bar"></span>
+        <span class="bar"></span>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- ===== MENU PAGE ===== -->
+<main style="padding-top: 40px;">
+  <div class="container text-center anim-fade-up" style="margin-bottom: 40px;">
+    <span class="section-label">Fresh From The Kitchen</span>
+    <h1 class="section-title">Our Menu</h1>
+    <div class="gold-divider"></div>
+    <p class="text-muted" style="max-width:600px; margin: 0 auto; font-size:1rem;">
+      Explore our complete menu of pizzas, burgers, wings, and more. All made fresh to order.
+    </p>
+  </div>
+
+  <div id="full-menu-container" class="container"></div>
+</main>
+
+<!-- ===== CONTACT BAR ===== -->
+<div class="contact-bar" id="contact" style="margin-top: 60px;">
+  <div class="contact-bar-inner">
+    <div>
+      <h2>ORDER <span>NOW</span></h2>
+      <p style="color:rgba(255,255,255,0.7); font-size:0.9rem; margin-top:4px;">Free delivery within 2 km · Min order Rs. 700</p>
+    </div>
+    <div class="contact-pills">
+      <a href="tel:03143636434" class="contact-pill">
+        <i class="fa-solid fa-phone"></i> 0314-3636434
+      </a>
+      <a href="tel:03099699986" class="contact-pill">
+        <i class="fa-solid fa-phone"></i> 0309-9699986
+      </a>
+    </div>
+  </div>
+</div>
+
+<!-- ===== FOOTER ===== -->
+<footer class="site-footer">
+  <div class="footer-main">
+    <div class="footer-col">
+      <h2>JERRY <span>PIZZA</span></h2>
+      <p>Sahiwal's #1 family pizza restaurant. Serving hot, stuffed-edge pizzas, loaded burgers, wings, wraps, pasta, and more at Pakpattan Chowk.</p>
+      <div class="social-icons">
+        <a href="#"><i class="fa-brands fa-facebook-f"></i></a>
+        <a href="#"><i class="fa-brands fa-instagram"></i></a>
+        <a href="#"><i class="fa-brands fa-tiktok"></i></a>
+        <a href="#"><i class="fa-brands fa-youtube"></i></a>
+      </div>
+    </div>
+
+    <div class="footer-col">
+      <h3>QUICK LINKS</h3>
+      <ul>
+        <li><a href="index.html">→ Home</a></li>
+        <li><a href="menu.html">→ Full Menu</a></li>
+        <li><a href="deals.html">→ Deals & Offers</a></li>
+        <li><a href="about.html">→ About Us</a></li>
+      </ul>
+    </div>
+
+    <div class="footer-col">
+      <h3>CONTACT US</h3>
+      <p><i class="fa-solid fa-phone" style="color:var(--red);margin-right:6px;"></i> 0314-3636434</p>
+      <p><i class="fa-solid fa-phone" style="color:var(--red);margin-right:6px;"></i> 0309-9699986</p>
+      <p><i class="fa-solid fa-location-dot" style="color:var(--red);margin-right:6px;"></i> Pakpattan Chowk, Sahiwal</p>
+    </div>
+  </div>
+
+  <div class="footer-bottom">
+    <p>© 2025 Jerry Pizza Family Restaurant. All rights reserved.</p>
+    <div class="payment-methods">
+      <span class="pay-badge">Bank Transfer</span>
+      <span class="pay-badge">Easypaisa</span>
+      <span class="pay-badge">JazzCash</span>
+      <span class="pay-badge">Cash on Delivery</span>
+    </div>
+  </div>
+</footer>
+
+<script src="menu-data.js"></script>
+<script>
+let cart = [];
+
+function toggleCartDrawer() {
+  document.getElementById('cart-drawer').classList.toggle('open');
+  document.getElementById('overlay').classList.toggle('active');
+}
+
+function closeAll() {
+  document.getElementById('cart-drawer').classList.remove('open');
+  document.getElementById('nav-menu').classList.remove('open');
+  document.getElementById('overlay').classList.remove('active');
+}
+
+function toggleNav() {
+  document.getElementById('nav-menu').classList.toggle('open');
+  document.getElementById('overlay').classList.toggle('active');
+}
+
+function addToCart(name, price) {
+  cart.push({ name, price });
+  renderCart();
+}
+
+function removeFromCart(i) {
+  cart.splice(i, 1);
+  renderCart();
+}
+
+function renderCart() {
+  const list = document.getElementById('cart-items-list');
+  const empty = document.getElementById('cart-empty-msg');
+  const totalRow = document.getElementById('cart-total-row');
+  const badge = document.getElementById('global-cart-badge');
+
+  badge.textContent = cart.length;
+  list.innerHTML = '';
+
+  if (cart.length === 0) {
+    empty.style.display = 'block';
+    totalRow.style.display = 'none';
+    document.getElementById('checkout-btn').style.display = 'none';
+    document.getElementById('checkout-form').style.display = 'none';
+  } else {
+    empty.style.display = 'none';
+    totalRow.style.display = 'flex';
+    document.getElementById('checkout-btn').style.display = 'block';
+    document.getElementById('checkout-form').style.display = 'flex';
+
+    let total = 0;
+    cart.forEach((item, i) => {
+      total += item.price;
+      list.innerHTML += `
+        <li class="cart-item">
+          <span class="cart-item-name">${item.name}</span>
+          <span class="cart-item-price">Rs. ${item.price}</span>
+          <span class="cart-item-remove" onclick="removeFromCart(${i})"><i class="fa-solid fa-xmark"></i></span>
+        </li>`;
+    });
+    document.getElementById('cart-total-price').textContent = `Rs. ${total}`;
+  }
+}
+
+function processCheckout() {
+  const name = document.getElementById('cust-name')?.value.trim() || '';
+  const phone = document.getElementById('cust-phone')?.value.trim() || '';
+  const address = document.getElementById('cust-address')?.value.trim() || '';
+
+  if (!name || !phone || !address) {
+    alert("Please fill in your Name, Phone Number, and Delivery Address.");
+    return;
+  }
+
+  let orderText = `*New Order - Jerry Pizza*\n\nName: ${name}\nPhone: ${phone}\nAddress: ${address}\n\n*Items:*\n`;
+  let total = 0;
+  let counts = {};
+  cart.forEach(item => {
+    if (!counts[item.name]) counts[item.name] = { price: item.price, qty: 0 };
+    counts[item.name].qty++;
+    total += item.price;
+  });
+  Object.entries(counts).forEach(([name, data]) => {
+    orderText += `- ${data.qty}x ${name} (Rs. ${data.price})\n`;
+  });
+  orderText += `\nTotal: Rs. ${total}`;
+
+  const whatsappUrl = `https://wa.me/923143636434?text=${encodeURIComponent(orderText)}`;
+  window.open(whatsappUrl, '_blank');
+  cart = [];
+  renderCart();
+  toggleCartDrawer();
+}
+
+function renderFullMenu() {
+  if (typeof MENU_DATA === 'undefined') return;
+  const container = document.getElementById('full-menu-container');
+  if (!container) return;
+
+  container.innerHTML = '';
+  const categories = [
+    { key: 'bestPizzas', title: 'SIGNATURE PIZZAS' },
+    { key: 'regularPizzas', title: 'CLASSIC PIZZAS' },
+    { key: 'burgers', title: 'BURGERS' },
+    { key: 'wingsAndNuggets', title: 'WINGS & NUGGETS' },
+    { key: 'wrapsAndFries', title: 'WRAPS & FRIES' },
+    { key: 'pasta', title: 'PASTA' },
+    { key: 'sandwiches', title: 'SANDWICHES' },
+    { key: 'newArrivals', title: 'NEW ARRIVALS' },
+    { key: 'drinksAndIceCream', title: 'DRINKS & ICE CREAM' }
+  ];
+
+  const imgs = [
+    "https://images.unsplash.com/photo-1574071318508-1cdbab80d002?w=400&q=80",
+    "https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=400&q=80",
+    "https://images.unsplash.com/photo-1527477396000-e27163b481c2?w=400&q=80",
+    "https://images.unsplash.com/photo-1555072956-7758afb20e8f?w=400&q=80"
+  ];
+
+  categories.forEach(cat => {
+    if (!MENU_DATA[cat.key] || MENU_DATA[cat.key].length === 0) return;
+
+    container.innerHTML += `
+      <div style="margin-bottom: 60px;">
+        <div style="text-align: center; margin-bottom: 40px;">
+          <h2 class="section-title">${cat.title}</h2>
+          <div class="gold-divider"></div>
+        </div>
+        <div class="menu-grid" id="grid-${cat.key}"></div>
+      </div>`;
+
+    const grid = document.getElementById(`grid-${cat.key}`);
+    let html = '';
+    MENU_DATA[cat.key].forEach((item, i) => {
+      const price = item.price || item.sizes?.S || 0;
+      const img = imgs[i % imgs.length];
+      const desc = item.desc || '';
+
+      html += `
+        <div class="menu-card">
+          <div class="card-img">
+            <img src="${img}" alt="${item.name}" loading="lazy" />
+          </div>
+          <div class="card-body">
+            <h4>${item.name}</h4>
+            <p>${desc}</p>
+            <div class="card-footer">
+              <div class="card-price">Rs. ${price}</div>
+              <button class="btn btn-red" style="padding:8px 16px;font-size:0.8rem;" onclick="addToCart('${item.name}', ${price})">
+                Add <i class="fa-solid fa-plus"></i>
+              </button>
+            </div>
+          </div>
+        </div>`;
+    });
+    grid.innerHTML = html;
+  });
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  renderFullMenu();
+});
+</script>
+
+</body>
+</html>
