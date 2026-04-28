@@ -531,25 +531,18 @@ function buildMarquee() {
 }
 
 // ---- BEST PIZZAS GRID ----
-const PIZZA_CARD_IMGS = [
-  "https://images.unsplash.com/photo-1574071318508-1cdbab80d002?w=500&q=80",
-  "https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=500&q=80",
-  "https://images.unsplash.com/photo-1528137871618-79d2761e3fd5?w=500&q=80",
-  "https://images.unsplash.com/photo-1555072956-7758afb20e8f?w=500&q=80",
-  "https://images.unsplash.com/photo-1513104890138-7c749659a591?w=500&q=80",
-  "https://images.unsplash.com/photo-1571407970349-bc81e7e96d47?w=500&q=80"
-];
-
 function buildBestSellers() {
   if (typeof MENU_DATA === 'undefined') return;
   const grid = document.getElementById('top-items-grid');
   if (!grid) return;
+  
   let html = '';
-  MENU_DATA.bestPizzas.forEach((pizza, i) => {
+  MENU_DATA.bestPizzas.forEach((pizza) => {
+    // Look! It's pulling pizza.img exactly from the data array now:
     html += `
       <div class="menu-card">
         <div class="card-img">
-          <img src="${PIZZA_CARD_IMGS[i % PIZZA_CARD_IMGS.length]}" alt="${pizza.name}" loading="lazy" />
+          <img src="${pizza.img}" alt="${pizza.name}" loading="lazy" />
           <span class="card-tag">${pizza.tag}</span>
         </div>
         <div class="card-body">
