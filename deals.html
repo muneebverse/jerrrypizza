@@ -252,12 +252,12 @@ function renderDeals() {
   MENU_DATA.deals.forEach(deal => {
     html += `
       <div class="deal-card">
-        <div class="deal-num">${deal.id}</div>
+        <img src="${deal.img}" class="deal-thumb" alt="${deal.name}">
         <div class="deal-info">
-          <h4>${deal.name}</h4>
-          <p style="font-size: 0.9rem; color: rgba(255,255,255,0.8); margin-bottom: 12px;">${deal.desc}</p>
+          <h4 style="color:var(--gold);">${deal.name}</h4>
+          <p style="font-size: 0.85rem; color: rgba(255,255,255,0.75); margin: 6px 0 12px; line-height: 1.5;">${deal.desc}</p>
           <div class="deal-price">Rs. ${deal.price}/-</div>
-          <button class="btn btn-primary" style="width:100%; margin-top:12px; justify-content:center; font-size:0.85rem;" onclick="addToCart('${deal.name} (Deal)',${deal.price})">
+          <button class="btn btn-primary" style="width:100%; margin-top:12px; justify-content:center; font-size:0.85rem;" onclick="addToCart('${deal.name}',${deal.price})">
             Add to Cart
           </button>
         </div>
