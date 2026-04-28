@@ -3,9 +3,50 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Deals | Jerry Pizza — Pakpattan Chowk, Sahiwal</title>
+  
+  <!-- SEO Meta Tags -->
+  <title>21 Exclusive Pizza Deals in Sahiwal | Jerry Pizza | Free Delivery</title>
+  <meta name="description" content="21 exclusive pizza & burger deals at Jerry Pizza Sahiwal – MUFTA Deal Rs.2699, combo offers, free delivery within 2km. Save big on pizzas, burgers & more.">
+  <meta name="keywords" content="pizza deals Sahiwal, food offers, combo deals, pizza discount, MUFTA deal, restaurant deals, Jerry Pizza">
+  <meta name="author" content="Jerry Pizza">
+  <meta name="robots" content="index, follow">
+  <meta name="language" content="English">
+  
+  <!-- Open Graph Tags -->
+  <meta property="og:title" content="21 Exclusive Pizza Deals | Jerry Pizza Sahiwal">
+  <meta property="og:description" content="Best pizza deals in Sahiwal – MUFTA Deal, combo offers, free delivery.">
+  <meta property="og:image" content="https://jerrypizza.me/assets/logo.png">
+  <meta property="og:url" content="https://jerrypizza.me/deals">
+  <meta property="og:type" content="website">
+  
+  <!-- Canonical URL -->
+  <link rel="canonical" href="https://jerrypizza.me/deals">
+  
+  <!-- Breadcrumb Schema -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "name": "Home",
+        "item": "https://jerrypizza.me/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 2,
+        "name": "Deals",
+        "item": "https://jerrypizza.me/deals"
+      }
+    ]
+  }
+  </script>
+  
+  <!-- Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Satisfy&family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" integrity="sha512-iBBXm8fW90+nuLcSKlbmrPcLa0OT92xO1BIsZ+ywDWZb9u6Vichqkruh6qJieA7/c0FjVn2ulfb0c9Knz/v+5A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
@@ -14,10 +55,10 @@
 <div class="cart-overlay" id="overlay" onclick="closeAll()"></div>
 
 <!-- CART DRAWER -->
-<aside class="cart-drawer" id="cart-drawer">
+<aside class="cart-drawer" id="cart-drawer" aria-label="Shopping cart">
   <div class="cart-header">
     <h3>YOUR CART</h3>
-    <span class="close-cart" onclick="toggleCartDrawer()"><i class="fa-solid fa-xmark"></i></span>
+    <button class="close-cart" onclick="toggleCartDrawer()" aria-label="Close cart"><i class="fa-solid fa-xmark"></i></button>
   </div>
   <ul class="cart-items" id="cart-items-list"></ul>
   <div id="cart-empty-msg" class="cart-empty">
@@ -29,12 +70,12 @@
       <span>Total</span>
       <span id="cart-total-price">Rs. 0</span>
     </div>
-    <div class="checkout-form" id="checkout-form" style="display:none;">
+    <form class="checkout-form" id="checkout-form" style="display:none;">
       <input type="text" id="cust-name" placeholder="Your Name" required>
       <input type="tel" id="cust-phone" placeholder="Phone Number" required>
       <textarea id="cust-address" placeholder="Delivery Address" rows="2" required></textarea>
-    </div>
-    <button class="btn btn-primary" style="width:100%;justify-content:center;" id="checkout-btn" style="display:none;" onclick="processCheckout()">
+    </form>
+    <button class="btn btn-primary" id="checkout-btn" style="width:100%;justify-content:center;display:none;" onclick="processCheckout()">
       <i class="fa-brands fa-whatsapp"></i> Place Order
     </button>
   </div>
@@ -43,43 +84,43 @@
 <!-- ===== HEADER ===== -->
 <header class="global-header" style="margin-bottom: 70px;">
   <div class="container-nav">
-<a href="index.html" class="logo">
-  <img src="assets/logo.png" alt="Jerry Pizza Logo" class="logo-img">
-  JERRY <span>PIZZA</span>
-</a>
+    <a href="/" class="logo" aria-label="Jerry Pizza Home">
+      <img src="assets/logo.png" alt="Jerry Pizza Logo" class="logo-img" width="50" height="50" loading="lazy">
+      JERRY <span>PIZZA</span>
+    </a>
 
-    <nav class="main-nav" id="nav-menu">
+    <nav class="main-nav" id="nav-menu" role="navigation" aria-label="Main navigation">
       <ul>
-        <li><a href="index.html">Home</a></li>
-        <li><a href="menu.html">Menu</a></li>
-        <li><a href="deals.html" class="active">Deals</a></li>
-        <li><a href="about.html">About Us</a></li>
+        <li><a href="/">Home</a></li>
+        <li><a href="/menu">Menu</a></li>
+        <li><a href="/deals" class="active">Deals</a></li>
+        <li><a href="/about">About Us</a></li>
         <li><a href="#contact">Contact</a></li>
       </ul>
     </nav>
 
     <div class="header-actions">
-      <div class="cart-trigger" onclick="toggleCartDrawer()">
+      <button class="cart-trigger" onclick="toggleCartDrawer()" aria-label="Open shopping cart with 0 items">
         🛒 <span class="cart-text">Cart</span>
         <span class="cart-badge" id="global-cart-badge">0</span>
-      </div>
-      <div class="hamburger" id="hamburger" onclick="toggleNav()">
+      </button>
+      <button class="hamburger" id="hamburger" onclick="toggleNav()" aria-label="Toggle navigation menu">
         <span class="bar"></span>
         <span class="bar"></span>
         <span class="bar"></span>
-      </div>
+      </button>
     </div>
   </div>
 </header>
 
 <!-- ===== DEALS PAGE ===== -->
-<main style="padding-top: 40px; padding-bottom: 60px;">
+<main role="main" style="padding-top: 40px; padding-bottom: 60px;">
   <div class="container text-center anim-fade-up" style="margin-bottom: 60px;">
     <span class="section-label">Save Big Today</span>
-    <h1 class="section-title">EXCLUSIVE DEALS</h1>
+    <h1 class="section-title" style="color: #333;">21 Exclusive Pizza & Burger Deals</h1>
     <div class="gold-divider"></div>
     <p class="text-muted" style="max-width:600px; margin: 0 auto; font-size:1rem;">
-      Pick a deal, save big. All combos include beverages. Free delivery in 2 km area. Minimum order Rs. 700/-
+      Pick a deal, save big. All combos include beverages. MUFTA Deal features a large pizza, 2 burgers, pasta, nuggets & drink for Rs. 2699. Free delivery within 2 km area. Minimum order Rs. 700.
     </p>
   </div>
 
@@ -89,57 +130,59 @@
 </main>
 
 <!-- ===== CONTACT BAR ===== -->
-<div class="contact-bar" id="contact">
+<section class="contact-bar" id="contact">
   <div class="contact-bar-inner">
     <div>
       <h2>ORDER <span>YOUR DEAL</span></h2>
       <p style="color:rgba(255,255,255,0.7); font-size:0.9rem; margin-top:4px;">Fast delivery · Fresh food · Best prices</p>
     </div>
     <div class="contact-pills">
-      <a href="tel:03143636434" class="contact-pill">
+      <a href="tel:+923143636434" class="contact-pill">
         <i class="fa-solid fa-phone"></i> 0314-3636434
       </a>
-      <a href="tel:03099699986" class="contact-pill">
+      <a href="tel:+923099699986" class="contact-pill">
         <i class="fa-solid fa-phone"></i> 0309-9699986
       </a>
     </div>
   </div>
-</div>
+</section>
 
 <!-- ===== FOOTER ===== -->
-<footer class="site-footer">
+<footer class="site-footer" role="contentinfo">
   <div class="footer-main">
     <div class="footer-col">
       <h2>JERRY <span>PIZZA</span></h2>
       <p>Sahiwal's #1 family pizza restaurant. Serving hot, stuffed-edge pizzas, loaded burgers, wings, wraps, pasta, and more at Pakpattan Chowk.</p>
-<div class="social-icons">
-  <a href="#" id="link-fb"><i class="fa-brands fa-facebook-f"></i></a>
-  <a href="#" id="link-insta"><i class="fa-brands fa-instagram"></i></a>
-  <a href="#" id="link-tiktok"><i class="fa-brands fa-tiktok"></i></a>
-  <a href="#" id="link-yt"><i class="fa-brands fa-youtube"></i></a>
-</div>
+      <div class="social-icons">
+        <a href="https://www.facebook.com/" id="link-fb" aria-label="Jerry Pizza on Facebook" title="Follow us on Facebook"><i class="fa-brands fa-facebook-f"></i></a>
+        <a href="https://www.instagram.com/" id="link-insta" aria-label="Jerry Pizza on Instagram" title="Follow us on Instagram"><i class="fa-brands fa-instagram"></i></a>
+        <a href="https://www.tiktok.com/" id="link-tiktok" aria-label="Jerry Pizza on TikTok" title="Follow us on TikTok"><i class="fa-brands fa-tiktok"></i></a>
+        <a href="https://www.youtube.com/" id="link-yt" aria-label="Jerry Pizza on YouTube" title="Subscribe on YouTube"><i class="fa-brands fa-youtube"></i></a>
+      </div>
     </div>
 
     <div class="footer-col">
       <h3>QUICK LINKS</h3>
       <ul>
-        <li><a href="index.html">→ Home</a></li>
-        <li><a href="menu.html">→ Full Menu</a></li>
-        <li><a href="deals.html">→ Deals & Offers</a></li>
-        <li><a href="about.html">→ About Us</a></li>
+        <li><a href="/">→ Home</a></li>
+        <li><a href="/menu">→ Full Menu</a></li>
+        <li><a href="/deals">→ Deals & Offers</a></li>
+        <li><a href="/about">→ About Us</a></li>
       </ul>
     </div>
 
     <div class="footer-col">
       <h3>CONTACT US</h3>
-      <p><i class="fa-solid fa-phone" style="color:var(--red);margin-right:6px;"></i> 0314-3636434</p>
-      <p><i class="fa-solid fa-phone" style="color:var(--red);margin-right:6px;"></i> 0309-9699986</p>
-      <p><i class="fa-solid fa-location-dot" style="color:var(--red);margin-right:6px;"></i> Pakpattan Chowk, Sahiwal</p>
+      <address>
+        <p><i class="fa-solid fa-phone" style="color:var(--red);margin-right:6px;"></i> <a href="tel:+923143636434">0314-3636434</a></p>
+        <p><i class="fa-solid fa-phone" style="color:var(--red);margin-right:6px;"></i> <a href="tel:+923099699986">0309-9699986</a></p>
+        <p><i class="fa-solid fa-location-dot" style="color:var(--red);margin-right:6px;"></i> Pakpattan Chowk, Sahiwal</p>
+      </address>
     </div>
   </div>
 
   <div class="footer-bottom">
-    <p>© 2025 Jerry Pizza Family Restaurant. All rights reserved.</p>
+    <p>&copy; 2025 Jerry Pizza Family Restaurant. All rights reserved.</p>
     <div class="payment-methods">
       <span class="pay-badge">Bank Transfer</span>
       <span class="pay-badge">Easypaisa</span>
@@ -150,128 +193,7 @@
 </footer>
 
 <script src="menu-data.js"></script>
-<script>
-let cart = [];
-
-function toggleCartDrawer() {
-  document.getElementById('cart-drawer').classList.toggle('open');
-  document.getElementById('overlay').classList.toggle('active');
-}
-
-function closeAll() {
-  document.getElementById('cart-drawer').classList.remove('open');
-  document.getElementById('nav-menu').classList.remove('open');
-  document.getElementById('overlay').classList.remove('active');
-}
-
-function toggleNav() {
-  document.getElementById('nav-menu').classList.toggle('open');
-  document.getElementById('overlay').classList.toggle('active');
-}
-
-function addToCart(name, price) {
-  cart.push({ name, price });
-  renderCart();
-}
-
-function removeFromCart(i) {
-  cart.splice(i, 1);
-  renderCart();
-}
-
-function renderCart() {
-  const list = document.getElementById('cart-items-list');
-  const empty = document.getElementById('cart-empty-msg');
-  const totalRow = document.getElementById('cart-total-row');
-  const badge = document.getElementById('global-cart-badge');
-
-  badge.textContent = cart.length;
-  list.innerHTML = '';
-
-  if (cart.length === 0) {
-    empty.style.display = 'block';
-    totalRow.style.display = 'none';
-    document.getElementById('checkout-btn').style.display = 'none';
-    document.getElementById('checkout-form').style.display = 'none';
-  } else {
-    empty.style.display = 'none';
-    totalRow.style.display = 'flex';
-    document.getElementById('checkout-btn').style.display = 'block';
-    document.getElementById('checkout-form').style.display = 'flex';
-
-    let total = 0;
-    cart.forEach((item, i) => {
-      total += item.price;
-      list.innerHTML += `
-        <li class="cart-item">
-          <span class="cart-item-name">${item.name}</span>
-          <span class="cart-item-price">Rs. ${item.price}</span>
-          <span class="cart-item-remove" onclick="removeFromCart(${i})"><i class="fa-solid fa-xmark"></i></span>
-        </li>`;
-    });
-    document.getElementById('cart-total-price').textContent = `Rs. ${total}`;
-  }
-}
-
-function processCheckout() {
-  const name = document.getElementById('cust-name')?.value.trim() || '';
-  const phone = document.getElementById('cust-phone')?.value.trim() || '';
-  const address = document.getElementById('cust-address')?.value.trim() || '';
-
-  if (!name || !phone || !address) {
-    alert("Please fill in all fields.");
-    return;
-  }
-
-  let orderText = `*Deal Order - Jerry Pizza*\n\nName: ${name}\nPhone: ${phone}\nAddress: ${address}\n\n*Items:*\n`;
-  let total = 0;
-  let counts = {};
-  cart.forEach(item => {
-    if (!counts[item.name]) counts[item.name] = { price: item.price, qty: 0 };
-    counts[item.name].qty++;
-    total += item.price;
-  });
-  Object.entries(counts).forEach(([name, data]) => {
-    orderText += `- ${data.qty}x ${name} (Rs. ${data.price})\n`;
-  });
-  orderText += `\nTotal: Rs. ${total}`;
-
-  const whatsappUrl = `https://wa.me/923143636434?text=${encodeURIComponent(orderText)}`;
-  window.open(whatsappUrl, '_blank');
-  cart = [];
-  renderCart();
-  toggleCartDrawer();
-}
-
-function renderDeals() {
-  if (typeof MENU_DATA === 'undefined' || !MENU_DATA.deals) return;
-  const grid = document.getElementById('deals-grid');
-  if (!grid) return;
-
-  let html = '';
-  MENU_DATA.deals.forEach(deal => {
-    html += `
-      <div class="deal-card">
-        <img src="${deal.img}" class="deal-thumb" alt="${deal.name}">
-        <div class="deal-info">
-          <h4 style="color:var(--gold);">${deal.name}</h4>
-          <p style="font-size: 0.85rem; color: rgba(255,255,255,0.75); margin: 6px 0 12px; line-height: 1.5;">${deal.desc}</p>
-          <div class="deal-price">Rs. ${deal.price}/-</div>
-          <button class="btn btn-primary" style="width:100%; margin-top:12px; justify-content:center; font-size:0.85rem;" onclick="addToCart('${deal.name}',${deal.price})">
-            Add to Cart
-          </button>
-        </div>
-      </div>`;
-  });
-  grid.innerHTML = html;
-}
-
-document.addEventListener('DOMContentLoaded', () => {
-  renderDeals();
-});
-</script>
-
-  <script src="link.js"></script>
+<script src="app.js"></script>
 
 </body>
 </html>
