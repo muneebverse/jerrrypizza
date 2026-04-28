@@ -276,7 +276,7 @@ function renderFullMenu() {
     let html = '';
     MENU_DATA[cat.key].forEach(item => {
       // Find the price (handling the different ways prices are written in your data)
-      const price = item.price || item.sizes?.S || item.priceHalf || item.price5pc || 0;
+      const price = item.price || item.sizes?.S || item.priceHalf || item.price5pc || item.priceS || 0;
       const desc = item.desc || '';
       
       // Pull the exact unique image from the menu data
