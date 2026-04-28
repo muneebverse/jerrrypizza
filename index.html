@@ -10,6 +10,7 @@
   <meta name="keywords" content="pizza delivery Sahiwal, best pizza Pakpattan Chowk, stuffed crust pizza, zinger burger, family restaurant, food delivery">
   <meta name="author" content="Jerry Pizza">
   <meta name="robots" content="index, follow">
+  <meta name="language" content="English">
   
   <!-- Geo Targeting -->
   <meta name="geo.position" content="30.1889;72.3347">
@@ -24,6 +25,7 @@
   <meta property="og:url" content="https://jerrypizza.me/">
   <meta property="og:type" content="business.business">
   <meta property="og:site_name" content="Jerry Pizza">
+  <meta property="og:locale" content="en_US">
   
   <!-- Twitter Card -->
   <meta name="twitter:card" content="summary_large_image">
@@ -36,10 +38,11 @@
   
   <!-- Favicon -->
   <link rel="icon" type="image/png" href="assets/logo.png">
+  <link rel="apple-touch-icon" href="assets/logo.png">
   
   <!-- Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Satisfy&family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" integrity="sha512-iBBXm8fW90+nuLcSKlbmrPcLa0OT92xO1BIsZ+ywDWZb9u6Vichqkruh6qJieA7/c0FjVn2ulfb0c9Knz/v+5A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
   <link rel="stylesheet" href="styles.css" />
   
   <!-- Schema Markup - Restaurant -->
@@ -60,7 +63,11 @@
       "addressCountry": "PK"
     },
     "telephone": "+92-314-3636434",
-    "telephone2": "+92-309-9699986",
+    "contactPoint": {
+      "@type": "ContactPoint",
+      "contactType": "Customer Service",
+      "telephone": "+92-314-3636434"
+    },
     "url": "https://jerrypizza.me",
     "priceRange": "$$",
     "cuisine": ["Pizza", "Burger", "Pakistani"],
@@ -81,12 +88,8 @@
       "@type": "City",
       "name": "Sahiwal"
     },
-    "deliveryRange": "2 km",
-    "minimumOrderAmount": {
-      "@type": "PriceSpecification",
-      "priceCurrency": "PKR",
-      "price": "700"
-    }
+    "paymentAccepted": ["Bank Transfer", "Easypaisa", "JazzCash", "Cash"],
+    "acceptsReservations": "False"
   }
   </script>
   
@@ -101,7 +104,7 @@
         "name": "What makes Jerry Pizza's crust special?",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "Our pizzas feature cheese-stuffed golden edges, making every bite packed with flavor and creaminess."
+          "text": "Our pizzas feature cheese-stuffed golden edges, making every bite packed with flavor and creaminess. This signature stuffed-edge crust is what sets Jerry Pizza apart from other restaurants."
         }
       },
       {
@@ -109,7 +112,7 @@
         "name": "Do you deliver in Sahiwal?",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "Yes! Free delivery within 2km of Pakpattan Chowk. Minimum order Rs. 700."
+          "text": "Yes! We provide free delivery within 2km of Pakpattan Chowk with a minimum order of Rs. 700. Delivery typically takes 20-40 minutes depending on your location."
         }
       },
       {
@@ -117,7 +120,7 @@
         "name": "What payment methods do you accept?",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "We accept bank transfer, Easypaisa, JazzCash, and cash on delivery."
+          "text": "We accept bank transfer, Easypaisa, JazzCash, and cash on delivery for your convenience."
         }
       },
       {
@@ -125,7 +128,7 @@
         "name": "How long does delivery take?",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "Delivery typically takes 20-40 minutes depending on your location within 2km radius."
+          "text": "Delivery typically takes 20-40 minutes depending on your location within our 2km delivery radius from Pakpattan Chowk."
         }
       }
     ]
@@ -138,10 +141,10 @@
 <div class="cart-overlay" id="overlay" onclick="closeAll()"></div>
 
 <!-- CART DRAWER -->
-<aside class="cart-drawer" id="cart-drawer">
+<aside class="cart-drawer" id="cart-drawer" aria-label="Shopping cart">
   <div class="cart-header">
     <h3>YOUR CART</h3>
-    <span class="close-cart" onclick="toggleCartDrawer()"><i class="fa-solid fa-xmark"></i></span>
+    <button class="close-cart" onclick="toggleCartDrawer()" aria-label="Close cart"><i class="fa-solid fa-xmark"></i></button>
   </div>
   <ul class="cart-items" id="cart-items-list"></ul>
   <div id="cart-empty-msg" class="cart-empty">
@@ -153,12 +156,12 @@
       <span>Total</span>
       <span id="cart-total-price">Rs. 0</span>
     </div>
-    <div class="checkout-form" id="checkout-form" style="display:none;">
+    <form class="checkout-form" id="checkout-form" style="display:none;">
       <input type="text" id="cust-name" placeholder="Your Name" required>
       <input type="tel" id="cust-phone" placeholder="Phone Number" required>
       <textarea id="cust-address" placeholder="Delivery Address" rows="2" required></textarea>
-    </div>
-    <button class="btn btn-primary" style="width:100%;justify-content:center;" id="checkout-btn" style="display:none;" onclick="processCheckout()">
+    </form>
+    <button class="btn btn-primary" id="checkout-btn" style="width:100%;justify-content:center;display:none;" onclick="processCheckout()">
       <i class="fa-brands fa-whatsapp"></i> Place Order
     </button>
   </div>
@@ -168,11 +171,11 @@
 <header class="global-header" style="margin-bottom: 70px;">
   <div class="container-nav">
     <a href="/" class="logo" aria-label="Jerry Pizza Home">
-      <img src="assets/logo.png" alt="Jerry Pizza Logo" class="logo-img" width="50" height="50">
+      <img src="assets/logo.png" alt="Jerry Pizza Logo" class="logo-img" width="50" height="50" loading="lazy">
       JERRY <span>PIZZA</span>
     </a>
 
-    <nav class="main-nav" id="nav-menu" role="navigation">
+    <nav class="main-nav" id="nav-menu" role="navigation" aria-label="Main navigation">
       <ul>
         <li><a href="/" class="active">Home</a></li>
         <li><a href="/menu">Menu</a></li>
@@ -183,15 +186,15 @@
     </nav>
 
     <div class="header-actions">
-      <div class="cart-trigger" onclick="toggleCartDrawer()" role="button" tabindex="0" aria-label="Open shopping cart">
+      <button class="cart-trigger" onclick="toggleCartDrawer()" aria-label="Open shopping cart with 0 items">
         🛒 <span class="cart-text">Cart</span>
         <span class="cart-badge" id="global-cart-badge">0</span>
-      </div>
-      <div class="hamburger" id="hamburger" onclick="toggleNav()" role="button" tabindex="0" aria-label="Toggle navigation menu">
+      </button>
+      <button class="hamburger" id="hamburger" onclick="toggleNav()" aria-label="Toggle navigation menu">
         <span class="bar"></span>
         <span class="bar"></span>
         <span class="bar"></span>
-      </div>
+      </button>
     </div>
   </div>
 </header>
@@ -202,7 +205,7 @@
     <div class="container">
       <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 40px; align-items: center;">
         <div class="anim-fade-up">
-          <h1 style="font-size: 3.5rem; margin-bottom: 20px; line-height: 1.2;">Sahiwal's #1 Stuffed-Crust Pizza & Family Restaurant</h1>
+          <h1 style="font-size: 3.5rem; margin-bottom: 20px; line-height: 1.2; color: #333;">Sahiwal's #1 Stuffed-Crust Pizza & Family Restaurant</h1>
           <p style="font-size: 1.1rem; color: #666; margin-bottom: 30px; line-height: 1.6;">Hand-tossed dough, premium toppings, cheese-stuffed edges — crafted for the real pizza lover. Fresh, fast, and delivered hot to your door.</p>
           <div style="display: flex; gap: 15px; flex-wrap: wrap;">
             <a href="/menu" class="btn btn-primary">Order Now</a>
@@ -210,7 +213,7 @@
           </div>
         </div>
         <div class="anim-fade-up" style="animation-delay: 0.2s;">
-          <img src="assets/hero-pizza.jpg" alt="Hand-tossed stuffed-crust pizza with premium toppings" style="width: 100%; border-radius: 12px; box-shadow: 0 10px 40px rgba(0,0,0,0.2);">
+          <img src="assets/hero-pizza.jpg" alt="Hand-tossed stuffed-crust pizza with premium toppings" style="width: 100%; border-radius: 12px; box-shadow: 0 10px 40px rgba(0,0,0,0.2);" loading="lazy">
         </div>
       </div>
     </div>
@@ -240,7 +243,7 @@
   <section style="padding: 80px 0;">
     <div class="container" style="display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center;">
       <div class="anim-fade-up">
-        <img src="assets/burger.jpg" alt="Crispy fried chicken zinger burger with loaded fries" style="width: 100%; border-radius: 12px; box-shadow: 0 10px 40px rgba(0,0,0,0.15);">
+        <img src="assets/burger.jpg" alt="Crispy fried chicken zinger burger with loaded fries" style="width: 100%; border-radius: 12px; box-shadow: 0 10px 40px rgba(0,0,0,0.15);" loading="lazy">
       </div>
       <div class="anim-fade-up" style="animation-delay: 0.2s;">
         <span class="section-label">Beyond Pizza</span>
@@ -271,7 +274,7 @@
   </section>
 
   <!-- ===== CONTACT BAR ===== -->
-  <div class="contact-bar" id="contact">
+  <section class="contact-bar" id="contact">
     <div class="contact-bar-inner">
       <div>
         <h2>ORDER <span>NOW</span></h2>
@@ -286,7 +289,7 @@
         </a>
       </div>
     </div>
-  </div>
+  </section>
 </main>
 
 <!-- ===== FOOTER ===== -->
@@ -296,10 +299,10 @@
       <h2>JERRY <span>PIZZA</span></h2>
       <p>Sahiwal's #1 family pizza restaurant. Serving hot, stuffed-edge pizzas, loaded burgers, wings, wraps, pasta, and more at Pakpattan Chowk.</p>
       <div class="social-icons">
-        <a href="#" id="link-fb" aria-label="Jerry Pizza on Facebook"><i class="fa-brands fa-facebook-f"></i></a>
-        <a href="#" id="link-insta" aria-label="Jerry Pizza on Instagram"><i class="fa-brands fa-instagram"></i></a>
-        <a href="#" id="link-tiktok" aria-label="Jerry Pizza on TikTok"><i class="fa-brands fa-tiktok"></i></a>
-        <a href="#" id="link-yt" aria-label="Jerry Pizza on YouTube"><i class="fa-brands fa-youtube"></i></a>
+        <a href="https://www.facebook.com/" id="link-fb" aria-label="Jerry Pizza on Facebook" title="Follow us on Facebook"><i class="fa-brands fa-facebook-f"></i></a>
+        <a href="https://www.instagram.com/" id="link-insta" aria-label="Jerry Pizza on Instagram" title="Follow us on Instagram"><i class="fa-brands fa-instagram"></i></a>
+        <a href="https://www.tiktok.com/" id="link-tiktok" aria-label="Jerry Pizza on TikTok" title="Follow us on TikTok"><i class="fa-brands fa-tiktok"></i></a>
+        <a href="https://www.youtube.com/" id="link-yt" aria-label="Jerry Pizza on YouTube" title="Subscribe on YouTube"><i class="fa-brands fa-youtube"></i></a>
       </div>
     </div>
 
@@ -315,9 +318,11 @@
 
     <div class="footer-col">
       <h3>CONTACT US</h3>
-      <p><i class="fa-solid fa-phone" style="color:var(--red);margin-right:6px;"></i> <a href="tel:+923143636434">0314-3636434</a></p>
-      <p><i class="fa-solid fa-phone" style="color:var(--red);margin-right:6px;"></i> <a href="tel:+923099699986">0309-9699986</a></p>
-      <p><i class="fa-solid fa-location-dot" style="color:var(--red);margin-right:6px;"></i> Pakpattan Chowk, Sahiwal</p>
+      <address>
+        <p><i class="fa-solid fa-phone" style="color:var(--red);margin-right:6px;"></i> <a href="tel:+923143636434">0314-3636434</a></p>
+        <p><i class="fa-solid fa-phone" style="color:var(--red);margin-right:6px;"></i> <a href="tel:+923099699986">0309-9699986</a></p>
+        <p><i class="fa-solid fa-location-dot" style="color:var(--red);margin-right:6px;"></i> Pakpattan Chowk, Sahiwal</p>
+      </address>
     </div>
   </div>
 
