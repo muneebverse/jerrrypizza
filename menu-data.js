@@ -152,28 +152,35 @@ const MENU_DATA = {
     { name: "Large Water", price: 120 }
   ],
 
-  deals: [
-    { id: 1, name: "Chicken Tikka Pizza Large + 1 Liter Drink", price: 1399 },
-    { id: 2, name: "Jerry Special Pizza Large + 1 Liter Drink", price: 1899 },
-    { id: 3, name: "Chicken Tikka Pizza XL + 1.5 Liter Drink", price: 1899 },
-    { id: 4, name: "2 Chicken Tikka Pizza Large + 1.5 Liter Drink", price: 2649 },
-    { id: 5, name: "2 Chicken Tikka Pizza Small + 1 Liter Drink", price: 1049 },
-    { id: 6, name: "Chicken Tikka Pizza Large + 10 Hot Wings + 1 Liter Drink", price: 1849 },
-    { id: 7, name: "Jerry Special Pizza Medium + 2 Zinger Burger + 1 Liter Drink", price: 2099 },
-    { id: 8, name: "Chicken Tikka Pizza Large + Fajita Pizza Small + 1.5 Liter Drink", price: 1849 },
-    { id: 9, name: "Chicken Tikka Pizza Medium + 500ml Drink", price: 1099 },
-    { id: 10, name: "Chicken Tikka Pizza Large + 2 Zinger Burger + Large Fries + 1.5 Liter Drink", price: 2449 },
-    { id: 11, name: "Chicken Tikka Pizza Small + Zinger Burger + 345ml Drink", price: 949 },
-    { id: 12, name: "Junior Zinger Burger + Small Fries + 345ml Drink", price: 559 },
-    { id: 13, name: "4 Junior Zinger Burger + 1.5 Liter Drink", price: 1499 },
-    { id: 14, name: "2 Junior Zinger Burger + 2 345ml Drink", price: 799 },
-    { id: 15, name: "Chicken Tikka Pizza Large + 1 Crunchy Pasta Small + 1 Liter Drink", price: 1749 },
-    { id: 16, name: "Chicken Tikka Pizza Small + Macaroni Pasta Small + 345ml Drink", price: 919 },
-    { id: 17, name: "Chicken Tikka Pizza Small + 345ml Drink", price: 499 },
-    { id: 18, name: "2 Chicken Shawarma + 2 345ml Drink", price: 599 },
-    { id: 19, name: "Zinger Pratha / Shawarma + Small Fries + 345ml Drink", price: 499 },
-    { id: 20, name: "10 Fried Hot Wings + Junior Zinger Burger + 345ml Drink", price: 929 },
-    { id: 21, name: "MUFTA — Large Pizza Any Flavour + 2 Junior Zinger Burger + Macaroni Pasta Small + 5 Nuggets + 1.5 Liter Drink", price: 2699 }
+  desserts:[
+    { name: "Pineapple Cake (1 lb)", price: 600, desc: "Fresh and creamy pineapple cake, baked to perfection." },
+    { name: "Pineapple Cake (2 lb)", price: 1100, desc: "A large, fresh, and creamy pineapple cake for celebrations." },
+    { name: "Chocolate Cake (1 lb)", price: 700, desc: "Rich, fudgy, and moist double chocolate cake." },
+    { name: "Chocolate Cake (2 lb)", price: 1300, desc: "Decadent large chocolate cake loaded with chocolate frosting." }
+  ],
+
+deals:[
+    { id: 1, name: "Deal 1", price: 1399, desc: "1 Large Chicken Tikka Pizza + 1 Liter Drink.", img: "https://images.unsplash.com/photo-1604382354936-07c5d9983bd3?w=300&q=80" },
+    { id: 2, name: "Deal 2", price: 1899, desc: "1 Large Jerry Special Pizza + 1 Liter Drink.", img: "https://images.unsplash.com/photo-1513104890138-7c749659a591?w=300&q=80" },
+    { id: 3, name: "Deal 3", price: 1899, desc: "1 XL Chicken Tikka Pizza + 1.5 Liter Drink.", img: "https://images.unsplash.com/photo-1574071318508-1cdbab80d002?w=300&q=80" },
+    { id: 4, name: "Deal 4", price: 2649, desc: "2 Large Chicken Tikka Pizzas + 1.5 Liter Drink.", img: "https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=300&q=80" },
+    { id: 5, name: "Deal 5", price: 1049, desc: "2 Small Chicken Tikka Pizzas + 1 Liter Drink.", img: "https://images.unsplash.com/photo-1555072956-7758afb20e8f?w=300&q=80" },
+    { id: 6, name: "Deal 6", price: 1849, desc: "1 Large Chicken Tikka Pizza + 10 Hot Wings + 1 Liter Drink.", img: "https://images.unsplash.com/photo-1608039829572-78524f79c4c7?w=300&q=80" },
+    { id: 7, name: "Deal 7", price: 2099, desc: "1 Medium Jerry Special + 2 Zinger Burgers + 1 Liter Drink.", img: "https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=300&q=80" },
+    { id: 8, name: "Deal 8", price: 1849, desc: "1 Large Chicken Tikka + 1 Small Fajita Pizza + 1.5 Liter Drink.", img: "https://images.unsplash.com/photo-1528137871618-79d2761e3fd5?w=300&q=80" },
+    { id: 9, name: "Deal 9", price: 1099, desc: "1 Medium Chicken Tikka Pizza + 500ml Drink.", img: "https://images.unsplash.com/photo-1571407970349-bc81e7e96d47?w=300&q=80" },
+    { id: 10, name: "Deal 10", price: 2449, desc: "1 Large Chicken Tikka + 2 Zinger Burgers + Large Fries + 1.5 L Drink.", img: "https://images.unsplash.com/photo-1594221708734-7a32707b22ab?w=300&q=80" },
+    { id: 11, name: "Deal 11", price: 949, desc: "1 Small Chicken Tikka + 1 Zinger Burger + 345ml Drink.", img: "https://images.unsplash.com/photo-1610440042657-612c34d95e9f?w=300&q=80" },
+    { id: 12, name: "Deal 12", price: 559, desc: "1 Junior Zinger Burger + Small Fries + 345ml Drink.", img: "https://images.unsplash.com/photo-1550547660-d9450f859349?w=300&q=80" },
+    { id: 13, name: "Deal 13", price: 1499, desc: "4 Junior Zinger Burgers + 1.5 Liter Drink.", img: "https://images.unsplash.com/photo-1550547660-d9450f859349?w=300&q=80" },
+    { id: 14, name: "Deal 14", price: 799, desc: "2 Junior Zinger Burgers + Two 345ml Drinks.", img: "https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=300&q=80" },
+    { id: 15, name: "Deal 15", price: 1749, desc: "1 Large Chicken Tikka + 1 Small Crunchy Pasta + 1 Liter Drink.", img: "https://images.unsplash.com/photo-1621996316541-0154080a5270?w=300&q=80" },
+    { id: 16, name: "Deal 16", price: 919, desc: "1 Small Chicken Tikka + 1 Small Macaroni Pasta + 345ml Drink.", img: "https://images.unsplash.com/photo-1555072956-7758afb20e8f?w=300&q=80" },
+    { id: 17, name: "Deal 17", price: 499, desc: "1 Small Chicken Tikka Pizza + 345ml Drink.", img: "https://images.unsplash.com/photo-1574071318508-1cdbab80d002?w=300&q=80" },
+    { id: 18, name: "Deal 18", price: 599, desc: "2 Chicken Shawarmas + Two 345ml Drinks.", img: "https://images.unsplash.com/photo-1648943564943-4dcde6d3e691?w=300&q=80" },
+    { id: 19, name: "Deal 19", price: 499, desc: "1 Zinger Pratha or Shawarma + Small Fries + 345ml Drink.", img: "https://images.unsplash.com/photo-1628840042765-356cda07504e?w=300&q=80" },
+    { id: 20, name: "Deal 20", price: 929, desc: "10 Fried Hot Wings + 1 Junior Zinger Burger + 345ml Drink.", img: "https://images.unsplash.com/photo-1608039829572-78524f79c4c7?w=300&q=80" },
+    { id: 21, name: "MUFTA DEAL", price: 2699, desc: "1 Large Pizza + 2 Junior Zinger Burgers + Small Macaroni + 5 Nuggets + 1.5 L Drink.", img: "https://images.unsplash.com/photo-1604382354936-07c5d9983bd3?w=300&q=80" }
   ]
 };
 
