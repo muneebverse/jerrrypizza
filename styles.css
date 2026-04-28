@@ -821,3 +821,22 @@ button { border: none; background: none; font-family: inherit; cursor: pointer; 
   .contact-pills { gap: 8px; }
   .contact-pill { padding: 8px 16px; font-size: 0.85rem; }
 }
+
+/* Logo Styling */
+.logo-img {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid var(--red);
+}
+
+/* Deal Thumbnail Styling */
+.deal-thumb {
+  width: 90px;
+  height: 90px;
+  border-radius: 12px;
+  object-fit: cover;
+  flex-shrink: 0;
+  border: 1px solid rgba(255,255,255,0.1);
+}
