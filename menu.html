@@ -246,8 +246,7 @@ function renderFullMenu() {
   const container = document.getElementById('full-menu-container');
   if (!container) return;
 
-  container.innerHTML = '';
-  const categories = [
+const categories =[
     { key: 'bestPizzas', title: 'SIGNATURE PIZZAS' },
     { key: 'regularPizzas', title: 'CLASSIC PIZZAS' },
     { key: 'burgers', title: 'BURGERS' },
@@ -256,6 +255,7 @@ function renderFullMenu() {
     { key: 'pasta', title: 'PASTA' },
     { key: 'sandwiches', title: 'SANDWICHES' },
     { key: 'newArrivals', title: 'NEW ARRIVALS' },
+    { key: 'desserts', title: 'DESSERTS & CAKES' }, /* <-- ADDED CAKES HERE */
     { key: 'drinksAndIceCream', title: 'DRINKS & ICE CREAM' }
   ];
 
