@@ -3,7 +3,13 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  
+  <title>About Us | Jerry Pizza — Pakpattan Chowk, Sahiwal</title>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Satisfy&family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+
   <!-- SEO Meta Tags -->
   <title>About Jerry Pizza | Family Restaurant Sahiwal | Quality & Tradition</title>
   <meta name="description" content="About Jerry Pizza – Family restaurant at Pakpattan Chowk, Sahiwal. Hand-tossed stuffed-crust pizzas with fresh ingredients. Quality service since 2023.">
@@ -72,13 +78,6 @@
     ]
   }
   </script>
-  
-  <!-- Fonts -->
-  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Satisfy&family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
-  <link rel="stylesheet" href="styles.css" />
-</head>
-<body>
 
 <!-- CART OVERLAY -->
 <div class="cart-overlay" id="overlay" onclick="closeAll()"></div>
@@ -113,27 +112,27 @@
 <!-- ===== HEADER ===== -->
 <header class="global-header" style="margin-bottom: 70px;">
   <div class="container-nav">
-    <a href="/" class="logo" aria-label="Jerry Pizza Home">
-      <img src="assets/logo.png" alt="Jerry Pizza Logo" class="logo-img" width="50" height="50">
-      JERRY <span>PIZZA</span>
-    </a>
+<a href="index.html" class="logo">
+  <img src="assets/logo.png" alt="Jerry Pizza Logo" class="logo-img">
+  JERRY <span>PIZZA</span>
+</a>
 
-    <nav class="main-nav" id="nav-menu" role="navigation">
+    <nav class="main-nav" id="nav-menu">
       <ul>
-        <li><a href="/">Home</a></li>
-        <li><a href="/menu">Menu</a></li>
-        <li><a href="/deals">Deals</a></li>
-        <li><a href="/about" class="active">About Us</a></li>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="menu.html">Menu</a></li>
+        <li><a href="deals.html">Deals</a></li>
+        <li><a href="about.html" class="active">About Us</a></li>
         <li><a href="#contact">Contact</a></li>
       </ul>
     </nav>
 
     <div class="header-actions">
-      <div class="cart-trigger" onclick="toggleCartDrawer()" role="button" tabindex="0" aria-label="Open shopping cart">
+      <div class="cart-trigger" onclick="toggleCartDrawer()">
         🛒 <span class="cart-text">Cart</span>
         <span class="cart-badge" id="global-cart-badge">0</span>
       </div>
-      <div class="hamburger" id="hamburger" onclick="toggleNav()" role="button" tabindex="0" aria-label="Toggle navigation menu">
+      <div class="hamburger" id="hamburger" onclick="toggleNav()">
         <span class="bar"></span>
         <span class="bar"></span>
         <span class="bar"></span>
@@ -143,152 +142,155 @@
 </header>
 
 <!-- ===== ABOUT PAGE ===== -->
-<main role="main" style="padding-top: 40px; padding-bottom: 60px;">
-  <div class="container text-center anim-fade-up" style="margin-bottom: 60px;">
-    <span class="section-label">Our Story</span>
-    <h1 class="section-title">About Jerry Pizza</h1>
-    <div class="gold-divider"></div>
-  </div>
-
-  <!-- SECTION 1: Our Story -->
-  <section class="container" style="margin-bottom: 80px;">
-    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center;">
-      <div class="anim-fade-up">
-        <img src="assets/restaurant.jpg" alt="Jerry Pizza restaurant at Pakpattan Chowk, Sahiwal" style="width: 100%; border-radius: 12px; box-shadow: 0 10px 40px rgba(0,0,0,0.15);">
-      </div>
-      <div class="anim-fade-up" style="animation-delay: 0.2s;">
-        <h2 class="section-title">Who We Are</h2>
-        <div class="gold-divider" style="width: 80px; margin: 20px 0;"></div>
-        <p style="font-size: 1rem; color: #666; line-height: 1.8; margin-bottom: 20px;">
-          Jerry Pizza is Sahiwal's #1 family restaurant, located at the heart of Pakpattan Chowk. Since our opening in 2023, we've been committed to serving the finest hand-tossed pizzas with cheese-stuffed golden edges that keep customers coming back.
-        </p>
-        <p style="font-size: 1rem; color: #666; line-height: 1.8; margin-bottom: 20px;">
-          What started as a passion for quality food has grown into a beloved local restaurant trusted by families, students, and pizza lovers across Sahiwal.
-        </p>
-      </div>
-    </div>
-  </section>
-
-  <!-- SECTION 2: Our Mission -->
-  <section style="padding: 80px 0; background: #f5f5f5;">
-    <div class="container">
-      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center;">
-        <div class="anim-fade-up" style="order: 2;">
-          <img src="assets/pizza-making.jpg" alt="Fresh hand-tossed pizza being made at Jerry Pizza" style="width: 100%; border-radius: 12px; box-shadow: 0 10px 40px rgba(0,0,0,0.15);">
-        </div>
-        <div class="anim-fade-up" style="order: 1;">
-          <h2 class="section-title">Our Mission</h2>
-          <div class="gold-divider" style="width: 80px; margin: 20px 0;"></div>
-          <p style="font-size: 1rem; color: #666; line-height: 1.8; margin-bottom: 20px;">
-            Our mission is simple: deliver the best pizza experience with every order. We believe in using fresh, premium ingredients and hand-crafting every pizza with care.
-          </p>
-          <p style="font-size: 1rem; color: #666; line-height: 1.8; margin-bottom: 20px;">
-            From our signature cheese-stuffed crust to our zinger burgers and crispy wings, every item is made fresh to order. We're not just selling food—we're creating memories and satisfying cravings.
-          </p>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- SECTION 3: Why Choose Us -->
-  <section class="container" style="padding: 80px 0;">
-    <div class="text-center anim-fade-up" style="margin-bottom: 60px;">
-      <h2 class="section-title">Why Choose Jerry Pizza?</h2>
-      <div class="gold-divider"></div>
-    </div>
-
-    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 40px;">
-      <div class="anim-fade-up" style="text-align: center; animation-delay: 0s;">
-        <div style="font-size: 3rem; margin-bottom: 20px;">🍕</div>
-        <h3 style="font-size: 1.3rem; margin-bottom: 15px; color: #333;">Stuffed-Edge Pizzas</h3>
-        <p style="color: #666; line-height: 1.6;">Hand-tossed dough with cheese-stuffed golden edges – because regular crust just isn't enough.</p>
-      </div>
-
-      <div class="anim-fade-up" style="text-align: center; animation-delay: 0.1s;">
-        <div style="font-size: 3rem; margin-bottom: 20px;">⚡</div>
-        <h3 style="font-size: 1.3rem; margin-bottom: 15px; color: #333;">Fresh & Fast</h3>
-        <p style="color: #666; line-height: 1.6;">All items made fresh to order and delivered hot within 20-40 minutes to your location.</p>
-      </div>
-
-      <div class="anim-fade-up" style="text-align: center; animation-delay: 0.2s;">
-        <div style="font-size: 3rem; margin-bottom: 20px;">🚚</div>
-        <h3 style="font-size: 1.3rem; margin-bottom: 15px; color: #333;">Free Delivery</h3>
-        <p style="color: #666; line-height: 1.6;">Free delivery within 2km of Pakpattan Chowk with minimum order of just Rs. 700.</p>
-      </div>
-
-      <div class="anim-fade-up" style="text-align: center; animation-delay: 0.3s;">
-        <div style="font-size: 3rem; margin-bottom: 20px;">👨‍👩‍👧‍👦</div>
-        <h3 style="font-size: 1.3rem; margin-bottom: 15px; color: #333;">Family Values</h3>
-        <p style="color: #666; line-height: 1.6;">A family-run restaurant where every customer is treated like family. Your satisfaction is our success.</p>
-      </div>
-
-      <div class="anim-fade-up" style="text-align: center; animation-delay: 0.4s;">
-        <div style="font-size: 3rem; margin-bottom: 20px;">💰</div>
-        <h3 style="font-size: 1.3rem; margin-bottom: 15px; color: #333;">Best Deals</h3>
-        <p style="color: #666; line-height: 1.6;">21 curated deals including the MUFTA Deal – maximum value for every budget.</p>
-      </div>
-
-      <div class="anim-fade-up" style="text-align: center; animation-delay: 0.5s;">
-        <div style="font-size: 3rem; margin-bottom: 20px;">🛡️</div>
-        <h3 style="font-size: 1.3rem; margin-bottom: 15px; color: #333;">Quality Assured</h3>
-        <p style="color: #666; line-height: 1.6;">Premium ingredients, hygiene standards, and consistent quality with every order.</p>
-      </div>
-    </div>
-  </section>
-
-  <!-- CONTACT BAR -->
-  <div class="contact-bar" id="contact">
-    <div class="contact-bar-inner">
+<main class="section-padding">
+  <div class="container">
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center;" class="anim-fade-up">
+      
       <div>
-        <h2>READY TO <span>ORDER?</span></h2>
-        <p style="color:rgba(255,255,255,0.7); font-size:0.9rem; margin-top:4px;">Call us now or visit our location</p>
+        <h2 style="font-family: var(--font-display); font-size: 2.5rem; margin-bottom: 20px; color: var(--gold); letter-spacing: 2px;">
+          Welcome to<br>JERRY <span style="color: var(--white);">PIZZA</span>
+        </h2>
+        <p style="color: var(--muted); font-size: 1.05rem; margin-bottom: 20px; line-height: 1.7;">
+          Located at Pakpattan Chowk in Sahiwal, Jerry Pizza is your go-to destination for authentic, delicious fast food. We specialize in hand-crafted pizzas with stuffed edges, crispy burgers, and tender wings — all prepared fresh to order.
+        </p>
+        <p style="color: var(--muted); font-size: 1.05rem; margin-bottom: 40px; line-height: 1.7;">
+          Whether it's a late-night craving or a family dinner, our doors stay open until late to serve you exactly when you want it. Quality, taste, and speed — that's the Jerry Pizza promise.
+        </p>
+        
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+          <div style="background: var(--bg-card); padding: 24px; border-radius: var(--radius); border: 1px solid rgba(255,255,255,0.08); text-align: center;">
+            <h3 style="color: var(--gold); font-family: var(--font-display); font-size: 1.8rem; margin-bottom: 8px;">10+</h3>
+            <span style="font-size: 0.95rem; color: var(--muted);">Years of Service</span>
+          </div>
+          <div style="background: var(--bg-card); padding: 24px; border-radius: var(--radius); border: 1px solid rgba(255,255,255,0.08); text-align: center;">
+            <h3 style="color: var(--gold); font-family: var(--font-display); font-size: 1.8rem; margin-bottom: 8px;">50+</h3>
+            <span style="font-size: 0.95rem; color: var(--muted);">Menu Items</span>
+          </div>
+        </div>
       </div>
-      <div class="contact-pills">
-        <a href="tel:+923143636434" class="contact-pill">
-          <i class="fa-solid fa-phone"></i> 0314-3636434
-        </a>
-        <a href="tel:+923099699986" class="contact-pill">
-          <i class="fa-solid fa-phone"></i> 0309-9699986
-        </a>
+
+      <div>
+        <div style="background: linear-gradient(135deg, var(--bg-card), rgba(232,25,10,0.1)); border-radius: 30px; padding: 40px; text-align: center; box-shadow: 0 20px 50px rgba(232,25,10,0.25); border: 1px solid rgba(232,25,10,0.3);">
+          <span style="font-size: 4rem; display: block; margin-bottom: 20px;">📍</span>
+          <h3 style="margin-bottom: 16px; font-size: 1.8rem; color: var(--white); font-family: var(--font-display);">Visit Us Today</h3>
+          <p style="color: var(--muted); margin-bottom: 30px; line-height: 1.8; font-size: 1.05rem;">
+            <strong style="color: var(--white);">Pakpattan Chowk<br>Sahiwal, Punjab<br>Pakistan</strong>
+          </p>
+          <p style="color: var(--muted); margin-bottom: 30px; font-size: 1rem;">
+            <i class="fa-solid fa-phone" style="color: var(--gold); margin-right: 8px;"></i> 0314-3636434<br>
+            <i class="fa-solid fa-phone" style="color: var(--gold); margin-right: 8px;"></i> 0309-9699986
+          </p>
+          <a href="https://maps.google.com/?q=Jerry+Pizza+Pakpattan+Chowk+Sahiwal" target="_blank" class="btn btn-primary" style="width: 100%;">
+            <i class="fa-solid fa-map"></i> Open in Maps
+          </a>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- VALUES SECTION -->
+    <div style="margin-top: 80px;">
+      <div style="text-align: center; margin-bottom: 50px;">
+        <h2 class="section-title">OUR <span style="color: var(--gold);">PROMISE</span></h2>
+        <div class="gold-divider"></div>
+      </div>
+
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 30px;">
+        <div class="anim-fade-up" style="background: var(--bg-card); padding: 30px; border-radius: var(--radius); border: 1px solid rgba(232,25,10,0.3); text-align: center;">
+          <div style="font-size: 3rem; margin-bottom: 16px;">🔥</div>
+          <h3 style="color: var(--white); margin-bottom: 12px; font-family: var(--font-display);">Fresh & Hot</h3>
+          <p style="color: var(--muted); line-height: 1.6;">Every order is prepared fresh. We don't compromise on quality or temperature.</p>
+        </div>
+
+        <div class="anim-fade-up" style="background: var(--bg-card); padding: 30px; border-radius: var(--radius); border: 1px solid rgba(232,25,10,0.3); text-align: center;">
+          <div style="font-size: 3rem; margin-bottom: 16px;">⚡</div>
+          <h3 style="color: var(--white); margin-bottom: 12px; font-family: var(--font-display);">Fast Delivery</h3>
+          <p style="color: var(--muted); line-height: 1.6;">Free delivery within 2 km. Quick service without sacrificing quality.</p>
+        </div>
+
+        <div class="anim-fade-up" style="background: var(--bg-card); padding: 30px; border-radius: var(--radius); border: 1px solid rgba(232,25,10,0.3); text-align: center;">
+          <div style="font-size: 3rem; margin-bottom: 16px;">😋</div>
+          <h3 style="color: var(--white); margin-bottom: 12px; font-family: var(--font-display);">Tasty Always</h3>
+          <p style="color: var(--muted); line-height: 1.6;">Signature recipes perfected over years. Taste you can trust.</p>
+        </div>
+
+        <div class="anim-fade-up" style="background: var(--bg-card); padding: 30px; border-radius: var(--radius); border: 1px solid rgba(232,25,10,0.3); text-align: center;">
+          <div style="font-size: 3rem; margin-bottom: 16px;">🎯</div>
+          <h3 style="color: var(--white); margin-bottom: 12px; font-family: var(--font-display);">Best Value</h3>
+          <p style="color: var(--muted); line-height: 1.6;">21 deals to choose from. Maximum satisfaction at minimum cost.</p>
+        </div>
+
+        <div class="anim-fade-up" style="background: var(--bg-card); padding: 30px; border-radius: var(--radius); border: 1px solid rgba(232,25,10,0.3); text-align: center;">
+          <div style="font-size: 3rem; margin-bottom: 16px;">🌙</div>
+          <h3 style="color: var(--white); margin-bottom: 12px; font-family: var(--font-display);">Always Open</h3>
+          <p style="color: var(--muted); line-height: 1.6;">Late night cravings? We're open till late every single day.</p>
+        </div>
+
+        <div class="anim-fade-up" style="background: var(--bg-card); padding: 30px; border-radius: var(--radius); border: 1px solid rgba(232,25,10,0.3); text-align: center;">
+          <div style="font-size: 3rem; margin-bottom: 16px;">💪</div>
+          <h3 style="color: var(--white); margin-bottom: 12px; font-family: var(--font-display);">Quality First</h3>
+          <p style="color: var(--muted); line-height: 1.6;">Premium ingredients. No compromises. Every time.</p>
+        </div>
       </div>
     </div>
   </div>
 </main>
 
+<!-- ===== CONTACT BAR ===== -->
+<div class="contact-bar" id="contact">
+  <div class="contact-bar-inner">
+    <div>
+      <h2>READY TO <span>ORDER?</span></h2>
+      <p style="color:rgba(255,255,255,0.7); font-size:0.9rem; margin-top:4px;">Fast delivery within 2 km · Minimum order Rs. 700</p>
+    </div>
+    <div class="contact-pills">
+      <a href="tel:03143636434" class="contact-pill">
+        <i class="fa-solid fa-phone"></i> 0314-3636434
+      </a>
+      <a href="tel:03099699986" class="contact-pill">
+        <i class="fa-solid fa-phone"></i> 0309-9699986
+      </a>
+      <a href="menu.html" class="contact-pill">
+        <i class="fa-solid fa-pizza-slice"></i> Order Now
+      </a>
+    </div>
+  </div>
+</div>
+
 <!-- ===== FOOTER ===== -->
-<footer class="site-footer" role="contentinfo">
+<footer class="site-footer">
   <div class="footer-main">
     <div class="footer-col">
       <h2>JERRY <span>PIZZA</span></h2>
       <p>Sahiwal's #1 family pizza restaurant. Serving hot, stuffed-edge pizzas, loaded burgers, wings, wraps, pasta, and more at Pakpattan Chowk.</p>
-      <div class="social-icons">
-        <a href="#" id="link-fb" aria-label="Jerry Pizza on Facebook"><i class="fa-brands fa-facebook-f"></i></a>
-        <a href="#" id="link-insta" aria-label="Jerry Pizza on Instagram"><i class="fa-brands fa-instagram"></i></a>
-        <a href="#" id="link-tiktok" aria-label="Jerry Pizza on TikTok"><i class="fa-brands fa-tiktok"></i></a>
-        <a href="#" id="link-yt" aria-label="Jerry Pizza on YouTube"><i class="fa-brands fa-youtube"></i></a>
-      </div>
+<div class="social-icons">
+  <a href="#" id="link-fb"><i class="fa-brands fa-facebook-f"></i></a>
+  <a href="#" id="link-insta"><i class="fa-brands fa-instagram"></i></a>
+  <a href="#" id="link-tiktok"><i class="fa-brands fa-tiktok"></i></a>
+  <a href="#" id="link-yt"><i class="fa-brands fa-youtube"></i></a>
+</div>
     </div>
 
     <div class="footer-col">
       <h3>QUICK LINKS</h3>
       <ul>
-        <li><a href="/">→ Home</a></li>
-        <li><a href="/menu">→ Full Menu</a></li>
-        <li><a href="/deals">→ Deals & Offers</a></li>
-        <li><a href="/about">→ About Us</a></li>
+        <li><a href="index.html">→ Home</a></li>
+        <li><a href="menu.html">→ Full Menu</a></li>
+        <li><a href="deals.html">→ Deals & Offers</a></li>
+        <li><a href="about.html">→ About Us</a></li>
       </ul>
     </div>
 
     <div class="footer-col">
       <h3>CONTACT US</h3>
-      <p><i class="fa-solid fa-phone" style="color:var(--red);margin-right:6px;"></i> <a href="tel:+923143636434">0314-3636434</a></p>
-      <p><i class="fa-solid fa-phone" style="color:var(--red);margin-right:6px;"></i> <a href="tel:+923099699986">0309-9699986</a></p>
+      <p><i class="fa-solid fa-phone" style="color:var(--red);margin-right:6px;"></i> 0314-3636434</p>
+      <p><i class="fa-solid fa-phone" style="color:var(--red);margin-right:6px;"></i> 0309-9699986</p>
       <p><i class="fa-solid fa-location-dot" style="color:var(--red);margin-right:6px;"></i> Pakpattan Chowk, Sahiwal</p>
     </div>
   </div>
 
   <div class="footer-bottom">
-    <p>&copy; 2025 Jerry Pizza Family Restaurant. All rights reserved.</p>
+    <p>© 2025 Jerry Pizza Family Restaurant. All rights reserved.</p>
     <div class="payment-methods">
       <span class="pay-badge">Bank Transfer</span>
       <span class="pay-badge">Easypaisa</span>
@@ -298,8 +300,112 @@
   </div>
 </footer>
 
-<script src="menu-data.js"></script>
-<script src="app.js"></script>
+<script>
+let cart = [];
+
+function toggleCartDrawer() {
+  document.getElementById('cart-drawer').classList.toggle('open');
+  document.getElementById('overlay').classList.toggle('active');
+}
+
+function closeAll() {
+  document.getElementById('cart-drawer').classList.remove('open');
+  document.getElementById('nav-menu').classList.remove('open');
+  document.getElementById('overlay').classList.remove('active');
+}
+
+function toggleNav() {
+  document.getElementById('nav-menu').classList.toggle('open');
+  document.getElementById('overlay').classList.toggle('active');
+}
+
+function addToCart(name, price) {
+  cart.push({ name, price });
+  renderCart();
+}
+
+function removeFromCart(i) {
+  cart.splice(i, 1);
+  renderCart();
+}
+
+function renderCart() {
+  const list = document.getElementById('cart-items-list');
+  const empty = document.getElementById('cart-empty-msg');
+  const totalRow = document.getElementById('cart-total-row');
+  const badge = document.getElementById('global-cart-badge');
+
+  badge.textContent = cart.length;
+  list.innerHTML = '';
+
+  if (cart.length === 0) {
+    empty.style.display = 'block';
+    totalRow.style.display = 'none';
+    document.getElementById('checkout-btn').style.display = 'none';
+    document.getElementById('checkout-form').style.display = 'none';
+  } else {
+    empty.style.display = 'none';
+    totalRow.style.display = 'flex';
+    document.getElementById('checkout-btn').style.display = 'block';
+    document.getElementById('checkout-form').style.display = 'flex';
+
+    let total = 0;
+    cart.forEach((item, i) => {
+      total += item.price;
+      list.innerHTML += `
+        <li class="cart-item">
+          <span class="cart-item-name">${item.name}</span>
+          <span class="cart-item-price">Rs. ${item.price}</span>
+          <span class="cart-item-remove" onclick="removeFromCart(${i})"><i class="fa-solid fa-xmark"></i></span>
+        </li>`;
+    });
+    document.getElementById('cart-total-price').textContent = `Rs. ${total}`;
+  }
+}
+
+function processCheckout() {
+  const name = document.getElementById('cust-name')?.value.trim() || '';
+  const phone = document.getElementById('cust-phone')?.value.trim() || '';
+  const address = document.getElementById('cust-address')?.value.trim() || '';
+
+  if (!name || !phone || !address) {
+    alert("Please fill in all fields.");
+    return;
+  }
+
+  let orderText = `*Order - Jerry Pizza*\n\nName: ${name}\nPhone: ${phone}\nAddress: ${address}\n\n*Items:*\n`;
+  let total = 0;
+  let counts = {};
+  cart.forEach(item => {
+    if (!counts[item.name]) counts[item.name] = { price: item.price, qty: 0 };
+    counts[item.name].qty++;
+    total += item.price;
+  });
+  Object.entries(counts).forEach(([name, data]) => {
+    orderText += `- ${data.qty}x ${name} (Rs. ${data.price})\n`;
+  });
+  orderText += `\nTotal: Rs. ${total}`;
+
+  const whatsappUrl = `https://wa.me/923143636434?text=${encodeURIComponent(orderText)}`;
+  window.open(whatsappUrl, '_blank');
+  cart = [];
+  renderCart();
+  toggleCartDrawer();
+}
+
+function initScrollAnim() {
+  const els = document.querySelectorAll('.anim-fade-up');
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+  }, { threshold: 0.15 });
+  els.forEach(el => io.observe(el));
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  initScrollAnim();
+});
+</script>
+  <script src="link.js"></script>
 
 </body>
 </html>
