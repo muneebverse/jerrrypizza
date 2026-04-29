@@ -7,9 +7,10 @@
   <!-- SEO Meta Tags -->
   <title>Pizza & Burger Menu in Sahiwal | Jerry Pizza | All Items & Prices</title>
   <meta name="description" content="Jerry Pizza menu in Sahiwal – Fresh stuffed-edge pizzas, loaded burgers, crispy wings, pasta & wraps. All made to order. View prices & add to cart.">
-  <meta name="keywords" content="pizza menu Sahiwal, burger menu, wings menu, pasta restaurant Sahiwal, food menu">
+  <meta name="keywords" content="pizza menu Sahiwal, burger menu, wings menu, pasta restaurant Sahiwal, food menu, Jerry Pizza">
   <meta name="author" content="Jerry Pizza">
   <meta name="robots" content="index, follow">
+  <meta name="language" content="English">
   
   <!-- Open Graph Tags -->
   <meta property="og:title" content="Menu | Jerry Pizza – Pizza & Burgers in Sahiwal">
@@ -43,33 +44,9 @@
   }
   </script>
   
-  <!-- Menu Schema -->
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "Menu",
-    "restaurant": "Jerry Pizza",
-    "url": "https://jerrypizza.me/menu",
-    "hasMenuSection": [
-      {
-        "@type": "MenuSection",
-        "name": "Signature Pizzas",
-        "hasMenuItem": [
-          {
-            "@type": "MenuItem",
-            "name": "Jerry's Special",
-            "description": "Cheese-stuffed edges, Tikka Chicken, Sweet Corn, Special Sauce",
-            "offers": {"@type": "Offer", "priceCurrency": "PKR", "price": "699"}
-          }
-        ]
-      }
-    ]
-  }
-  </script>
-  
   <!-- Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Satisfy&family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" integrity="sha512-iBBXm8fW90+nuLcSKlbmrPcLa0OT92xO1BIsZ+ywDWZb9u6Vichqkruh6qJieA7/c0FjVn2ulfb0c9Knz/v+5A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
@@ -78,10 +55,10 @@
 <div class="cart-overlay" id="overlay" onclick="closeAll()"></div>
 
 <!-- CART DRAWER -->
-<aside class="cart-drawer" id="cart-drawer">
+<aside class="cart-drawer" id="cart-drawer" aria-label="Shopping cart">
   <div class="cart-header">
     <h3>YOUR CART</h3>
-    <span class="close-cart" onclick="toggleCartDrawer()"><i class="fa-solid fa-xmark"></i></span>
+    <button class="close-cart" onclick="toggleCartDrawer()" aria-label="Close cart"><i class="fa-solid fa-xmark"></i></button>
   </div>
   <ul class="cart-items" id="cart-items-list"></ul>
   <div id="cart-empty-msg" class="cart-empty">
@@ -93,12 +70,12 @@
       <span>Total</span>
       <span id="cart-total-price">Rs. 0</span>
     </div>
-    <div class="checkout-form" id="checkout-form" style="display:none;">
+    <form class="checkout-form" id="checkout-form" style="display:none;">
       <input type="text" id="cust-name" placeholder="Your Name" required>
       <input type="tel" id="cust-phone" placeholder="Phone Number" required>
       <textarea id="cust-address" placeholder="Delivery Address" rows="2" required></textarea>
-    </div>
-    <button class="btn btn-primary" style="width:100%;justify-content:center;" id="checkout-btn" style="display:none;" onclick="processCheckout()">
+    </form>
+    <button class="btn btn-primary" id="checkout-btn" style="width:100%;justify-content:center;display:none;" onclick="processCheckout()">
       <i class="fa-brands fa-whatsapp"></i> Place Order
     </button>
   </div>
@@ -108,11 +85,11 @@
 <header class="global-header" style="margin-bottom: 70px;">
   <div class="container-nav">
     <a href="/" class="logo" aria-label="Jerry Pizza Home">
-      <img src="assets/logo.png" alt="Jerry Pizza Logo" class="logo-img" width="50" height="50">
+      <img src="assets/logo.png" alt="Jerry Pizza Logo" class="logo-img" width="50" height="50" loading="lazy">
       JERRY <span>PIZZA</span>
     </a>
 
-    <nav class="main-nav" id="nav-menu" role="navigation">
+    <nav class="main-nav" id="nav-menu" role="navigation" aria-label="Main navigation">
       <ul>
         <li><a href="/">Home</a></li>
         <li><a href="/menu" class="active">Menu</a></li>
@@ -123,15 +100,15 @@
     </nav>
 
     <div class="header-actions">
-      <div class="cart-trigger" onclick="toggleCartDrawer()" role="button" tabindex="0" aria-label="Open shopping cart">
+      <button class="cart-trigger" onclick="toggleCartDrawer()" aria-label="Open shopping cart with 0 items">
         🛒 <span class="cart-text">Cart</span>
         <span class="cart-badge" id="global-cart-badge">0</span>
-      </div>
-      <div class="hamburger" id="hamburger" onclick="toggleNav()" role="button" tabindex="0" aria-label="Toggle navigation menu">
+      </button>
+      <button class="hamburger" id="hamburger" onclick="toggleNav()" aria-label="Toggle navigation menu">
         <span class="bar"></span>
         <span class="bar"></span>
         <span class="bar"></span>
-      </div>
+      </button>
     </div>
   </div>
 </header>
@@ -140,7 +117,7 @@
 <main role="main" style="padding-top: 40px;">
   <div class="container text-center anim-fade-up" style="margin-bottom: 40px;">
     <span class="section-label">Fresh From The Kitchen</span>
-    <h1 class="section-title">Fresh Pizza, Burgers & Wings Menu</h1>
+    <h1 class="section-title" style="color: #333;">Fresh Pizza, Burgers & Wings Menu</h1>
     <div class="gold-divider"></div>
     <p class="text-muted" style="max-width:600px; margin: 0 auto; font-size:1rem;">
       Explore our complete menu of hand-tossed pizzas, loaded burgers, crispy wings, and more. All made fresh to order with premium ingredients.
@@ -151,7 +128,7 @@
 </main>
 
 <!-- ===== CONTACT BAR ===== -->
-<div class="contact-bar" id="contact" style="margin-top: 60px;">
+<section class="contact-bar" id="contact" style="margin-top: 60px;">
   <div class="contact-bar-inner">
     <div>
       <h2>ORDER <span>NOW</span></h2>
@@ -166,7 +143,7 @@
       </a>
     </div>
   </div>
-</div>
+</section>
 
 <!-- ===== FOOTER ===== -->
 <footer class="site-footer" role="contentinfo">
@@ -175,10 +152,10 @@
       <h2>JERRY <span>PIZZA</span></h2>
       <p>Sahiwal's #1 family pizza restaurant. Serving hot, stuffed-edge pizzas, loaded burgers, wings, wraps, pasta, and more at Pakpattan Chowk.</p>
       <div class="social-icons">
-        <a href="#" id="link-fb" aria-label="Jerry Pizza on Facebook"><i class="fa-brands fa-facebook-f"></i></a>
-        <a href="#" id="link-insta" aria-label="Jerry Pizza on Instagram"><i class="fa-brands fa-instagram"></i></a>
-        <a href="#" id="link-tiktok" aria-label="Jerry Pizza on TikTok"><i class="fa-brands fa-tiktok"></i></a>
-        <a href="#" id="link-yt" aria-label="Jerry Pizza on YouTube"><i class="fa-brands fa-youtube"></i></a>
+        <a href="https://www.facebook.com/" id="link-fb" aria-label="Jerry Pizza on Facebook" title="Follow us on Facebook"><i class="fa-brands fa-facebook-f"></i></a>
+        <a href="https://www.instagram.com/" id="link-insta" aria-label="Jerry Pizza on Instagram" title="Follow us on Instagram"><i class="fa-brands fa-instagram"></i></a>
+        <a href="https://www.tiktok.com/" id="link-tiktok" aria-label="Jerry Pizza on TikTok" title="Follow us on TikTok"><i class="fa-brands fa-tiktok"></i></a>
+        <a href="https://www.youtube.com/" id="link-yt" aria-label="Jerry Pizza on YouTube" title="Subscribe on YouTube"><i class="fa-brands fa-youtube"></i></a>
       </div>
     </div>
 
@@ -194,9 +171,11 @@
 
     <div class="footer-col">
       <h3>CONTACT US</h3>
-      <p><i class="fa-solid fa-phone" style="color:var(--red);margin-right:6px;"></i> <a href="tel:+923143636434">0314-3636434</a></p>
-      <p><i class="fa-solid fa-phone" style="color:var(--red);margin-right:6px;"></i> <a href="tel:+923099699986">0309-9699986</a></p>
-      <p><i class="fa-solid fa-location-dot" style="color:var(--red);margin-right:6px;"></i> Pakpattan Chowk, Sahiwal</p>
+      <address>
+        <p><i class="fa-solid fa-phone" style="color:var(--red);margin-right:6px;"></i> <a href="tel:+923143636434">0314-3636434</a></p>
+        <p><i class="fa-solid fa-phone" style="color:var(--red);margin-right:6px;"></i> <a href="tel:+923099699986">0309-9699986</a></p>
+        <p><i class="fa-solid fa-location-dot" style="color:var(--red);margin-right:6px;"></i> Pakpattan Chowk, Sahiwal</p>
+      </address>
     </div>
   </div>
 
