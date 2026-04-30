@@ -756,7 +756,6 @@ button { border: none; background: none; font-family: inherit; cursor: pointer; 
 .main-nav {
   position: static;
 }
-.main-nav.open { display: flex; }
 
 @media (max-width: 768px) {
   .main-nav {
