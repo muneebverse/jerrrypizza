@@ -20,7 +20,7 @@ const MENU_DATA = {
       sizes: { S: 699, M: 1230, L: 1850, XL: 2349 },
       tag: "Fan Fav",
       emoji: "⭐",
-      img: "assets/yummy-malai-boti.png"
+      img: "assets/malai-boti.jpg"
     },
     {
       name: "Behari Kebab",
@@ -28,7 +28,7 @@ const MENU_DATA = {
       sizes: { S: 699, M: 1230, L: 1850, XL: 2349 },
       tag: "Bestseller",
       emoji: "🥩",
-      img: "assets/behari-kebab.png"
+      img: "assets/behari-kabab.jpg"
     },
     {
       name: "Bubble Cheese Stuffer",
@@ -36,7 +36,7 @@ const MENU_DATA = {
       sizes: { S: 699, M: 1230, L: 1850, XL: 2349 },
       tag: "Cheesy",
       emoji: "🧀",
-      img: "assets/bubble-cheese-stuffer.png"
+      img: "assets/bubble-cheese-stuffer.jpg"
     },
     {
       name: "Crispy Crunch",
@@ -44,7 +44,7 @@ const MENU_DATA = {
       sizes: { S: 699, M: 1230, L: 1850, XL: 2349 },
       tag: "Crunchy",
       emoji: "💥",
-      img: "assets/crispy-crunch.png"
+      img: "assets/crunchy.jpg"
     },
     {
       name: "Cheese & Pepperoni",
@@ -52,7 +52,7 @@ const MENU_DATA = {
       sizes: { S: 699, M: 1230, L: 1850, XL: 2349 },
       tag: "Classic",
       emoji: "🍕",
-      img: "assets/cheese-pepperoni.png"
+      img: "assets/creamy.jpg"
     }
   ],
 
@@ -61,13 +61,13 @@ const MENU_DATA = {
       name: "Chicken Tikka",
       desc: "Pizza Sauce, Tikka Chicken, Cheese, Tomatoes, Capsicum, Black Olives, Onions.",
       sizes: { S: 499, M: 1050, L: 1299, XL: 1849 },
-      img: "assets/chicken-tikka.png"
+      img: "assets/tikka.jpg"
     },
     {
       name: "Chicken Fajita",
       desc: "Pizza Sauce, Fajita Chicken, Cheese, Capsicum, Green Jalapeño, Mushrooms, Onions.",
       sizes: { S: 499, M: 1050, L: 1299, XL: 1849 },
-      img: "assets/chicken-fajita.jpg"
+      img: "assets/fajita.jpg"
     },
     {
       name: "Hot & Spicy",
@@ -79,7 +79,7 @@ const MENU_DATA = {
       name: "Picklish Tikka",
       desc: "Picklish Sauce, Tikka Chicken, Cheese, Tomatoes, Capsicum, Onions, Black Olives.",
       sizes: { S: 499, M: 1050, L: 1299, XL: 1849 },
-      img: "assets/pick-tikka.png"
+      img: "assets/pick-tikka.jpg"
     },
     {
       name: "Cheese & Kebab",
@@ -96,27 +96,27 @@ const MENU_DATA = {
   ],
 
   newArrivals: [
-    { name: "Special Pizza Pratha", price: 449, img: "assets/chicken-tikka.png" },
-    { name: "Shawarma Pizza", price: 299, img: "assets/chicken-tikka.png" },
-    { name: "Delight Shawarma", price: 349, img: "assets/chicken-tikka.png" },
-    { name: "Square Pizza Large", price: 1899, img: "assets/chicken-tikka.png" },
-    { name: "Square Pizza Medium", price: 1149, img: "assets/chicken-tikka.png" }
+    { name: "Special Pizza Pratha", price: 449, img: "assets/pizzapar.jpg" },
+    { name: "Shawarma Pizza", price: 299, img: "assets/shawarmapizza.jpg" },
+    { name: "Delight Shawarma", price: 349, img: "assets/delight.jpg" },
+    { name: "Square Pizza Large", price: 1899, img: "assets/squarelarge.jpg" },
+    { name: "Square Pizza Medium", price: 1149, img: "assets/square.jpg" }
   ],
 
   burgers: [
-    { name: "Big Zinger", price: 450, img: "assets/big-burger-jpg" },
+    { name: "Big Zinger", price: 450, img: "assets/big-burger.jpg" },
     { name: "Junior Zinger", price: 349, img: "assets/junior.jpg" },
     { name: "Crispy Crunch Burger", price: 450, img: "assets/crunchcrispy.jpg" },
     { name: "Chicken Reggy", price: 299, img: "assets/chickenreggy.jpg" },
-    { name: "Juicy & Crunchy", price: 599, note: "Add Cheese Slice in Just 50/-", img: "assets/chicken-tikka.png" }
+    { name: "Juicy & Crunchy", price: 599, note: "Add Cheese Slice in Just 50/-", img: "assets/juicy.jpg" }
   ],
 
   wrapsAndFries: [
-    { name: "Kebab Pratha", price: 319, img: "assets/chicken-tikka.png" },
-    { name: "Zinger Pratha", price: 299, img: "assets/chicken-tikka.png" },
-    { name: "Cheese Pratha", price: 349, img: "assets/chicken-tikka.png" },
-    { name: "Zinger Shawarma", price: 280, img: "assets/chicken-tikka.png" },
-    { name: "Chicken Shawarma", price: 249, img: "assets/chicken-tikka.png" }
+    { name: "Kebab Pratha", price: 319, img: "assets/kabab-paratha.jpg" },
+    { name: "Zinger Pratha", price: 299, img: "assets/zinger-roll.jpg" },
+    { name: "Cheese Pratha", price: 349, img: "assets/cheese-paratha.jpg" },
+    { name: "Zinger Shawarma", price: 280, img: "assets/zinger-shawarma.jpg" },
+    { name: "Chicken Shawarma", price: 249, img: "assets/chiken-shawarma.jpg" }
   ],
 
   wingsAndNuggets: [
@@ -129,7 +129,7 @@ const MENU_DATA = {
   chipsAndDips: [
     { name: "Plane Fries", priceS: 199, priceL: 349, img: "assets/planefries.jpg" },
     { name: "Matka Fries", priceS: 749, priceL: null, img: "assets/matkafries.jpg" },
-    { name: "Masala Fries", priceS: 349, priceL: null, img: "assets/chicken-tikka.png" },
+    { name: "Masala Fries", priceS: 349, priceL: null, img: "assets/masala.jpg" },
     { name: "Loaded Fries", priceS: 599, priceL: null, img: "assets/loadedfries.jpg" }
   ],
 
@@ -140,35 +140,35 @@ const MENU_DATA = {
   ],
 
   pasta: [
-    { name: "Cheese Macaroni Pasta", priceHalf: 399, priceFull: 749, img: "assets/chicken-tikka.png" },
-    { name: "Crunchy Pasta", priceHalf: 449, priceFull: 799, img: "assets/chicken-tikka.png" },
-    { name: "Chicken Spicy Macaroni", priceHalf: 350, priceFull: 649, img: "assets/chicken-tikka.png" }
+    { name: "Cheese Macaroni Pasta", priceHalf: 399, priceFull: 749, img: "assets/cheese-pasta.jpg" },
+    { name: "Crunchy Pasta", priceHalf: 449, priceFull: 799, img: "assets/crunchy-pasta.jpg" },
+    { name: "Chicken Spicy Macaroni", priceHalf: 350, priceFull: 649, img: "assets/spicy-pasta.jpg" }
   ],
 
   sandwiches: [
-    { name: "Chicken Cheese", price: 249, img: "assets/chicken-tikka.png" },
-    { name: "Chicken Club", price: 219, img: "assets/chicken-tikka.png" },
-    { name: "Jerry's Special Sandwich", price: 300, img: "assets/chicken-tikka.png" },
-    { name: "3 Cheese Bread", price: 199, img: "assets/chicken-tikka.png" }
+    { name: "Chicken Cheese", price: 249, img: "assets/sand-cheese.jpg" },
+    { name: "Chicken Club", price: 219, img: "assets/sand-club.jpg" },
+    { name: "Jerry's Special Sandwich", price: 300, img: "assets/sand-jerry.jpg" },
+    { name: "3 Cheese Bread", price: 199, img: "assets/sand-3.jpg" }
   ],
 
   drinksAndIceCream: [
-    { name: "Ice Cream Full", price: 349, img: "assets/chicken-tikka.png" },
-    { name: "Ice Cream Half", price: 199, img: "assets/chicken-tikka.png" },
-    { name: "1.5 Liter Drink", price: 220, img: "assets/chicken-tikka.png" },
-    { name: "1 Liter Drink", price: 170, img: "assets/chicken-tikka.png" },
-    { name: "500ml Drink", price: 110, img: "assets/chicken-tikka.png" },
-    { name: "345ml Drink", price: 90, img: "assets/chicken-tikka.png" },
-    { name: "Regular Drink", price: 80, img: "assets/chicken-tikka.png" },
-    { name: "Small Water", price: 60, img: "assets/chicken-tikka.png" },
-    { name: "Large Water", price: 120, img: "assets/chicken-tikka.png" }
+    { name: "Ice Cream Full", price: 349, img: "assets/half.jpg" },
+    { name: "Ice Cream Half", price: 199, img: "assets/full.jpg" },
+    { name: "1.5 Liter Drink", price: 220, img: "assets/1.5l.jpg" },
+    { name: "1 Liter Drink", price: 170, img: "assets/1l.jpg" },
+    { name: "500ml Drink", price: 110, img: "assets/500ml.jpg" },
+    { name: "345ml Drink", price: 90, img: "assets/345ml.jpg" },
+    { name: "Regular Drink", price: 80, img: "assets/regular.jpg" },
+    { name: "Small Water", price: 60, img: "assets/small-water.jpg" },
+    { name: "Large Water", price: 120, img: "assets/large-water.jpg" }
   ],
 
   desserts: [
-    { name: "Pineapple Cake (1 lb)", price: 600, desc: "Fresh and creamy pineapple cake, baked to perfection.", img: "assets/chicken-tikka.png" },
-    { name: "Pineapple Cake (2 lb)", price: 1100, desc: "A large, fresh, and creamy pineapple cake for celebrations.", img: "assets/chicken-tikka.png" },
-    { name: "Chocolate Cake (1 lb)", price: 700, desc: "Rich, fudgy, and moist double chocolate cake.", img: "assets/chicken-tikka.png" },
-    { name: "Chocolate Cake (2 lb)", price: 1300, desc: "Decadent large chocolate cake loaded with chocolate frosting.", img: "assets/chicken-tikka.png" }
+    { name: "Pineapple Cake (1 lb)", price: 600, desc: "Fresh and creamy pineapple cake, baked to perfection.", img: "assets/1lb.jpg" },
+    { name: "Pineapple Cake (2 lb)", price: 1100, desc: "A large, fresh, and creamy pineapple cake for celebrations.", img: "assets/2lb.jpg" },
+    { name: "Chocolate Cake (1 lb)", price: 700, desc: "Rich, fudgy, and moist double chocolate cake.", img: "assets/ch1lb.jpg" },
+    { name: "Chocolate Cake (2 lb)", price: 1300, desc: "Decadent large chocolate cake loaded with chocolate frosting.", img: "assets/ch2lb.jpg" }
   ],
 
   deals: [
