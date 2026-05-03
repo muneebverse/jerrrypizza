@@ -3,8 +3,8 @@
 // ============================================================
 
 const SOCIAL_LINKS = {
-  facebook: "https://www.facebook.com/your_jerry_pizza_page",
-  instagram: "https://www.instagram.com/your_jerry_pizza",
+  facebook: "https://www.facebook.com/Jerry-Pizza-Sahiwal-61555050629124/?_rdc=1&_rdr#",
+  instagram: "https://www.instagram.com/jerrypizzasahiwal?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==",
   tiktok: "https://www.tiktok.com/@your_jerry_pizza",
   youtube: "https://www.youtube.com/@your_jerry_pizza"
 };
