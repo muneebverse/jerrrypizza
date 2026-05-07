@@ -1,0 +1,331 @@
+<!--
+  ============================================================
+  JERRY PIZZA — WEBSITE CART FIREBASE INTEGRATION
+  ============================================================
+  HOW TO USE:
+  Paste this entire <script> block into jerrypizza.me
+  just before the closing </body> tag on EVERY page
+  that has the cart (index.html, menu.html, deals.html).
+  
+  Replace YOUR_* values with your actual Firebase config.
+  Same config used in pos.html and waiter.html.
+  ============================================================
+-->
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import { getDatabase, ref, push } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
+
+// ── YOUR FIREBASE CONFIG (same as pos.html) ──
+const firebaseConfig = {
+  apiKey: "YOUR_API_KEY",
+  authDomain: "YOUR_PROJECT.firebaseapp.com",
+  databaseURL: "https://YOUR_PROJECT-default-rtdb.firebaseio.com",
+  projectId: "YOUR_PROJECT",
+  storageBucket: "YOUR_PROJECT.appspot.com",
+  messagingSenderId: "YOUR_SENDER_ID",
+  appId: "YOUR_APP_ID"
+};
+
+const app = initializeApp(firebaseConfig, "website-cart");
+const db = getDatabase(app);
+
+// ============================================================
+// CART INTERCEPTOR
+// Watches for the WhatsApp order button and intercepts it.
+// Works regardless of what their existing cart JS is called.
+// ============================================================
+
+function interceptCart() {
+
+  // ── STRATEGY 1: Intercept WhatsApp button click ──
+  // Finds any element that links to wa.me or triggers WhatsApp
+  document.addEventListener('click', async function(e) {
+    // Walk up the DOM to find the actual button/link
+    let target = e.target;
+    while (target && target !== document.body) {
+      const isWhatsAppLink = (
+        (target.tagName === 'A' && target.href && target.href.includes('wa.me')) ||
+        (target.tagName === 'BUTTON' && (
+          target.textContent?.toLowerCase().includes('whatsapp') ||
+          target.textContent?.toLowerCase().includes('place order') ||
+          target.onclick?.toString().includes('wa.me') ||
+          target.onclick?.toString().includes('whatsapp')
+        )) ||
+        target.classList.contains('place-order') ||
+        target.classList.contains('checkout-btn') ||
+        target.id === 'place-order' ||
+        target.id === 'checkout'
+      );
+
+      if (isWhatsAppLink) {
+        e.preventDefault();
+        e.stopPropagation();
+
+        const cartData = extractCartData();
+        if (!cartData || cartData.items.length === 0) {
+          // Nothing in cart — let original action proceed
+          proceedToWhatsApp(target);
+          return;
+        }
+
+        // Save to Firebase first, then WhatsApp
+        try {
+          await saveOrderToFirebase(cartData, db);
+          console.log('[Jerry Pizza] Order saved to Firebase ✓');
+        } catch (err) {
+          console.warn('[Jerry Pizza] Firebase save failed:', err);
+          // Still proceed to WhatsApp even if Firebase fails
+        }
+
+        proceedToWhatsApp(target, cartData);
+        return;
+      }
+      target = target.parentElement;
+    }
+  }, true); // useCapture = true so we get it before their handler
+
+  // ── STRATEGY 2: Also watch for dynamically generated wa.me links ──
+  // Some carts build the WhatsApp URL on the fly in onclick attributes
+  const observer = new MutationObserver(() => {
+    document.querySelectorAll('a[href*="wa.me"]:not([data-fb-hooked])').forEach(link => {
+      link.setAttribute('data-fb-hooked', '1');
+      link.addEventListener('click', async function(e) {
+        e.preventDefault();
+        const cartData = extractCartData();
+        if (cartData && cartData.items.length > 0) {
+          try { await saveOrderToFirebase(cartData, db); } catch(err) { console.warn(err); }
+        }
+        window.open(this.href, '_blank');
+      });
+    });
+  });
+  observer.observe(document.body, { childList: true, subtree: true });
+  // Run once immediately for existing links
+  document.querySelectorAll('a[href*="wa.me"]:not([data-fb-hooked])').forEach(link => {
+    link.setAttribute('data-fb-hooked', '1');
+    link.addEventListener('click', async function(e) {
+      e.preventDefault();
+      const cartData = extractCartData();
+      if (cartData && cartData.items.length > 0) {
+        try { await saveOrderToFirebase(cartData, db); } catch(err) { console.warn(err); }
+      }
+      window.open(this.href, '_blank');
+    });
+  });
+}
+
+// ============================================================
+// EXTRACT CART DATA
+// Reads cart from whatever the website uses:
+// localStorage, sessionStorage, DOM, or global window variables
+// ============================================================
+function extractCartData() {
+  let items = [];
+  let total = 0;
+  let customerName = '';
+  let phone = '';
+  let orderNote = '';
+  let orderType = 'Website'; // default for online orders
+
+  // ── Method 1: Read from DOM (most reliable for render-based carts) ──
+  // Tries common cart HTML patterns
+  const cartContainer = 
+    document.querySelector('#cart-items') ||
+    document.querySelector('.cart-items') ||
+    document.querySelector('#cart') ||
+    document.querySelector('.cart') ||
+    document.querySelector('[class*="cart-item"]')?.parentElement;
+
+  if (cartContainer) {
+    const rows = cartContainer.querySelectorAll(
+      '.cart-item, [class*="cart-row"], [class*="cart-product"], li[class*="cart"]'
+    );
+    rows.forEach(row => {
+      const nameEl = row.querySelector('[class*="name"], [class*="title"], [class*="product"]');
+      const priceEl = row.querySelector('[class*="price"], [class*="total"]');
+      const qtyEl = row.querySelector('[class*="qty"], [class*="quantity"], [class*="count"]');
+      if (nameEl) {
+        const name = nameEl.textContent.trim();
+        const qty = parseInt(qtyEl?.textContent?.replace(/\D/g,'') || '1') || 1;
+        const priceText = priceEl?.textContent?.replace(/[^0-9.]/g,'') || '0';
+        const price = parseFloat(priceText) || 0;
+        if (name && name.length > 1) {
+          items.push({ name, qty, price: Math.round(price / qty) || 0 });
+          total += price;
+        }
+      }
+    });
+  }
+
+  // ── Method 2: Read from localStorage ──
+  if (items.length === 0) {
+    const keys = ['cart', 'jerry_cart', 'cartItems', 'orderItems', 'basket'];
+    for (const key of keys) {
+      try {
+        const stored = localStorage.getItem(key);
+        if (stored) {
+          const parsed = JSON.parse(stored);
+          if (Array.isArray(parsed) && parsed.length > 0) {
+            items = parsed.map(i => ({
+              name: i.name || i.title || i.item || 'Item',
+              qty: i.qty || i.quantity || i.count || 1,
+              price: i.price || i.unitPrice || 0,
+              sub: i.size || i.variant || i.sub || ''
+            }));
+            total = items.reduce((s, i) => s + (i.price * i.qty), 0);
+            break;
+          }
+        }
+      } catch(e) {}
+    }
+  }
+
+  // ── Method 3: Read from window global variables ──
+  if (items.length === 0) {
+    const globalVars = ['cart', 'cartItems', 'orderItems', 'currentCart', 'jerryCart'];
+    for (const v of globalVars) {
+      if (window[v] && Array.isArray(window[v]) && window[v].length > 0) {
+        items = window[v].map(i => ({
+          name: i.name || i.title || 'Item',
+          qty: i.qty || i.quantity || 1,
+          price: i.price || 0,
+          sub: i.size || i.variant || ''
+        }));
+        total = items.reduce((s, i) => s + (i.price * i.qty), 0);
+        break;
+      }
+    }
+  }
+
+  // ── Method 4: Parse the WhatsApp message text ──
+  // If we can find the WhatsApp link, parse the pre-encoded message
+  if (items.length === 0) {
+    const waLink = document.querySelector('a[href*="wa.me"]');
+    if (waLink) {
+      try {
+        const url = new URL(waLink.href);
+        const text = decodeURIComponent(url.searchParams.get('text') || '');
+        if (text) {
+          // Parse lines like "2x Jerry's Special (Large) - Rs. 2700"
+          const lines = text.split('\n');
+          lines.forEach(line => {
+            // Match patterns: "2x Item Name - Rs.500" or "2 x Item - 500"
+            const m = line.match(/^(\d+)\s*[x×]\s*(.+?)\s*[-–]\s*(?:Rs\.?\s*)?([\d,]+)/i);
+            if (m) {
+              items.push({
+                name: m[2].trim(),
+                qty: parseInt(m[1]),
+                price: parseInt(m[3].replace(',','')) / parseInt(m[1]) || 0
+              });
+            }
+          });
+          // Extract total
+          const totalMatch = text.match(/total[:\s]*(?:Rs\.?\s*)?([\d,]+)/i);
+          if (totalMatch) total = parseInt(totalMatch[1].replace(',',''));
+          else total = items.reduce((s,i) => s+(i.price*i.qty),0);
+
+          // Extract customer name/phone if in message
+          const nameMatch = text.match(/(?:name|customer)[:\s]+([^\n]+)/i);
+          const phoneMatch = text.match(/(?:phone|contact|no)[:\s]+([^\n]+)/i);
+          if (nameMatch) customerName = nameMatch[1].trim();
+          if (phoneMatch) phone = phoneMatch[1].trim();
+        }
+      } catch(e) {}
+    }
+  }
+
+  if (items.length === 0) return null;
+
+  // ── Read total from DOM if we didn't get it ──
+  if (!total) {
+    const totalEl =
+      document.querySelector('#cart-total') ||
+      document.querySelector('.cart-total') ||
+      document.querySelector('[class*="total-amount"]') ||
+      document.querySelector('[class*="grand-total"]');
+    if (totalEl) {
+      total = parseInt(totalEl.textContent.replace(/[^0-9]/g,'')) || 0;
+    }
+  }
+
+  return {
+    items,
+    total,
+    customerName,
+    phone,
+    orderNote,
+    orderType,
+    source: 'Website',
+    status: 'new',
+    createdAt: Date.now(),
+    date: new Date().toLocaleDateString('en-PK')
+  };
+}
+
+// ============================================================
+// SAVE TO FIREBASE
+// ============================================================
+async function saveOrderToFirebase(cartData, db) {
+  const ordersRef = ref(db, 'orders');
+  const result = await push(ordersRef, cartData);
+  console.log('[Jerry Pizza] Order ID:', result.key);
+  return result.key;
+}
+
+// ============================================================
+// PROCEED TO WHATSAPP
+// After Firebase save, open WhatsApp as normal
+// ============================================================
+function proceedToWhatsApp(triggerElement, cartData) {
+  // If it's a direct link
+  if (triggerElement.tagName === 'A' && triggerElement.href?.includes('wa.me')) {
+    window.open(triggerElement.href, '_blank');
+    return;
+  }
+
+  // If it's a button that had an onclick — re-fire original logic
+  // Try to find nearest wa.me link
+  const nearby = document.querySelector('a[href*="wa.me"]');
+  if (nearby) { window.open(nearby.href, '_blank'); return; }
+
+  // Fallback: build WhatsApp link manually from cart data
+  if (cartData) {
+    const phone = '923143636434'; // Jerry Pizza WhatsApp
+    const itemLines = cartData.items.map(i =>
+      `${i.qty}x ${i.name}${i.sub?' ('+i.sub+')':''} - Rs.${i.price * i.qty}`
+    ).join('\n');
+    const msg = `*Jerry Pizza Order*\n\n${itemLines}\n\n*Total: Rs. ${cartData.total}*\n\nOrder via: Website`;
+    window.open(`https://wa.me/${phone}?text=${encodeURIComponent(msg)}`, '_blank');
+  }
+}
+
+// ============================================================
+// ALSO: Show a small "saved" indicator on the cart (optional)
+// ============================================================
+function addSavedBadge() {
+  const style = document.createElement('style');
+  style.textContent = `
+    .jp-fb-badge {
+      display: inline-block;
+      background: #22c55e;
+      color: white;
+      font-size: 10px;
+      font-weight: 700;
+      padding: 2px 6px;
+      border-radius: 4px;
+      margin-left: 6px;
+      vertical-align: middle;
+      animation: jp-fadein .3s ease;
+    }
+    @keyframes jp-fadein { from{opacity:0;transform:scale(.8)} to{opacity:1;transform:scale(1)} }
+  `;
+  document.head.appendChild(style);
+}
+
+// ── RUN ──
+addSavedBadge();
+interceptCart();
+console.log('[Jerry Pizza] Cart Firebase integration loaded ✓');
+
+</script>
