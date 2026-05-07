@@ -8,18 +8,29 @@
 
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/12.12.1/firebase-app.js";
-  import { getAnalytics } from "https://www.gstatic.com/firebasejs/12.12.1/firebase-analytics.js";
+  import { getFirestore, collection, addDoc, onSnapshot, doc, updateDoc } from "https://www.gstatic.com/firebasejs/12.12.1/firebase-firestore.js";
+
   const firebaseConfig = {
     apiKey: "AIzaSyBG-J0dzxS70Fr7-VPf1SQ8Fiq0fRzNAq8",
     authDomain: "jerry-pos.firebaseapp.com",
     projectId: "jerry-pos",
     storageBucket: "jerry-pos.firebasestorage.app",
     messagingSenderId: "771100017615",
-    appId: "1:771100017615:web:ae7342c89b3b697cdd48ba",
-    measurementId: "G-DSH1P0GKS3"
+    appId: "1:771100017615:web:ae7342c89b3b697cdd48ba"
   };
+
   const app = initializeApp(firebaseConfig);
-  const analytics = getAnalytics(app);
+  const db = getFirestore(app);
+
+  window._db = db;
+  window._collection = collection;
+  window._addDoc = addDoc;
+  window._onSnapshot = onSnapshot;
+  window._doc = doc;
+  window._updateDoc = updateDoc;
+
+  window._fbReady = true;
+  document.dispatchEvent(new Event('fbReady'));
 </script>
 
 <style>
@@ -543,20 +554,42 @@ function setOSrc(s) {
 function placeOrder() {
   if (!cart.length) { showToast('Cart is empty!', true); return; }
   const total = cart.reduce((s, c) => s + c.price * c.qty, 0);
-  const order = { items: cart.map(c => ({ name: c.name, sub: c.sub || '', qty: c.qty, price: c.price })), total, type: orderType, source: orderSrc, status: 'new', createdAt: Date.now(), date: new Date().toLocaleDateString('en-PK') };
+  const order = { 
+    items: cart.map(c => ({ name: c.name, sub: c.sub || '', qty: c.qty, price: c.price })), 
+    total, type: orderType, source: orderSrc, status: 'new', 
+    createdAt: Date.now(), date: new Date().toLocaleDateString('en-PK') 
+  };
+  
   if (window._fbReady) {
-    window._push(window._ref(window._db, 'orders'), order).then(() => { showToast('✓ Order placed!'); clearCart(); document.getElementById('cart-side').classList.remove('mobile-open'); switchTab('orders'); }).catch(err => { showToast('Firebase error!', true); });
+    window._addDoc(window._collection(window._db, 'orders'), order).then(() => { 
+      showToast('✓ Order placed!'); clearCart(); 
+      document.getElementById('cart-side').classList.remove('mobile-open'); switchTab('orders'); 
+    }).catch(err => { showToast('Firebase error!', true); console.error(err); });
   } else {
-    order.id = 'ORD-' + Date.now(); allOrders.unshift(order); showToast('✓ Order placed (demo)!'); clearCart(); document.getElementById('cart-side').classList.remove('mobile-open'); renderKDS(); switchTab('orders');
+    order.id = 'ORD-' + Date.now(); allOrders.unshift(order); 
+    showToast('✓ Order placed (demo)!'); clearCart(); document.getElementById('cart-side').classList.remove('mobile-open'); renderKDS(); switchTab('orders');
   }
 }
 
 function initFirebase() { if (!window._fbReady) { document.addEventListener('fbReady', () => listenOrders()); } else { listenOrders(); } }
 function listenOrders() {
-  if (!window._db) return; const today = new Date().toLocaleDateString('en-PK');
-  window._onValue(window._ref(window._db, 'orders'), snap => {
-    allOrders =[]; snap.forEach(child => { allOrders.push({ id: child.key, ...child.val() }); });
-    allOrders = allOrders.filter(o => o.date === today).reverse(); renderKDS(); updateDash();
+  if (!window._db) return; 
+  const today = new Date().toLocaleDateString('en-PK');
+  
+  window._onSnapshot(window._collection(window._db, 'orders'), (snap) => {
+    allOrders =[]; 
+    snap.forEach(docSnap => { 
+      const o = { id: docSnap.id, ...docSnap.data() };
+      // Ignore archived orders so they stop cluttering the POS display
+      if (o.status !== 'archived') {
+        allOrders.push(o); 
+      }
+    });
+    
+    // Filter for today's orders and sort newest first
+    allOrders = allOrders.filter(o => o.date === today).sort((a,b) => b.createdAt - a.createdAt);
+    renderKDS(); 
+    updateDash(); // Automatically pushes live stats to Dashboard!
   });
 }
 
@@ -585,13 +618,21 @@ function renderKDS() {
   document.getElementById('stat-done').textContent = allOrders.filter(o => o.status === 'done').length;
 }
 function updateStatus(id, status) {
-  if (window._db) { window._update(window._ref(window._db, 'orders/' + id), { status }); } else { const o = allOrders.find(o => o.id === id); if (o) { o.status = status; renderKDS(); } }
+  if (window._db) { 
+    window._updateDoc(window._doc(window._db, 'orders', id), { status }); 
+  } else { 
+    const o = allOrders.find(o => o.id === id); if (o) { o.status = status; renderKDS(); } 
+  }
 }
 function clearDoneOrders() {
-  if (window._db) { allOrders.filter(o => o.status === 'done').forEach(o => { window._set(window._ref(window._db, 'orders/' + o.id + '/archived'), true); }); }
+  if (window._db) { 
+    // Move 'done' orders to 'archived' status so they disappear from KDS but keep data safe
+    allOrders.filter(o => o.status === 'done').forEach(o => { 
+      window._updateDoc(window._doc(window._db, 'orders', o.id), { status: 'archived' }); 
+    }); 
+  }
   showToast('Done orders cleared');
 }
-
 function updateDash() {
   const rev = allOrders.reduce((s, o) => s + (o.total || 0), 0); const cnt = allOrders.length;
   document.getElementById('d-revenue').textContent = 'Rs. ' + rev.toLocaleString();
