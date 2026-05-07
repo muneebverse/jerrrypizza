@@ -1,3 +1,4 @@
+--- START OF FILE pos.html ---
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -45,13 +46,13 @@
 }
 * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
 
-/* Desktop Defaults (will be overridden on Mobile) */
+/* Desktop Defaults */
 html, body { height: 100%; overflow: hidden; background: var(--black); color: var(--text); font-family: 'Nunito', sans-serif; user-select: none; }
 #app { display: none; height: 100dvh; flex-direction: column; }
 #app.visible { display: flex; }
 .panel { display: none; flex: 1; overflow: hidden; }
 .panel.active { display: flex; }
-.fixed-header { display: contents; } /* Only used heavily on mobile */
+.fixed-header { display: contents; }
 
 /* ─── PIN SCREEN ─── */
 #pin-screen { position: fixed; inset: 0; background: var(--black); display: flex; flex-direction: column; align-items: center; justify-content: center; z-index: 9999; gap: 24px; }
@@ -83,8 +84,6 @@ html, body { height: 100%; overflow: hidden; background: var(--black); color: va
 
 /* ─── POS PANEL ─── */
 #panel-pos { flex-direction: row; gap: 0; }
-
-/* LEFT: Menu */
 .menu-side { flex: 1; display: flex; flex-direction: column; overflow: hidden; border-right: 1px solid var(--border); }
 .menu-search-bar { padding: 12px 16px; border-bottom: 1px solid var(--border); flex-shrink: 0; }
 .menu-search { width: 100%; background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 14px 14px 14px 38px; color: var(--text); font-size: 16px; font-family: inherit; position: relative; }
@@ -92,7 +91,6 @@ html, body { height: 100%; overflow: hidden; background: var(--black); color: va
 .search-wrap { position: relative; }
 .search-wrap::before { content:'⌕'; position:absolute; left:14px; top:50%; transform:translateY(-50%); color:var(--muted); font-size:18px; pointer-events:none; }
 
-/* Categories touch slider */
 .cat-tabs { display: flex; gap: 10px; padding: 12px 16px; overflow-x: auto; flex-shrink: 0; border-bottom: 1px solid var(--border); scroll-snap-type: x mandatory; -webkit-overflow-scrolling: touch; scrollbar-width: none; }
 .cat-tabs::-webkit-scrollbar { display: none; }
 .cat-tab { scroll-snap-align: start; white-space: nowrap; padding: 12px 20px; border-radius: 24px; font-size: 14px; font-weight: 800; background: var(--card); border: 1px solid var(--border); color: var(--muted); cursor: pointer; transition: all .15s; }
@@ -109,9 +107,12 @@ html, body { height: 100%; overflow: hidden; background: var(--black); color: va
 .item-cat-badge { font-size: 10px; color: var(--muted); text-transform: uppercase; letter-spacing: .5px; margin-top: 4px; display: inline-block; }
 
 /* RIGHT: Cart */
-.cart-side { width: 340px; display: flex; flex-direction: column; flex-shrink: 0; }
-.cart-header { padding: 16px; border-bottom: 1px solid var(--border); flex-shrink: 0; }
-.close-cart-btn { display: none; } /* Show only on mobile */
+.cart-side { width: 340px; display: flex; flex-direction: column; flex-shrink: 0; background: var(--black); }
+.cart-title-bar { display: flex; justify-content: space-between; align-items: center; padding: 16px; border-bottom: 1px solid var(--border); flex-shrink: 0; background: var(--card); }
+.cart-title-bar h3 { font-size: 20px; font-weight: 900; }
+.close-cart-btn { display: none; }
+.cart-scrollable { flex: 1; overflow-y: auto; display: flex; flex-direction: column; }
+.cart-header { padding: 16px; flex-shrink: 0; }
 .order-type-row { display: flex; gap: 6px; margin-bottom: 10px; }
 .otype-btn { flex: 1; padding: 10px 4px; border-radius: 10px; border: 1px solid var(--border); background: var(--card); color: var(--muted); font-size: 12px; font-weight: 800; cursor: pointer; text-align: center; }
 .otype-btn.active { background: var(--red); border-color: var(--red); color: #fff; }
@@ -123,12 +124,8 @@ html, body { height: 100%; overflow: hidden; background: var(--black); color: va
 .del-input { background: var(--card2); border: 1px solid var(--border); border-radius: 10px; padding: 10px 13px; color: var(--text); font-size: 13px; font-family: inherit; font-weight: 700; width: 100%; }
 .del-input:focus { outline: none; border-color: var(--red); }
 .del-input::placeholder { color: var(--muted); font-weight: 600; }
-.oc-delivery { font-size: 12px; color: var(--muted); margin-bottom: 10px; line-height: 1.8; border-bottom: 1px solid var(--border); padding-bottom: 10px; }
-.oc-action.cancel { background: transparent; border: 1px solid var(--border); color: var(--red); font-size: 12px; padding: 8px 12px; }
 
-.cart-items { flex: 1; overflow-y: auto; padding: 12px; }
-.cart-items::-webkit-scrollbar { width: 4px; }
-.cart-items::-webkit-scrollbar-thumb { background: var(--border); }
+.cart-items { padding: 0 12px 12px; flex: 1; }
 .cart-empty { color: var(--muted); font-size: 14px; font-weight: 700; text-align: center; padding: 40px 0; }
 .cart-item { display: flex; align-items: center; gap: 10px; padding: 12px 8px; border-bottom: 1px solid var(--border); }
 .ci-name { flex: 1; font-size: 14px; font-weight: 800; line-height: 1.3; }
@@ -138,7 +135,7 @@ html, body { height: 100%; overflow: hidden; background: var(--black); color: va
 .qty-val { font-size: 16px; font-weight: 900; min-width: 22px; text-align: center; }
 .ci-price { font-size: 15px; font-weight: 900; color: var(--red); white-space: nowrap; }
 
-.cart-footer { padding: 16px; border-top: 1px solid var(--border); flex-shrink: 0; }
+.cart-footer { padding: 16px; border-top: 1px solid var(--border); flex-shrink: 0; background: var(--card); }
 .totals-row { display: flex; justify-content: space-between; font-size: 14px; color: var(--muted); margin-bottom: 6px; }
 .totals-row.total { font-size: 20px; font-weight: 900; color: var(--text); margin-bottom: 12px; }
 .totals-row.total .amt { color: var(--red); }
@@ -146,7 +143,7 @@ html, body { height: 100%; overflow: hidden; background: var(--black); color: va
 .btn-clear { flex: 1; padding: 14px; border-radius: 12px; border: 1px solid var(--border); background: transparent; color: var(--muted); font-size: 15px; font-weight: 800; font-family: inherit; }
 .btn-place { flex: 2; padding: 14px; border-radius: 12px; border: none; background: var(--red); color: #fff; font-size: 16px; font-weight: 900; font-family: inherit; }
 
-/* ─── ORDERS PANEL (KDS) ─── */
+/* ─── ORDERS PANEL & KDS ─── */
 #panel-orders { flex-direction: column; overflow: hidden; }
 .kds-header { padding: 16px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid var(--border); flex-shrink: 0; }
 .kds-header h2 { font-size: 20px; font-weight: 900; }
@@ -181,6 +178,8 @@ html, body { height: 100%; overflow: hidden; background: var(--black); color: va
 .oc-action.to-prep { background: var(--orange); color: #fff; }
 .oc-action.to-ready { background: var(--green); color: #fff; }
 .oc-action.to-done { background: var(--border); color: var(--muted); }
+.oc-delivery { font-size: 12px; color: var(--muted); margin-bottom: 10px; line-height: 1.8; border-bottom: 1px solid var(--border); padding-bottom: 10px; }
+.oc-action.cancel { background: transparent; border: 1px solid var(--border); color: var(--red); font-size: 12px; padding: 8px 12px; }
 
 /* ─── DASHBOARD PANEL ─── */
 #panel-dash { flex-direction: column; overflow-y: auto; padding: 20px; gap: 16px; }
@@ -217,15 +216,14 @@ html, body { height: 100%; overflow: hidden; background: var(--black); color: va
 .toast.show { transform: translateX(-50%) translateY(0); }
 .toast.error { background: var(--red); }
 
-.fab-cart { display: none; } /* Mobile only */
+.fab-cart { display: none; }
 
 /* ========================================================= */
 /* 📱 MOBILE RESPONSIVENESS OVERRIDES                        */
-/* Allows natural scrolling, hides cart into slide-up modal  */
 /* ========================================================= */
 @media (max-width: 768px) {
   html, body { height: auto; min-height: 100dvh; overflow: visible; }
-  body { padding-top: 106px; padding-bottom: 90px; } /* Space for headers & FAB */
+  body { padding-top: 106px; padding-bottom: 90px; } 
   
   .fixed-header { position: fixed; top: 0; left: 0; width: 100%; z-index: 1000; background: var(--black); }
   
@@ -234,12 +232,10 @@ html, body { height: 100%; overflow: hidden; background: var(--black); color: va
   .panel { display: none; overflow: visible; }
   .panel.active { display: block; }
   
-  /* POS Section specific overrides */
   #panel-pos { display: block; }
   .menu-side { display: block; border-right: none; overflow: visible; }
   .menu-grid { overflow: visible; padding-bottom: 40px; }
   
-  /* Keep search and categories at the top of the menu while scrolling */
   .menu-search-bar { position: sticky; top: 106px; z-index: 900; background: var(--black); }
   .cat-tabs { position: sticky; top: 168px; z-index: 900; background: var(--black); }
 
@@ -255,15 +251,12 @@ html, body { height: 100%; overflow: hidden; background: var(--black); color: va
     padding: 8px 16px; border-radius: 8px; font-weight: 800; font-family: inherit; font-size: 14px;
   }
 
-  /* Floating Action Button for opening Cart */
   .fab-cart {
     display: flex; position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%);
     background: var(--red); color: white; border: none; border-radius: 30px;
     padding: 16px 24px; font-size: 16px; font-weight: 900; z-index: 1500;
     box-shadow: 0 4px 20px rgba(232, 0, 29, 0.4); align-items: center; gap: 10px; width: 90%; justify-content: center;
   }
-
-  /* KDS Order grid flow naturally */
   .kds-grid { overflow: visible; display: grid; }
 }
 </style>
@@ -320,11 +313,14 @@ html, body { height: 100%; overflow: hidden; background: var(--black); color: va
         <div class="cat-tab active" onclick="setCat('All')" id="cat-All">All</div>
         <div class="cat-tab" onclick="setCat('Pizza')" id="cat-Pizza">🍕 Pizza</div>
         <div class="cat-tab" onclick="setCat('Burger')" id="cat-Burger">🍔 Burger</div>
-        <div class="cat-tab" onclick="setCat('Wings')" id="cat-Wings">🍗 Wings</div>
-        <div class="cat-tab" onclick="setCat('Pasta')" id="cat-Pasta">🍝 Pasta</div>
         <div class="cat-tab" onclick="setCat('Wrap')" id="cat-Wrap">🌯 Wrap</div>
         <div class="cat-tab" onclick="setCat('Fries')" id="cat-Fries">🍟 Fries</div>
+        <div class="cat-tab" onclick="setCat('Wings')" id="cat-Wings">🍗 Wings</div>
+        <div class="cat-tab" onclick="setCat('Pasta')" id="cat-Pasta">🍝 Pasta</div>
+        <div class="cat-tab" onclick="setCat('Sandwich')" id="cat-Sandwich">🥪 Sandwich</div>
+        <div class="cat-tab" onclick="setCat('Sauce')" id="cat-Sauce">🥣 Sauce</div>
         <div class="cat-tab" onclick="setCat('Drink')" id="cat-Drink">🥤 Drink</div>
+        <div class="cat-tab" onclick="setCat('Dessert')" id="cat-Dessert">🍰 Dessert</div>
         <div class="cat-tab" onclick="setCat('Deal')" id="cat-Deal">🎁 Deals</div>
       </div>
       <div class="menu-grid" id="menu-grid"></div>
@@ -336,29 +332,31 @@ html, body { height: 100%; overflow: hidden; background: var(--black); color: va
     </button>
 
     <div class="cart-side" id="cart-side">
-      <div class="cart-header">
-        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:14px;">
-          <h3 style="font-size:20px; font-weight:900;">Current Order</h3>
-          <button class="close-cart-btn" onclick="toggleMobileCart()">✕ Close</button>
-        </div>
-        <div class="order-type-row">
-          <button class="otype-btn active" id="ot-dine" onclick="setOType('dine')">🍽 Dine-in</button>
-          <button class="otype-btn" id="ot-take" onclick="setOType('take')">🥡 Takeaway</button>
-          <button class="otype-btn" id="ot-del" onclick="setOType('del')">🛵 Delivery</button>
-        </div>
-        <div class="order-source-row">
-          <button class="osrc-btn active" id="os-counter" onclick="setOSrc('Counter')">Counter</button>
-          <button class="osrc-btn" id="os-phone" onclick="setOSrc('Phone')">Phone</button>
-          <button class="osrc-btn" id="os-web" onclick="setOSrc('Website')">Website</button>
-        </div>
-        <div class="delivery-fields" id="delivery-fields">
-          <input class="del-input" id="del-name" type="text" placeholder="👤 Customer Name" autocomplete="off">
-          <input class="del-input" id="del-phone" type="tel" placeholder="📞 Phone Number" autocomplete="off">
-          <input class="del-input" id="del-address" type="text" placeholder="📍 Delivery Address" autocomplete="off">
-        </div>
+      <div class="cart-title-bar">
+        <h3>Current Order</h3>
+        <button class="close-cart-btn" onclick="toggleMobileCart()">✕ Close</button>
       </div>
-      <div class="cart-items" id="cart-items">
-        <div class="cart-empty">🛒 Cart is empty</div>
+      <div class="cart-scrollable">
+        <div class="cart-header">
+          <div class="order-type-row">
+            <button class="otype-btn active" id="ot-dine" onclick="setOType('dine')">🍽 Dine-in</button>
+            <button class="otype-btn" id="ot-take" onclick="setOType('take')">🥡 Takeaway</button>
+            <button class="otype-btn" id="ot-del" onclick="setOType('del')">🛵 Delivery</button>
+          </div>
+          <div class="order-source-row">
+            <button class="osrc-btn active" id="os-counter" onclick="setOSrc('Counter')">Counter</button>
+            <button class="osrc-btn" id="os-phone" onclick="setOSrc('Phone')">Phone</button>
+            <button class="osrc-btn" id="os-web" onclick="setOSrc('Website')">Website</button>
+          </div>
+          <div class="delivery-fields" id="delivery-fields">
+            <input class="del-input" id="del-name" type="text" placeholder="👤 Customer Name" autocomplete="off">
+            <input class="del-input" id="del-phone" type="tel" placeholder="📞 Phone Number" autocomplete="off">
+            <input class="del-input" id="del-address" type="text" placeholder="📍 Delivery Address" autocomplete="off">
+          </div>
+        </div>
+        <div class="cart-items" id="cart-items">
+          <div class="cart-empty">🛒 Cart is empty</div>
+        </div>
       </div>
       <div class="cart-footer">
         <div class="cart-totals">
@@ -404,7 +402,6 @@ html, body { height: 100%; overflow: hidden; background: var(--black); color: va
   </div>
 </div>
 
-<!-- Size Modal -->
 <div class="size-modal-overlay" id="size-modal">
   <div class="size-modal">
     <h3 id="sm-name">Choose Size</h3>
@@ -416,52 +413,100 @@ html, body { height: 100%; overflow: hidden; background: var(--black); color: va
 
 <div class="toast" id="toast"></div>
 
-<!-- Original JS integrated below -->
 <script>
 const MENU =[
-  { id:'p1', name:"Jerry's Special", cat:'Pizza', emoji:'🍕', desc:'Stuffed edge', sizes:[{label:'Small 7"',price:680},{label:'Medium 10"',price:980},{label:'Large 14"',price:1350}] },
-  { id:'p2', name:'Bubble Cheese Stuffer', cat:'Pizza', emoji:'🍕', desc:'Stuffed edge', sizes:[{label:'Small 7"',price:720},{label:'Medium 10"',price:1050},{label:'Large 14"',price:1450}] },
-  { id:'p3', name:'BBQ Chicken', cat:'Pizza', emoji:'🍕', desc:'Stuffed edge', sizes:[{label:'Small 7"',price:700},{label:'Medium 10"',price:1000},{label:'Large 14"',price:1400}] },
-  { id:'p4', name:'Beef Supremo', cat:'Pizza', emoji:'🍕', desc:'Stuffed edge', sizes:[{label:'Small 7"',price:750},{label:'Medium 10"',price:1100},{label:'Large 14"',price:1500}] },
-  { id:'p5', name:'Veggie Delight', cat:'Pizza', emoji:'🍕', desc:'Stuffed edge', sizes:[{label:'Small 7"',price:620},{label:'Medium 10"',price:900},{label:'Large 14"',price:1250}] },
-  { id:'p6', name:'Zinger Tikka', cat:'Pizza', emoji:'🍕', desc:'Stuffed edge', sizes:[{label:'Small 7"',price:730},{label:'Medium 10"',price:1080},{label:'Large 14"',price:1480}] },
-  { id:'p7', name:'Hot & Spicy', cat:'Pizza', emoji:'🍕', desc:'Stuffed edge', sizes:[{label:'Small 7"',price:700},{label:'Medium 10"',price:1020},{label:'Large 14"',price:1420}] },
-  { id:'p8', name:'Cheese Lovers', cat:'Pizza', emoji:'🍕', desc:'Stuffed edge', sizes:[{label:'Small 7"',price:680},{label:'Medium 10"',price:990},{label:'Large 14"',price:1380}] },
-  { id:'p9', name:'Mighty Meat', cat:'Pizza', emoji:'🍕', desc:'Stuffed edge', sizes:[{label:'Small 7"',price:780},{label:'Medium 10"',price:1150},{label:'Large 14"',price:1550}] },
-  { id:'p10', name:'Chicken Fajita', cat:'Pizza', emoji:'🍕', desc:'Stuffed edge', sizes:[{label:'Small 7"',price:720},{label:'Medium 10"',price:1050},{label:'Large 14"',price:1450}] },
-  { id:'b1', name:'Big Zinger', cat:'Burger', emoji:'🍔', price:320 },
-  { id:'b2', name:'Zinger Classic', cat:'Burger', emoji:'🍔', price:280 },
-  { id:'b3', name:'Double Beef Burger', cat:'Burger', emoji:'🍔', price:380 },
-  { id:'b4', name:'Spicy Zinger', cat:'Burger', emoji:'🍔', price:300 },
-  { id:'b5', name:'Chicken Fillet Burger', cat:'Burger', emoji:'🍔', price:290 },
-  { id:'b6', name:'Tower Burger', cat:'Burger', emoji:'🍔', price:420 },
-  { id:'b7', name:'BBQ Crunch Burger', cat:'Burger', emoji:'🍔', price:340 },
-  { id:'w1', name:'Saucy Spicy Wings', cat:'Wings', emoji:'🍗', sizes:[{label:'6 pcs',price:380},{label:'12 pcs',price:720}] },
-  { id:'w2', name:'BBQ Wings', cat:'Wings', emoji:'🍗', sizes:[{label:'6 pcs',price:360},{label:'12 pcs',price:680}] },
-  { id:'w3', name:'Garlic Butter Wings', cat:'Wings', emoji:'🍗', sizes:[{label:'6 pcs',price:370},{label:'12 pcs',price:700}] },
-  { id:'w4', name:'Crispy Fried Wings', cat:'Wings', emoji:'🍗', sizes:[{label:'6 pcs',price:350},{label:'12 pcs',price:660}] },
-  { id:'pa1', name:'Chicken Alfredo', cat:'Pasta', emoji:'🍝', price:350 },
-  { id:'pa2', name:'Red Sauce Pasta', cat:'Pasta', emoji:'🍝', price:300 },
-  { id:'pa3', name:'Pink Sauce Pasta', cat:'Pasta', emoji:'🍝', price:320 },
-  { id:'pa4', name:'Penne Arabiata', cat:'Pasta', emoji:'🍝', price:290 },
-  { id:'wr1', name:'Zinger Wrap', cat:'Wrap', emoji:'🌯', price:260 },
-  { id:'wr2', name:'BBQ Chicken Wrap', cat:'Wrap', emoji:'🌯', price:270 },
-  { id:'wr3', name:'Tikka Wrap', cat:'Wrap', emoji:'🌯', price:280 },
-  { id:'f1', name:'Loaded Fries', cat:'Fries', emoji:'🍟', price:220 },
-  { id:'f2', name:'Regular Fries', cat:'Fries', emoji:'🍟', price:150 },
-  { id:'f3', name:'Cheese Fries', cat:'Fries', emoji:'🍟', price:200 },
-  { id:'f4', name:'Nuggets (6 pcs)', cat:'Fries', emoji:'🍗', price:250 },
-  { id:'d1', name:'Soft Drink 500ml', cat:'Drink', emoji:'🥤', price:80 },
-  { id:'d2', name:'Soft Drink 1.5L', cat:'Drink', emoji:'🥤', price:140 },
-  { id:'d3', name:'Water Bottle', cat:'Drink', emoji:'💧', price:50 },
-  { id:'d4', name:'Juice Can', cat:'Drink', emoji:'🧃', price:90 },
-  { id:'dl1', name:'MUFTA Deal', cat:'Deal', emoji:'🎁', price:2699, desc:'Lg Pizza + 2 Burgers + Pasta + Nuggets + Drink' },
-  { id:'dl2', name:'Family Deal', cat:'Deal', emoji:'🎁', price:1999, desc:'Lg Pizza + 2 Burgers + 2 Drinks' },
-  { id:'dl3', name:'Student Deal', cat:'Deal', emoji:'🎁', price:699, desc:'Sm Pizza + Burger + Drink' },
-  { id:'dl4', name:'Wings Deal', cat:'Deal', emoji:'🎁', price:999, desc:'12 Wings + Fries + 2 Drinks' },
-  { id:'dl5', name:'Double Deal', cat:'Deal', emoji:'🎁', price:1499, desc:'Med Pizza + 2 Burgers + 2 Drinks' },
-  { id:'dl6', name:'Pizza Duo', cat:'Deal', emoji:'🎁', price:2199, desc:'2x Med Pizzas + 2 Drinks' },
-  { id:'dl7', name:'Solo Deal', cat:'Deal', emoji:'🎁', price:550, desc:'Burger + Fries + Drink' }
+  // Best Pizzas
+  { id:'p1', name:"Jerry's Special", cat:'Pizza', emoji:'🍕', desc:"Edge Filling with Chicken & Cheese, Tikka Chicken...", sizes:[{label:'Small',price:699},{label:'Medium',price:1230},{label:'Large',price:1850},{label:'XL',price:2349}] },
+  { id:'p2', name:"Yummy Malai Boti", cat:'Pizza', emoji:'🍕', desc:"Edge Filling with Chicken & Sauce, Malai Boti Chicken...", sizes:[{label:'Small',price:699},{label:'Medium',price:1230},{label:'Large',price:1850},{label:'XL',price:2349}] },
+  { id:'p3', name:"Behari Kebab", cat:'Pizza', emoji:'🍕', desc:"Pizza Sauce, Tikka Chicken, Cheese, Kebab...", sizes:[{label:'Small',price:699},{label:'Medium',price:1230},{label:'Large',price:1850},{label:'XL',price:2349}] },
+  { id:'p4', name:"Bubble Cheese Stuffer", cat:'Pizza', emoji:'🍕', desc:"Edge Filled with Cheese, Tikka Chicken...", sizes:[{label:'Small',price:699},{label:'Medium',price:1230},{label:'Large',price:1850},{label:'XL',price:2349}] },
+  { id:'p5', name:"Crispy Crunch", cat:'Pizza', emoji:'🍕', desc:"Special Sauce, Crunchy Zinger Chicken...", sizes:[{label:'Small',price:699},{label:'Medium',price:1230},{label:'Large',price:1850},{label:'XL',price:2349}] },
+  { id:'p6', name:"Cheese & Pepperoni", cat:'Pizza', emoji:'🍕', desc:"Special Sauce, Chicken Pepperoni...", sizes:[{label:'Small',price:699},{label:'Medium',price:1230},{label:'Large',price:1850},{label:'XL',price:2349}] },
+  // Regular Pizzas
+  { id:'p7', name:"Chicken Tikka", cat:'Pizza', emoji:'🍕', desc:"Pizza Sauce, Tikka Chicken...", sizes:[{label:'Small',price:499},{label:'Medium',price:1050},{label:'Large',price:1299},{label:'XL',price:1849}] },
+  { id:'p8', name:"Chicken Fajita", cat:'Pizza', emoji:'🍕', desc:"Pizza Sauce, Fajita Chicken...", sizes:[{label:'Small',price:499},{label:'Medium',price:1050},{label:'Large',price:1299},{label:'XL',price:1849}] },
+  { id:'p9', name:"Hot & Spicy", cat:'Pizza', emoji:'🍕', desc:"Pizza Sauce, Spicy Chicken...", sizes:[{label:'Small',price:499},{label:'Medium',price:1050},{label:'Large',price:1299},{label:'XL',price:1849}] },
+  { id:'p10', name:"Picklish Tikka", cat:'Pizza', emoji:'🍕', desc:"Picklish Sauce, Tikka Chicken...", sizes:[{label:'Small',price:499},{label:'Medium',price:1050},{label:'Large',price:1299},{label:'XL',price:1849}] },
+  { id:'p11', name:"Cheese & Kebab", cat:'Pizza', emoji:'🍕', desc:"Special Sauce, Seekh Kebab...", sizes:[{label:'Small',price:499},{label:'Medium',price:1050},{label:'Large',price:1299},{label:'XL',price:1849}] },
+  { id:'p12', name:"Bar.B.Q Tikka", cat:'Pizza', emoji:'🍕', desc:"Pizza Sauce, Seekh Kebab...", sizes:[{label:'Small',price:499},{label:'Medium',price:1050},{label:'Large',price:1299},{label:'XL',price:1849}] },
+  // New Arrivals (Pizza / Wrap)
+  { id:'na1', name:"Special Pizza Pratha", cat:'Wrap', emoji:'🌯', price:449 },
+  { id:'na2', name:"Shawarma Pizza", cat:'Pizza', emoji:'🍕', price:299 },
+  { id:'na3', name:"Delight Shawarma", cat:'Wrap', emoji:'🌯', price:349 },
+  { id:'na4', name:"Square Pizza Large", cat:'Pizza', emoji:'🍕', price:1899 },
+  { id:'na5', name:"Square Pizza Medium", cat:'Pizza', emoji:'🍕', price:1149 },
+  // Burgers
+  { id:'b1', name:"Big Zinger", cat:'Burger', emoji:'🍔', price:450 },
+  { id:'b2', name:"Junior Zinger", cat:'Burger', emoji:'🍔', price:349 },
+  { id:'b3', name:"Crispy Crunch Burger", cat:'Burger', emoji:'🍔', price:450 },
+  { id:'b4', name:"Chicken Reggy", cat:'Burger', emoji:'🍔', price:299 },
+  { id:'b5', name:"Juicy & Crunchy", cat:'Burger', emoji:'🍔', price:599, desc:"Add Cheese Slice in Just 50/-" },
+  // Wraps
+  { id:'w1', name:"Kebab Pratha", cat:'Wrap', emoji:'🌯', price:319 },
+  { id:'w2', name:"Zinger Pratha", cat:'Wrap', emoji:'🌯', price:299 },
+  { id:'w3', name:"Cheese Pratha", cat:'Wrap', emoji:'🌯', price:349 },
+  { id:'w4', name:"Zinger Shawarma", cat:'Wrap', emoji:'🌯', price:280 },
+  { id:'w5', name:"Chicken Shawarma", cat:'Wrap', emoji:'🌯', price:249 },
+  // Wings & Nuggets
+  { id:'wn1', name:"Fried Wings", cat:'Wings', emoji:'🍗', sizes:[{label:'5 pcs',price:279},{label:'10 pcs',price:549}] },
+  { id:'wn2', name:"Grilled Wings", cat:'Wings', emoji:'🍗', sizes:[{label:'5 pcs',price:309},{label:'10 pcs',price:599}] },
+  { id:'wn3', name:"Saucy Spicy Wings", cat:'Wings', emoji:'🍗', sizes:[{label:'5 pcs',price:329},{label:'10 pcs',price:649}] },
+  { id:'wn4', name:"Chicken Nuggets", cat:'Wings', emoji:'🍗', sizes:[{label:'5 pcs',price:269},{label:'10 pcs',price:499}] },
+  // Fries
+  { id:'f1', name:"Plane Fries", cat:'Fries', emoji:'🍟', sizes:[{label:'Small',price:199},{label:'Large',price:349}] },
+  { id:'f2', name:"Matka Fries", cat:'Fries', emoji:'🍟', price:749 },
+  { id:'f3', name:"Masala Fries", cat:'Fries', emoji:'🍟', price:349 },
+  { id:'f4', name:"Loaded Fries", cat:'Fries', emoji:'🍟', price:599 },
+  // Sauces
+  { id:'s1', name:"Garlic Mayo", cat:'Sauce', emoji:'🥣', price:50 },
+  { id:'s2', name:"Picklish Sauce", cat:'Sauce', emoji:'🥣', price:50 },
+  { id:'s3', name:"Special Sauce", cat:'Sauce', emoji:'🥣', price:50 },
+  // Pasta
+  { id:'ps1', name:"Cheese Macaroni Pasta", cat:'Pasta', emoji:'🍝', sizes:[{label:'Half',price:399},{label:'Full',price:749}] },
+  { id:'ps2', name:"Crunchy Pasta", cat:'Pasta', emoji:'🍝', sizes:[{label:'Half',price:449},{label:'Full',price:799}] },
+  { id:'ps3', name:"Chicken Spicy Macaroni", cat:'Pasta', emoji:'🍝', sizes:[{label:'Half',price:350},{label:'Full',price:649}] },
+  // Sandwiches
+  { id:'sw1', name:"Chicken Cheese", cat:'Sandwich', emoji:'🥪', price:249 },
+  { id:'sw2', name:"Chicken Club", cat:'Sandwich', emoji:'🥪', price:219 },
+  { id:'sw3', name:"Jerry's Special Sandwich", cat:'Sandwich', emoji:'🥪', price:300 },
+  { id:'sw4', name:"3 Cheese Bread", cat:'Sandwich', emoji:'🥪', price:199 },
+  // Drinks & Ice Cream
+  { id:'ic1', name:"Ice Cream Full", cat:'Dessert', emoji:'🍨', price:349 },
+  { id:'ic2', name:"Ice Cream Half", cat:'Dessert', emoji:'🍨', price:199 },
+  { id:'dr1', name:"1.5 Liter Drink", cat:'Drink', emoji:'🥤', price:220 },
+  { id:'dr2', name:"1 Liter Drink", cat:'Drink', emoji:'🥤', price:170 },
+  { id:'dr3', name:"500ml Drink", cat:'Drink', emoji:'🥤', price:110 },
+  { id:'dr4', name:"345ml Drink", cat:'Drink', emoji:'🥤', price:90 },
+  { id:'dr5', name:"Regular Drink", cat:'Drink', emoji:'🥤', price:80 },
+  { id:'dr6', name:"Small Water", cat:'Drink', emoji:'💧', price:60 },
+  { id:'dr7', name:"Large Water", cat:'Drink', emoji:'💧', price:120 },
+  // Desserts
+  { id:'ds1', name:"Pineapple Cake (1 lb)", cat:'Dessert', emoji:'🍰', price:600, desc:"Fresh and creamy pineapple cake" },
+  { id:'ds2', name:"Pineapple Cake (2 lb)", cat:'Dessert', emoji:'🍰', price:1100, desc:"A large, fresh, and creamy pineapple cake" },
+  { id:'ds3', name:"Chocolate Cake (1 lb)", cat:'Dessert', emoji:'🍰', price:700, desc:"Rich, fudgy, and moist double chocolate cake" },
+  { id:'ds4', name:"Chocolate Cake (2 lb)", cat:'Dessert', emoji:'🍰', price:1300, desc:"Decadent large chocolate cake" },
+  // Deals
+  { id:'dl1', name:"Deal 1", cat:'Deal', emoji:'🎁', price:1399, desc:"1 Lg Tikka Pizza + 1 Ltr Drink" },
+  { id:'dl2', name:"Deal 2", cat:'Deal', emoji:'🎁', price:1899, desc:"1 Lg Jerry Special + 1 Ltr Drink" },
+  { id:'dl3', name:"Deal 3", cat:'Deal', emoji:'🎁', price:1899, desc:"1 XL Tikka Pizza + 1.5 Ltr Drink" },
+  { id:'dl4', name:"Deal 4", cat:'Deal', emoji:'🎁', price:2649, desc:"2 Lg Tikka Pizzas + 1.5 Ltr Drink" },
+  { id:'dl5', name:"Deal 5", cat:'Deal', emoji:'🎁', price:1049, desc:"2 Sm Tikka Pizzas + 1 Ltr Drink" },
+  { id:'dl6', name:"Deal 6", cat:'Deal', emoji:'🎁', price:1849, desc:"1 Lg Tikka Pizza + 10 Hot Wings + 1 Ltr Drink" },
+  { id:'dl7', name:"Deal 7", cat:'Deal', emoji:'🎁', price:2099, desc:"1 Med Jerry Special + 2 Zinger Burgers + 1 Ltr Drink" },
+  { id:'dl8', name:"Deal 8", cat:'Deal', emoji:'🎁', price:1849, desc:"1 Lg Tikka + 1 Sm Fajita + 1.5 Ltr Drink" },
+  { id:'dl9', name:"Deal 9", cat:'Deal', emoji:'🎁', price:1099, desc:"1 Med Tikka Pizza + 500ml Drink" },
+  { id:'dl10', name:"Deal 10", cat:'Deal', emoji:'🎁', price:2449, desc:"1 Lg Tikka + 2 Zinger Burgers + Lg Fries + 1.5 Ltr Drink" },
+  { id:'dl11', name:"Deal 11", cat:'Deal', emoji:'🎁', price:949, desc:"1 Sm Tikka + 1 Zinger Burger + 345ml Drink" },
+  { id:'dl12', name:"Deal 12", cat:'Deal', emoji:'🎁', price:559, desc:"1 Jr Zinger Burger + Sm Fries + 345ml Drink" },
+  { id:'dl13', name:"Deal 13", cat:'Deal', emoji:'🎁', price:1499, desc:"4 Jr Zinger Burgers + 1.5 Ltr Drink" },
+  { id:'dl14', name:"Deal 14", cat:'Deal', emoji:'🎁', price:799, desc:"2 Jr Zinger Burgers + Two 345ml Drinks" },
+  { id:'dl15', name:"Deal 15", cat:'Deal', emoji:'🎁', price:1749, desc:"1 Lg Tikka + 1 Sm Crunchy Pasta + 1 Ltr Drink" },
+  { id:'dl16', name:"Deal 16", cat:'Deal', emoji:'🎁', price:919, desc:"1 Sm Tikka + 1 Sm Macaroni Pasta + 345ml Drink" },
+  { id:'dl17', name:"Deal 17", cat:'Deal', emoji:'🎁', price:499, desc:"1 Sm Tikka Pizza + 345ml Drink" },
+  { id:'dl18', name:"Deal 18", cat:'Deal', emoji:'🎁', price:599, desc:"2 Chicken Shawarmas + Two 345ml Drinks" },
+  { id:'dl19', name:"Deal 19", cat:'Deal', emoji:'🎁', price:499, desc:"1 Zinger Pratha or Shawarma + Sm Fries + 345ml Drink" },
+  { id:'dl20', name:"Deal 20", cat:'Deal', emoji:'🎁', price:929, desc:"10 Fried Hot Wings + 1 Jr Zinger Burger + 345ml Drink" },
+  { id:'dl21', name:"MUFTA DEAL", cat:'Deal', emoji:'🎁', price:2699, desc:"1 Lg Pizza + 2 Jr Zinger Burgers + Sm Macaroni + 5 Nuggets + 1.5 Ltr Drink" }
 ];
 
 let pinVal = ''; let cart =[]; let orderType = 'dine'; let orderSrc = 'Counter'; let activeCat = 'All'; let allOrders =[]; let pendingItem = null;
@@ -573,7 +618,7 @@ function renderCart() {
   document.getElementById('fab-count').textContent = ct;
   document.getElementById('fab-total').textContent = 'Rs. ' + sub;
 }
-function getCatEmoji(cat) { const m = {Pizza:'🍕',Burger:'🍔',Wings:'🍗',Pasta:'🍝',Wrap:'🌯',Fries:'🍟',Drink:'🥤',Deal:'🎁'}; return m[cat] || '🍽'; }
+function getCatEmoji(cat) { const m = {Pizza:'🍕',Burger:'🍔',Wings:'🍗',Pasta:'🍝',Wrap:'🌯',Fries:'🍟',Drink:'🥤',Deal:'🎁',Sandwich:'🥪',Sauce:'🥣',Dessert:'🍰'}; return m[cat] || '🍽'; }
 function changeQty(idx, d) { cart[idx].qty += d; if (cart[idx].qty <= 0) cart.splice(idx, 1); renderCart(); }
 function clearCart() { cart =[]; renderCart(); }
 
@@ -584,7 +629,7 @@ function setOType(t) {
   if (t === 'del') { df.classList.add('show'); } else { df.classList.remove('show'); }
 }
 function setOSrc(s) {
-  orderSrc = s; ['counter','phone','web'].forEach(id => document.getElementById('os-' + id).classList.remove('active'));
+  orderSrc = s;['counter','phone','web'].forEach(id => document.getElementById('os-' + id).classList.remove('active'));
   document.getElementById('os-' + s.toLowerCase()).classList.add('active');
 }
 
@@ -639,16 +684,12 @@ function listenOrders() {
     allOrders =[]; 
     snap.forEach(docSnap => { 
       const o = { id: docSnap.id, ...docSnap.data() };
-      // Ignore archived orders so they stop cluttering the POS display
-      if (o.status !== 'archived') {
-        allOrders.push(o); 
-      }
+      if (o.status !== 'archived') { allOrders.push(o); }
     });
     
-    // Filter for today's orders and sort newest first
     allOrders = allOrders.filter(o => o.date === today).sort((a,b) => b.createdAt - a.createdAt);
     renderKDS(); 
-    updateDash(); // Automatically pushes live stats to Dashboard!
+    updateDash();
   });
 }
 
@@ -693,7 +734,6 @@ function updateStatus(id, status) {
 }
 function clearDoneOrders() {
   if (window._db) { 
-    // Move 'done' orders to 'archived' status so they disappear from KDS but keep data safe
     allOrders.filter(o => o.status === 'done').forEach(o => { 
       window._updateDoc(window._doc(window._db, 'orders', o.id), { status: 'archived' }); 
     }); 
@@ -726,3 +766,4 @@ renderMenu(); renderCart();
 </script>
 </body>
 </html>
+--- END OF FILE pos.html ---
