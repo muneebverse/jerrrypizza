@@ -50,27 +50,27 @@
   <link rel="stylesheet" href="styles.css" />
 
   <!-- ── Jerry Pizza: Firebase (same project as pos.html) ── -->
-<script type="module">
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/12.12.1/firebase-app.js";
-  import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/12.12.1/firebase-firestore.js";
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/12.12.1/firebase-app.js";
+    import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/12.12.1/firebase-firestore.js";
 
-  const firebaseConfig = {
-    apiKey: "AIzaSyBG-J0dzxS70Fr7-VPf1SQ8Fiq0fRzNAq8",
-    authDomain: "jerry-pos.firebaseapp.com",
-    projectId: "jerry-pos",
-    storageBucket: "jerry-pos.firebasestorage.app",
-    messagingSenderId: "771100017615",
-    appId: "1:771100017615:web:ae7342c89b3b697cdd48ba"
-  };
+    const firebaseConfig = {
+      apiKey: "AIzaSyBG-J0dzxS70Fr7-VPf1SQ8Fiq0fRzNAq8",
+      authDomain: "jerry-pos.firebaseapp.com",
+      projectId: "jerry-pos",
+      storageBucket: "jerry-pos.firebasestorage.app",
+      messagingSenderId: "771100017615",
+      appId: "1:771100017615:web:ae7342c89b3b697cdd48ba"
+    };
 
-  const app = initializeApp(firebaseConfig);
-  const db = getFirestore(app);
-  window._db = db;
-  window._collection = collection;
-  window._addDoc = addDoc;
-  window._fbReady = true;
-  document.dispatchEvent(new Event('fbReady'));
-</script>
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+    window._db = db;
+    window._collection = collection;
+    window._addDoc = addDoc;
+    window._fbReady = true;
+    document.dispatchEvent(new Event('fbReady'));
+  </script>
 </head>
 <body>
 
@@ -98,7 +98,7 @@
       <input type="tel" id="cust-phone" placeholder="Phone Number" required>
       <textarea id="cust-address" placeholder="Delivery Address" rows="2" required></textarea>
     </form>
-    <button class="btn btn-primary" id="checkout-btn" style="width:100%;justify-content:center;display:none;" onclick="processCheckout()">
+    <button class="btn btn-primary" id="checkout-btn" style="width:100%;justify-content:center;display:none;" onclick="checkoutToWhatsApp()">
       <i class="fa-brands fa-whatsapp"></i> Place Order
     </button>
   </div>
@@ -217,6 +217,85 @@
 
 <script src="menu-data.js"></script>
 <script src="app.js"></script>
+<script>
+// Helper functions for checkout (hooking into app.js variables)
+function getCustomerName() {
+  return document.getElementById('cust-name')?.value.trim() || 'Website Customer';
+}
+function getCustomerPhone() {
+  return document.getElementById('cust-phone')?.value.trim() || '';
+}
+function getCustomerAddress() {
+  return document.getElementById('cust-address')?.value.trim() || '';
+}
+function getOrderNote() {
+  return '';
+}
+
+async function checkoutToWhatsApp() {
+  const rawName = document.getElementById('cust-name')?.value.trim();
+  const phone = getCustomerPhone();
+  const address = getCustomerAddress();
+
+  if (!rawName || !phone || !address) { 
+    alert("Please fill in your Name, Phone Number, and Delivery Address."); 
+    return; 
+  }
+
+  const name = getCustomerName();
+
+  let total = 0;
+  let counts = {};
+  if (typeof cart !== 'undefined') {
+    cart.forEach(item => {
+      if (!counts[item.name]) counts[item.name] = { price: item.price, qty: 0 };
+      counts[item.name].qty++;
+      total += parseInt(item.price);
+    });
+  }
+
+  const items = Object.entries(counts).map(([n, d]) => ({
+    name:  n,
+    sub:   '',
+    qty:   d.qty,
+    price: d.price
+  }));
+
+  const order = {
+    items,
+    total,
+    type:      'del',
+    source:    'Website',
+    customer:  name,
+    phone:     phone,
+    address:   address,
+    note:      getOrderNote(),
+    status:    'new',
+    createdAt: Date.now(),
+    date:      new Date().toLocaleDateString('en-PK')
+  };
+
+  if (window._fbReady) {
+    try {
+      await window._addDoc(window._collection(window._db, 'orders'), order);
+      console.log('✓ Order saved to Firestore');
+    } catch (err) {
+      console.error('Firestore save failed:', err);
+    }
+  }
+
+  let orderText = `*Order - Jerry Pizza*\n\nName: ${name}\nPhone: ${phone}\nAddress: ${address}\n\n*Items:*\n`;
+  Object.entries(counts).forEach(([n, d]) => { orderText += `- ${d.qty}x ${n} (Rs. ${d.price})\n`; });
+  orderText += `\nTotal: Rs. ${total}`;
+  
+  window.open(`https://wa.me/923143636434?text=${encodeURIComponent(orderText)}`, '_blank');
+  
+  // Clear cart using app.js methods if they exist
+  if (typeof cart !== 'undefined') cart.length = 0; 
+  if (typeof renderCart === 'function') renderCart(); 
+  if (typeof toggleCartDrawer === 'function') toggleCartDrawer();
+}
+</script>
 
 </body>
 </html>
