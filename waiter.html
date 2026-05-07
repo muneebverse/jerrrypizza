@@ -524,6 +524,7 @@ function setOType(t) {
 function sendToKitchen() {
   if (!cart.length) { showToast('Cart is empty!', true); return; }
   if (!navigator.onLine && window._fbReady) { showToast('No internet!', true); return; }
+  
   const total = cart.reduce((s, c) => s + c.price * c.qty, 0);
   const order = {
     items: cart.map(c => ({ name: c.name, sub: c.sub || '', qty: c.qty, price: c.price })),
@@ -533,15 +534,34 @@ function sendToKitchen() {
     note: document.getElementById('f-note').value.trim(),
     status: 'new', createdAt: Date.now(), date: new Date().toLocaleDateString('en-PK')
   };
+
   if (window._fbReady) {
-    window._push(window._ref(window._db, 'orders'), order).then(() => {
-      showToast('✓ Sent to kitchen!'); clearCart();
-      ['f-customer','f-phone','f-note'].forEach(id=>document.getElementById(id).value=''); switchTab('myorders');
-    }).catch(err => { showToast('Firebase error!', true); });
+    // Firestore Add Document
+    window._addDoc(window._collection(window._db, 'orders'), order).then(() => {
+      showToast('✓ Sent to kitchen!'); clearCart();['f-customer','f-phone','f-note'].forEach(id=>document.getElementById(id).value=''); 
+      switchTab('myorders');
+    }).catch(err => { showToast('Firebase error!', true); console.error(err); });
   } else {
     order.id = 'W-' + Date.now(); myOrders.unshift(order);
     showToast('✓ Sent to kitchen (demo)!'); clearCart(); renderMyOrders(); switchTab('myorders');
   }
+}
+
+function listenOrders() {
+  if (!window._db) return;
+  const today = new Date().toLocaleDateString('en-PK');
+  
+  // Firestore Real-Time Snapshot
+  window._onSnapshot(window._collection(window._db, 'orders'), (snap) => {
+    myOrders =[];
+    snap.forEach(doc => { 
+      const o = { id: doc.id, ...doc.data() }; 
+      if (o.date === today && o.waiter === currentWaiter) myOrders.push(o); 
+    });
+    // Sort newest first
+    myOrders.sort((a, b) => b.createdAt - a.createdAt);
+    renderMyOrders();
+  });
 }
 
 function initFirebase() { if (!window._fbReady) { document.addEventListener('fbReady', () => listenOrders()); } else { listenOrders(); } }
