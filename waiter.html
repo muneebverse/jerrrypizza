@@ -1,3 +1,4 @@
+--- START OF FILE waiter.html ---
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -166,8 +167,13 @@ body { background:var(--black); color:var(--text); font-family:var(--font-b); fo
 }
 
 /* ══ CART VIEW ══ */
-.cart-top { padding:16px; background:var(--surface); border-bottom:1px solid var(--border); position:sticky; top:0; z-index:10; }
-.cart-section-title { font-size:20px; font-weight:900; margin-bottom:14px; }
+#view-cart { display: none; flex-direction: column; overflow: hidden; padding-bottom: 0; }
+#view-cart.active { display: flex; }
+.cart-title-bar { padding: 16px; background: var(--surface); border-bottom: 1px solid var(--border); flex-shrink: 0; }
+.cart-section-title { font-size: 20px; font-weight: 900; margin-bottom: 0; }
+
+.cart-scrollable { flex: 1; overflow-y: auto; -webkit-overflow-scrolling: touch; }
+.cart-top { padding: 16px; background: var(--surface); }
 .type-row { display:flex; gap:8px; margin-bottom:16px; }
 .type-btn {
   flex:1; padding:12px 6px; border-radius:12px; border:1px solid var(--border);
@@ -183,7 +189,7 @@ body { background:var(--black); color:var(--text); font-family:var(--font-b); fo
 }
 .meta-input:focus { border-color:var(--red); }
 .delivery-fields { display:none; }
-.cart-items-list { padding:16px; display:flex; flex-direction:column; gap:10px; }
+.cart-items-list { padding:0 16px 16px; display:flex; flex-direction:column; gap:10px; }
 .cart-empty-state { display:flex; flex-direction:column; align-items:center; justify-content:center; gap:12px; padding:60px 20px; color:var(--dim); font-size:15px; font-weight:700; }
 .cart-row { background:var(--surface2); border:1px solid var(--border); border-radius:14px; padding:14px; display:flex; align-items:center; gap:12px; }
 .cart-row-info { flex:1; min-width:0; }
@@ -197,7 +203,7 @@ body { background:var(--black); color:var(--text); font-family:var(--font-b); fo
   display:flex; align-items:center; justify-content:center;
 }
 .qty-b:active { background:var(--red); border-color:var(--red); color:#fff; }
-.cart-footer { padding:16px; background:var(--surface); border-top:1px solid var(--border); position:sticky; bottom:0; }
+.cart-footer { padding:16px; background:var(--surface); border-top:1px solid var(--border); flex-shrink: 0; }
 .totals { display:flex; justify-content:space-between; font-size:15px; font-weight:700; color:var(--muted); margin-bottom:8px; }
 .totals.grand { font-size:20px; font-weight:900; color:var(--text); border-top:1px solid var(--border); padding-top:12px; margin-top:6px; }
 .totals.grand span:last-child { color:var(--red); }
@@ -274,7 +280,6 @@ body { background:var(--black); color:var(--text); font-family:var(--font-b); fo
 </head>
 <body>
 
-<!-- PIN SCREEN -->
 <div id="pin-screen">
   <div class="pin-bg"></div>
   <div class="pin-logo">🍕 JERRY<span>WAITER</span></div>
@@ -301,11 +306,9 @@ body { background:var(--black); color:var(--text); font-family:var(--font-b); fo
   </div>
 </div>
 
-<!-- BANNERS -->
 <div id="ready-banner"></div>
 <div id="offline-bar">⚠️ No internet — check your connection</div>
 
-<!-- TOPBAR -->
 <div class="topbar">
   <div class="topbar-logo">🍕 JERRY<span>WAITER</span> <span class="waiter-badge" id="waiterBadge">STAFF</span></div>
   <div class="topbar-right">
@@ -315,9 +318,7 @@ body { background:var(--black); color:var(--text); font-family:var(--font-b); fo
   </div>
 </div>
 
-<!-- MAIN VIEWS -->
 <div class="main">
-
   <!-- ── MENU VIEW ── -->
   <div class="view active" id="view-menu">
     <div class="menu-header">
@@ -331,30 +332,34 @@ body { background:var(--black); color:var(--text); font-family:var(--font-b); fo
 
   <!-- ── CART VIEW ── -->
   <div class="view" id="view-cart">
-    <div class="cart-top">
+    <div class="cart-title-bar">
       <div class="cart-section-title">Order Details</div>
-      <div class="type-row">
-        <button class="type-btn active" onclick="setType('dine',this)">🍽 Dine-in</button>
-        <button class="type-btn"        onclick="setType('take',this)">🥡 Takeaway</button>
-        <button class="type-btn"        onclick="setType('del',this)">🛵 Delivery</button>
-      </div>
-      
-      <div class="meta-label">Customer / Table No.</div>
-      <input type="text" class="meta-input" id="custName"  placeholder="e.g. Table 4 or Ali" autocomplete="off">
-      
-      <div class="meta-label">Phone Number</div>
-      <input type="tel"  class="meta-input" id="custPhone" placeholder="03XX-XXXXXXX" autocomplete="off">
-      
-      <div class="delivery-fields" id="deliveryFields">
-        <div class="meta-label">Delivery Address</div>
-        <input type="text" class="meta-input" id="custAddress" placeholder="House no, Street..." autocomplete="off">
-      </div>
-      
-      <div class="meta-label">Order Note (Optional)</div>
-      <input type="text" class="meta-input" id="orderNote" placeholder="e.g. Less spicy, extra sauce" autocomplete="off">
     </div>
-    <div class="cart-items-list" id="cartItemsList">
-      <div class="cart-empty-state"><span style="font-size:42px">🛒</span><span>Cart is empty</span></div>
+    <div class="cart-scrollable">
+      <div class="cart-top">
+        <div class="type-row">
+          <button class="type-btn active" onclick="setType('dine',this)">🍽 Dine-in</button>
+          <button class="type-btn"        onclick="setType('take',this)">🥡 Takeaway</button>
+          <button class="type-btn"        onclick="setType('del',this)">🛵 Delivery</button>
+        </div>
+        
+        <div class="meta-label">Customer / Table No.</div>
+        <input type="text" class="meta-input" id="custName"  placeholder="e.g. Table 4 or Ali" autocomplete="off">
+        
+        <div class="meta-label">Phone Number</div>
+        <input type="tel"  class="meta-input" id="custPhone" placeholder="03XX-XXXXXXX" autocomplete="off">
+        
+        <div class="delivery-fields" id="deliveryFields">
+          <div class="meta-label">Delivery Address</div>
+          <input type="text" class="meta-input" id="custAddress" placeholder="House no, Street..." autocomplete="off">
+        </div>
+        
+        <div class="meta-label">Order Note (Optional)</div>
+        <input type="text" class="meta-input" id="orderNote" placeholder="e.g. Less spicy, extra sauce" autocomplete="off">
+      </div>
+      <div class="cart-items-list" id="cartItemsList">
+        <div class="cart-empty-state"><span style="font-size:42px">🛒</span><span>Cart is empty</span></div>
+      </div>
     </div>
     <div class="cart-footer">
       <div class="totals"><span>Subtotal</span><span id="subtotalVal">Rs. 0</span></div>
@@ -374,10 +379,8 @@ body { background:var(--black); color:var(--text); font-family:var(--font-b); fo
       <div class="orders-empty"><span style="font-size:42px">📋</span><span>No active orders</span></div>
     </div>
   </div>
-
 </div>
 
-<!-- BOTTOM NAV -->
 <div class="bottom-nav">
   <button class="nav-btn active" id="nav-menu" onclick="switchView('menu')">
     <span class="nav-icon">🍕</span><span>Menu</span>
@@ -392,7 +395,6 @@ body { background:var(--black); color:var(--text); font-family:var(--font-b); fo
   </button>
 </div>
 
-<!-- SIZE MODAL -->
 <div class="modal-overlay" id="sizeModal">
   <div class="size-modal">
     <h3 id="smName">Choose Size</h3>
@@ -404,9 +406,6 @@ body { background:var(--black); color:var(--text); font-family:var(--font-b); fo
 
 <div id="toast"></div>
 
-<!-- ════════════════════════════════════════
-     FIREBASE + APP LOGIC (Modular SDK)
-════════════════════════════════════════ -->
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/12.12.1/firebase-app.js";
   import { getFirestore, collection, addDoc, onSnapshot, getDocs, query, where } from "https://www.gstatic.com/firebasejs/12.12.1/firebase-firestore.js";
@@ -423,71 +422,116 @@ body { background:var(--black); color:var(--text); font-family:var(--font-b); fo
   const app = initializeApp(firebaseConfig);
   const db = getFirestore(app);
 
-  // ── MENU DATA (Synced with pos.html) ──
-  const MENU = [
-    { id:'p1', name:"Jerry's Special", cat:'Pizza', emoji:'🍕', desc:'Stuffed edge', sizes:[{label:'Small 7"',price:680},{label:'Medium 10"',price:980},{label:'Large 14"',price:1350}] },
-    { id:'p2', name:'Bubble Cheese Stuffer', cat:'Pizza', emoji:'🍕', desc:'Stuffed edge', sizes:[{label:'Small 7"',price:720},{label:'Medium 10"',price:1050},{label:'Large 14"',price:1450}] },
-    { id:'p3', name:'BBQ Chicken', cat:'Pizza', emoji:'🍕', desc:'Stuffed edge', sizes:[{label:'Small 7"',price:700},{label:'Medium 10"',price:1000},{label:'Large 14"',price:1400}] },
-    { id:'p4', name:'Beef Supremo', cat:'Pizza', emoji:'🍕', desc:'Stuffed edge', sizes:[{label:'Small 7"',price:750},{label:'Medium 10"',price:1100},{label:'Large 14"',price:1500}] },
-    { id:'p5', name:'Veggie Delight', cat:'Pizza', emoji:'🍕', desc:'Stuffed edge', sizes:[{label:'Small 7"',price:620},{label:'Medium 10"',price:900},{label:'Large 14"',price:1250}] },
-    { id:'p6', name:'Zinger Tikka', cat:'Pizza', emoji:'🍕', desc:'Stuffed edge', sizes:[{label:'Small 7"',price:730},{label:'Medium 10"',price:1080},{label:'Large 14"',price:1480}] },
-    { id:'p7', name:'Hot & Spicy', cat:'Pizza', emoji:'🍕', desc:'Stuffed edge', sizes:[{label:'Small 7"',price:700},{label:'Medium 10"',price:1020},{label:'Large 14"',price:1420}] },
-    { id:'p8', name:'Cheese Lovers', cat:'Pizza', emoji:'🍕', desc:'Stuffed edge', sizes:[{label:'Small 7"',price:680},{label:'Medium 10"',price:990},{label:'Large 14"',price:1380}] },
-    { id:'p9', name:'Mighty Meat', cat:'Pizza', emoji:'🍕', desc:'Stuffed edge', sizes:[{label:'Small 7"',price:780},{label:'Medium 10"',price:1150},{label:'Large 14"',price:1550}] },
-    { id:'p10', name:'Chicken Fajita', cat:'Pizza', emoji:'🍕', desc:'Stuffed edge', sizes:[{label:'Small 7"',price:720},{label:'Medium 10"',price:1050},{label:'Large 14"',price:1450}] },
-    { id:'b1', name:'Big Zinger', cat:'Burger', emoji:'🍔', price:320 },
-    { id:'b2', name:'Zinger Classic', cat:'Burger', emoji:'🍔', price:280 },
-    { id:'b3', name:'Double Beef Burger', cat:'Burger', emoji:'🍔', price:380 },
-    { id:'b4', name:'Spicy Zinger', cat:'Burger', emoji:'🍔', price:300 },
-    { id:'b5', name:'Chicken Fillet Burger', cat:'Burger', emoji:'🍔', price:290 },
-    { id:'b6', name:'Tower Burger', cat:'Burger', emoji:'🍔', price:420 },
-    { id:'b7', name:'BBQ Crunch Burger', cat:'Burger', emoji:'🍔', price:340 },
-    { id:'w1', name:'Saucy Spicy Wings', cat:'Wings', emoji:'🍗', sizes:[{label:'6 pcs',price:380},{label:'12 pcs',price:720}] },
-    { id:'w2', name:'BBQ Wings', cat:'Wings', emoji:'🍗', sizes:[{label:'6 pcs',price:360},{label:'12 pcs',price:680}] },
-    { id:'w3', name:'Garlic Butter Wings', cat:'Wings', emoji:'🍗', sizes:[{label:'6 pcs',price:370},{label:'12 pcs',price:700}] },
-    { id:'w4', name:'Crispy Fried Wings', cat:'Wings', emoji:'🍗', sizes:[{label:'6 pcs',price:350},{label:'12 pcs',price:660}] },
-    { id:'pa1', name:'Chicken Alfredo', cat:'Pasta', emoji:'🍝', price:350 },
-    { id:'pa2', name:'Red Sauce Pasta', cat:'Pasta', emoji:'🍝', price:300 },
-    { id:'pa3', name:'Pink Sauce Pasta', cat:'Pasta', emoji:'🍝', price:320 },
-    { id:'pa4', name:'Penne Arabiata', cat:'Pasta', emoji:'🍝', price:290 },
-    { id:'wr1', name:'Zinger Wrap', cat:'Wrap', emoji:'🌯', price:260 },
-    { id:'wr2', name:'BBQ Chicken Wrap', cat:'Wrap', emoji:'🌯', price:270 },
-    { id:'wr3', name:'Tikka Wrap', cat:'Wrap', emoji:'🌯', price:280 },
-    { id:'f1', name:'Loaded Fries', cat:'Fries', emoji:'🍟', price:220 },
-    { id:'f2', name:'Regular Fries', cat:'Fries', emoji:'🍟', price:150 },
-    { id:'f3', name:'Cheese Fries', cat:'Fries', emoji:'🍟', price:200 },
-    { id:'f4', name:'Nuggets (6 pcs)', cat:'Fries', emoji:'🍗', price:250 },
-    { id:'d1', name:'Soft Drink 500ml', cat:'Drink', emoji:'🥤', price:80 },
-    { id:'d2', name:'Soft Drink 1.5L', cat:'Drink', emoji:'🥤', price:140 },
-    { id:'d3', name:'Water Bottle', cat:'Drink', emoji:'💧', price:50 },
-    { id:'d4', name:'Juice Can', cat:'Drink', emoji:'🧃', price:90 },
-    { id:'dl1', name:'MUFTA Deal', cat:'Deal', emoji:'🎁', price:2699, desc:'Lg Pizza + 2 Burgers + Pasta + Nuggets + Drink' },
-    { id:'dl2', name:'Family Deal', cat:'Deal', emoji:'🎁', price:1999, desc:'Lg Pizza + 2 Burgers + 2 Drinks' },
-    { id:'dl3', name:'Student Deal', cat:'Deal', emoji:'🎁', price:699, desc:'Sm Pizza + Burger + Drink' },
-    { id:'dl4', name:'Wings Deal', cat:'Deal', emoji:'🎁', price:999, desc:'12 Wings + Fries + 2 Drinks' },
-    { id:'dl5', name:'Double Deal', cat:'Deal', emoji:'🎁', price:1499, desc:'Med Pizza + 2 Burgers + 2 Drinks' },
-    { id:'dl6', name:'Pizza Duo', cat:'Deal', emoji:'🎁', price:2199, desc:'2x Med Pizzas + 2 Drinks' },
-    { id:'dl7', name:'Solo Deal', cat:'Deal', emoji:'🎁', price:550, desc:'Burger + Fries + Drink' }
+  const MENU =[
+    // Best Pizzas
+    { id:'p1', name:"Jerry's Special", cat:'Pizza', emoji:'🍕', desc:"Edge Filling with Chicken & Cheese, Tikka Chicken...", sizes:[{label:'Small',price:699},{label:'Medium',price:1230},{label:'Large',price:1850},{label:'XL',price:2349}] },
+    { id:'p2', name:"Yummy Malai Boti", cat:'Pizza', emoji:'🍕', desc:"Edge Filling with Chicken & Sauce, Malai Boti Chicken...", sizes:[{label:'Small',price:699},{label:'Medium',price:1230},{label:'Large',price:1850},{label:'XL',price:2349}] },
+    { id:'p3', name:"Behari Kebab", cat:'Pizza', emoji:'🍕', desc:"Pizza Sauce, Tikka Chicken, Cheese, Kebab...", sizes:[{label:'Small',price:699},{label:'Medium',price:1230},{label:'Large',price:1850},{label:'XL',price:2349}] },
+    { id:'p4', name:"Bubble Cheese Stuffer", cat:'Pizza', emoji:'🍕', desc:"Edge Filled with Cheese, Tikka Chicken...", sizes:[{label:'Small',price:699},{label:'Medium',price:1230},{label:'Large',price:1850},{label:'XL',price:2349}] },
+    { id:'p5', name:"Crispy Crunch", cat:'Pizza', emoji:'🍕', desc:"Special Sauce, Crunchy Zinger Chicken...", sizes:[{label:'Small',price:699},{label:'Medium',price:1230},{label:'Large',price:1850},{label:'XL',price:2349}] },
+    { id:'p6', name:"Cheese & Pepperoni", cat:'Pizza', emoji:'🍕', desc:"Special Sauce, Chicken Pepperoni...", sizes:[{label:'Small',price:699},{label:'Medium',price:1230},{label:'Large',price:1850},{label:'XL',price:2349}] },
+    // Regular Pizzas
+    { id:'p7', name:"Chicken Tikka", cat:'Pizza', emoji:'🍕', desc:"Pizza Sauce, Tikka Chicken...", sizes:[{label:'Small',price:499},{label:'Medium',price:1050},{label:'Large',price:1299},{label:'XL',price:1849}] },
+    { id:'p8', name:"Chicken Fajita", cat:'Pizza', emoji:'🍕', desc:"Pizza Sauce, Fajita Chicken...", sizes:[{label:'Small',price:499},{label:'Medium',price:1050},{label:'Large',price:1299},{label:'XL',price:1849}] },
+    { id:'p9', name:"Hot & Spicy", cat:'Pizza', emoji:'🍕', desc:"Pizza Sauce, Spicy Chicken...", sizes:[{label:'Small',price:499},{label:'Medium',price:1050},{label:'Large',price:1299},{label:'XL',price:1849}] },
+    { id:'p10', name:"Picklish Tikka", cat:'Pizza', emoji:'🍕', desc:"Picklish Sauce, Tikka Chicken...", sizes:[{label:'Small',price:499},{label:'Medium',price:1050},{label:'Large',price:1299},{label:'XL',price:1849}] },
+    { id:'p11', name:"Cheese & Kebab", cat:'Pizza', emoji:'🍕', desc:"Special Sauce, Seekh Kebab...", sizes:[{label:'Small',price:499},{label:'Medium',price:1050},{label:'Large',price:1299},{label:'XL',price:1849}] },
+    { id:'p12', name:"Bar.B.Q Tikka", cat:'Pizza', emoji:'🍕', desc:"Pizza Sauce, Seekh Kebab...", sizes:[{label:'Small',price:499},{label:'Medium',price:1050},{label:'Large',price:1299},{label:'XL',price:1849}] },
+    // New Arrivals (Pizza / Wrap)
+    { id:'na1', name:"Special Pizza Pratha", cat:'Wrap', emoji:'🌯', price:449 },
+    { id:'na2', name:"Shawarma Pizza", cat:'Pizza', emoji:'🍕', price:299 },
+    { id:'na3', name:"Delight Shawarma", cat:'Wrap', emoji:'🌯', price:349 },
+    { id:'na4', name:"Square Pizza Large", cat:'Pizza', emoji:'🍕', price:1899 },
+    { id:'na5', name:"Square Pizza Medium", cat:'Pizza', emoji:'🍕', price:1149 },
+    // Burgers
+    { id:'b1', name:"Big Zinger", cat:'Burger', emoji:'🍔', price:450 },
+    { id:'b2', name:"Junior Zinger", cat:'Burger', emoji:'🍔', price:349 },
+    { id:'b3', name:"Crispy Crunch Burger", cat:'Burger', emoji:'🍔', price:450 },
+    { id:'b4', name:"Chicken Reggy", cat:'Burger', emoji:'🍔', price:299 },
+    { id:'b5', name:"Juicy & Crunchy", cat:'Burger', emoji:'🍔', price:599, desc:"Add Cheese Slice in Just 50/-" },
+    // Wraps
+    { id:'w1', name:"Kebab Pratha", cat:'Wrap', emoji:'🌯', price:319 },
+    { id:'w2', name:"Zinger Pratha", cat:'Wrap', emoji:'🌯', price:299 },
+    { id:'w3', name:"Cheese Pratha", cat:'Wrap', emoji:'🌯', price:349 },
+    { id:'w4', name:"Zinger Shawarma", cat:'Wrap', emoji:'🌯', price:280 },
+    { id:'w5', name:"Chicken Shawarma", cat:'Wrap', emoji:'🌯', price:249 },
+    // Wings & Nuggets
+    { id:'wn1', name:"Fried Wings", cat:'Wings', emoji:'🍗', sizes:[{label:'5 pcs',price:279},{label:'10 pcs',price:549}] },
+    { id:'wn2', name:"Grilled Wings", cat:'Wings', emoji:'🍗', sizes:[{label:'5 pcs',price:309},{label:'10 pcs',price:599}] },
+    { id:'wn3', name:"Saucy Spicy Wings", cat:'Wings', emoji:'🍗', sizes:[{label:'5 pcs',price:329},{label:'10 pcs',price:649}] },
+    { id:'wn4', name:"Chicken Nuggets", cat:'Wings', emoji:'🍗', sizes:[{label:'5 pcs',price:269},{label:'10 pcs',price:499}] },
+    // Fries
+    { id:'f1', name:"Plane Fries", cat:'Fries', emoji:'🍟', sizes:[{label:'Small',price:199},{label:'Large',price:349}] },
+    { id:'f2', name:"Matka Fries", cat:'Fries', emoji:'🍟', price:749 },
+    { id:'f3', name:"Masala Fries", cat:'Fries', emoji:'🍟', price:349 },
+    { id:'f4', name:"Loaded Fries", cat:'Fries', emoji:'🍟', price:599 },
+    // Sauces
+    { id:'s1', name:"Garlic Mayo", cat:'Sauce', emoji:'🥣', price:50 },
+    { id:'s2', name:"Picklish Sauce", cat:'Sauce', emoji:'🥣', price:50 },
+    { id:'s3', name:"Special Sauce", cat:'Sauce', emoji:'🥣', price:50 },
+    // Pasta
+    { id:'ps1', name:"Cheese Macaroni Pasta", cat:'Pasta', emoji:'🍝', sizes:[{label:'Half',price:399},{label:'Full',price:749}] },
+    { id:'ps2', name:"Crunchy Pasta", cat:'Pasta', emoji:'🍝', sizes:[{label:'Half',price:449},{label:'Full',price:799}] },
+    { id:'ps3', name:"Chicken Spicy Macaroni", cat:'Pasta', emoji:'🍝', sizes:[{label:'Half',price:350},{label:'Full',price:649}] },
+    // Sandwiches
+    { id:'sw1', name:"Chicken Cheese", cat:'Sandwich', emoji:'🥪', price:249 },
+    { id:'sw2', name:"Chicken Club", cat:'Sandwich', emoji:'🥪', price:219 },
+    { id:'sw3', name:"Jerry's Special Sandwich", cat:'Sandwich', emoji:'🥪', price:300 },
+    { id:'sw4', name:"3 Cheese Bread", cat:'Sandwich', emoji:'🥪', price:199 },
+    // Drinks & Ice Cream
+    { id:'ic1', name:"Ice Cream Full", cat:'Dessert', emoji:'🍨', price:349 },
+    { id:'ic2', name:"Ice Cream Half", cat:'Dessert', emoji:'🍨', price:199 },
+    { id:'dr1', name:"1.5 Liter Drink", cat:'Drink', emoji:'🥤', price:220 },
+    { id:'dr2', name:"1 Liter Drink", cat:'Drink', emoji:'🥤', price:170 },
+    { id:'dr3', name:"500ml Drink", cat:'Drink', emoji:'🥤', price:110 },
+    { id:'dr4', name:"345ml Drink", cat:'Drink', emoji:'🥤', price:90 },
+    { id:'dr5', name:"Regular Drink", cat:'Drink', emoji:'🥤', price:80 },
+    { id:'dr6', name:"Small Water", cat:'Drink', emoji:'💧', price:60 },
+    { id:'dr7', name:"Large Water", cat:'Drink', emoji:'💧', price:120 },
+    // Desserts
+    { id:'ds1', name:"Pineapple Cake (1 lb)", cat:'Dessert', emoji:'🍰', price:600, desc:"Fresh and creamy pineapple cake" },
+    { id:'ds2', name:"Pineapple Cake (2 lb)", cat:'Dessert', emoji:'🍰', price:1100, desc:"A large, fresh, and creamy pineapple cake" },
+    { id:'ds3', name:"Chocolate Cake (1 lb)", cat:'Dessert', emoji:'🍰', price:700, desc:"Rich, fudgy, and moist double chocolate cake" },
+    { id:'ds4', name:"Chocolate Cake (2 lb)", cat:'Dessert', emoji:'🍰', price:1300, desc:"Decadent large chocolate cake" },
+    // Deals
+    { id:'dl1', name:"Deal 1", cat:'Deal', emoji:'🎁', price:1399, desc:"1 Lg Tikka Pizza + 1 Ltr Drink" },
+    { id:'dl2', name:"Deal 2", cat:'Deal', emoji:'🎁', price:1899, desc:"1 Lg Jerry Special + 1 Ltr Drink" },
+    { id:'dl3', name:"Deal 3", cat:'Deal', emoji:'🎁', price:1899, desc:"1 XL Tikka Pizza + 1.5 Ltr Drink" },
+    { id:'dl4', name:"Deal 4", cat:'Deal', emoji:'🎁', price:2649, desc:"2 Lg Tikka Pizzas + 1.5 Ltr Drink" },
+    { id:'dl5', name:"Deal 5", cat:'Deal', emoji:'🎁', price:1049, desc:"2 Sm Tikka Pizzas + 1 Ltr Drink" },
+    { id:'dl6', name:"Deal 6", cat:'Deal', emoji:'🎁', price:1849, desc:"1 Lg Tikka Pizza + 10 Hot Wings + 1 Ltr Drink" },
+    { id:'dl7', name:"Deal 7", cat:'Deal', emoji:'🎁', price:2099, desc:"1 Med Jerry Special + 2 Zinger Burgers + 1 Ltr Drink" },
+    { id:'dl8', name:"Deal 8", cat:'Deal', emoji:'🎁', price:1849, desc:"1 Lg Tikka + 1 Sm Fajita + 1.5 Ltr Drink" },
+    { id:'dl9', name:"Deal 9", cat:'Deal', emoji:'🎁', price:1099, desc:"1 Med Tikka Pizza + 500ml Drink" },
+    { id:'dl10', name:"Deal 10", cat:'Deal', emoji:'🎁', price:2449, desc:"1 Lg Tikka + 2 Zinger Burgers + Lg Fries + 1.5 Ltr Drink" },
+    { id:'dl11', name:"Deal 11", cat:'Deal', emoji:'🎁', price:949, desc:"1 Sm Tikka + 1 Zinger Burger + 345ml Drink" },
+    { id:'dl12', name:"Deal 12", cat:'Deal', emoji:'🎁', price:559, desc:"1 Jr Zinger Burger + Sm Fries + 345ml Drink" },
+    { id:'dl13', name:"Deal 13", cat:'Deal', emoji:'🎁', price:1499, desc:"4 Jr Zinger Burgers + 1.5 Ltr Drink" },
+    { id:'dl14', name:"Deal 14", cat:'Deal', emoji:'🎁', price:799, desc:"2 Jr Zinger Burgers + Two 345ml Drinks" },
+    { id:'dl15', name:"Deal 15", cat:'Deal', emoji:'🎁', price:1749, desc:"1 Lg Tikka + 1 Sm Crunchy Pasta + 1 Ltr Drink" },
+    { id:'dl16', name:"Deal 16", cat:'Deal', emoji:'🎁', price:919, desc:"1 Sm Tikka + 1 Sm Macaroni Pasta + 345ml Drink" },
+    { id:'dl17', name:"Deal 17", cat:'Deal', emoji:'🎁', price:499, desc:"1 Sm Tikka Pizza + 345ml Drink" },
+    { id:'dl18', name:"Deal 18", cat:'Deal', emoji:'🎁', price:599, desc:"2 Chicken Shawarmas + Two 345ml Drinks" },
+    { id:'dl19', name:"Deal 19", cat:'Deal', emoji:'🎁', price:499, desc:"1 Zinger Pratha or Shawarma + Sm Fries + 345ml Drink" },
+    { id:'dl20', name:"Deal 20", cat:'Deal', emoji:'🎁', price:929, desc:"10 Fried Hot Wings + 1 Jr Zinger Burger + 345ml Drink" },
+    { id:'dl21', name:"MUFTA DEAL", cat:'Deal', emoji:'🎁', price:2699, desc:"1 Lg Pizza + 2 Jr Zinger Burgers + Sm Macaroni + 5 Nuggets + 1.5 Ltr Drink" }
   ];
 
-  const CATS = ['All', 'Pizza', 'Burger', 'Wings', 'Pasta', 'Wrap', 'Fries', 'Drink', 'Deal'];
+  const CATS =['All', 'Pizza', 'Burger', 'Wrap', 'Fries', 'Wings', 'Pasta', 'Sandwich', 'Sauce', 'Drink', 'Dessert', 'Deal'];
 
-  // ── State ──
   let currentWaiter  = null;
   let cart           = [];
   let orderType      = 'dine';
-  let myOrders       = [];
+  let myOrders       =[];
   let firestoreUnsub = null;
   let activeCat      = 'All';
   let pendingItem    = null;
   let pinBuf         = '';
 
-  // ── Connectivity ──
   window.addEventListener('online',  () => document.getElementById('offline-bar').classList.remove('show'));
   window.addEventListener('offline', () => document.getElementById('offline-bar').classList.add('show'));
   if (!navigator.onLine) document.getElementById('offline-bar').classList.add('show');
 
-  // ══ EXPOSE GLOBALS ══
   window.pp = (d) => {
     if (pinBuf.length >= 4) return;
     pinBuf += d; updPin();
@@ -524,10 +568,9 @@ body { background:var(--black); color:var(--text); font-family:var(--font-b); fo
     document.getElementById('pinErr').textContent = '';
     document.getElementById('pin-screen').classList.remove('hidden');
     if (firestoreUnsub) { firestoreUnsub(); firestoreUnsub = null; }
-    myOrders = []; cart = []; updateCartBadge(); switchView('menu');
+    myOrders = []; cart =[]; updateCartBadge(); switchView('menu');
   };
 
-  // ══ LOGIN & SETUP ══
   function onLogin() {
     document.getElementById('waiterInfo').textContent  = currentWaiter.name;
     document.getElementById('waiterBadge').textContent = currentWaiter.name.toUpperCase();
@@ -537,9 +580,7 @@ body { background:var(--black); color:var(--text); font-family:var(--font-b); fo
     showToast('Welcome, ' + currentWaiter.name + '!');
   }
 
-  // ══ VIEWS ══
-  window.switchView = (v) => {
-    ['menu','cart','orders'].forEach(id => {
+  window.switchView = (v) => {['menu','cart','orders'].forEach(id => {
       document.getElementById('view-' + id).classList.toggle('active', id === v);
       document.getElementById('nav-'  + id).classList.toggle('active', id === v);
     });
@@ -547,7 +588,6 @@ body { background:var(--black); color:var(--text); font-family:var(--font-b); fo
     if (v === 'orders') renderOrdersList();
   };
 
-  // ══ MENU ══
   function buildCatStrip() {
     document.getElementById('catStrip').innerHTML = CATS.map(c =>
       `<button class="cat-chip${c === activeCat ? ' active' : ''}" onclick="setCategory('${c}')">${c}</button>`
@@ -593,7 +633,6 @@ body { background:var(--black); color:var(--text); font-family:var(--font-b); fo
     }).join('');
   };
 
-  // ══ ADDING ITEMS ══
   window.addFlat = (id) => {
     const item = MENU.find(i => i.id === id);
     if (!item || item.sizes) return;
@@ -640,7 +679,6 @@ body { background:var(--black); color:var(--text); font-family:var(--font-b); fo
   };
   window.closeSizeModal = () => { document.getElementById('sizeModal').classList.remove('open'); pendingItem = null; };
 
-  // ══ CART ══
   function updateCartBadge() {
     const total = cart.reduce((s, i) => s + i.qty, 0);
     const badge = document.getElementById('cartBadge');
@@ -658,8 +696,7 @@ body { background:var(--black); color:var(--text); font-family:var(--font-b); fo
   };
 
   window.clearCart = () => {
-    cart = [];
-    ['custName','custPhone','custAddress','orderNote'].forEach(id => { const el = document.getElementById(id); if (el) el.value = ''; });
+    cart = [];['custName','custPhone','custAddress','orderNote'].forEach(id => { const el = document.getElementById(id); if (el) el.value = ''; });
     window.setType('dine', document.querySelector('.type-btn'));
     updateCartBadge(); renderCartView();
   };
@@ -698,7 +735,6 @@ body { background:var(--black); color:var(--text); font-family:var(--font-b); fo
     document.getElementById('grandTotal').innerHTML  = `Rs. <span>${sub.toLocaleString()}</span>`;
   }
 
-  // ══ SEND ORDER → FIRESTORE ══
   window.sendOrder = async () => {
     if (!cart.length || !currentWaiter) return;
     const btn = document.getElementById('sendBtn');
@@ -706,7 +742,6 @@ body { background:var(--black); color:var(--text); font-family:var(--font-b); fo
 
     const localId = currentWaiter.name.slice(0,2).toUpperCase() + Math.floor(1000 + Math.random()*9000);
     
-    // Validate delivery inputs
     if(orderType === 'del') {
       const nm = document.getElementById('custName').value.trim();
       const ph = document.getElementById('custPhone').value.trim();
@@ -746,14 +781,13 @@ body { background:var(--black); color:var(--text); font-family:var(--font-b); fo
     btn.disabled = false; btn.textContent = 'Send to Kitchen';
   };
 
-  // ══ FIRESTORE LISTENER (own active orders, today only) ══
   function startFirebaseListener() {
     if (firestoreUnsub) return;
     const todayStr = new Date().toLocaleDateString('en-PK');
 
     firestoreUnsub = onSnapshot(collection(db, 'orders'), snap => {
       const prev = new Map(myOrders.map(o => [o.firebaseId, o.status]));
-      let incoming = [];
+      let incoming =[];
       
       snap.forEach(docSnap => {
         const d = docSnap.data();
@@ -765,7 +799,6 @@ body { background:var(--black); color:var(--text); font-family:var(--font-b); fo
       incoming.sort((a, b) => b.createdAt - a.createdAt);
       myOrders = incoming;
       
-      // Alert if any order just became 'ready'
       myOrders.forEach(o => {
         if (prev.has(o.firebaseId) && prev.get(o.firebaseId) !== 'ready' && o.status === 'ready') {
           showReadyBanner(o);
@@ -776,7 +809,6 @@ body { background:var(--black); color:var(--text); font-family:var(--font-b); fo
     }, err => { console.error('Listener error:', err); showToast('⚠️ Connection error', true); });
   }
 
-  // ══ RENDER MY ORDERS ══
   function renderOrdersList() {
     const el = document.getElementById('ordersList');
     document.getElementById('ordersSubtitle').textContent = myOrders.length + ' active order(s)';
@@ -811,7 +843,6 @@ body { background:var(--black); color:var(--text); font-family:var(--font-b); fo
     }).join('');
   }
 
-  // ══ READY BANNER + BEEP ══
   function showReadyBanner(o) {
     const b = document.getElementById('ready-banner');
     b.textContent = `✅ Order #${o.localId||o.firebaseId.slice(0,6)} is READY!`;
@@ -821,8 +852,7 @@ body { background:var(--black); color:var(--text); font-family:var(--font-b); fo
   }
   function playBeep() {
     try {
-      const ctx = new (window.AudioContext || window.webkitAudioContext)();
-      [0, 220, 440].forEach(delay => {
+      const ctx = new (window.AudioContext || window.webkitAudioContext)();[0, 220, 440].forEach(delay => {
         const osc = ctx.createOscillator(), g = ctx.createGain();
         osc.connect(g); g.connect(ctx.destination);
         osc.type = 'sine'; osc.frequency.value = 1047;
@@ -833,7 +863,6 @@ body { background:var(--black); color:var(--text); font-family:var(--font-b); fo
     } catch(e) {}
   }
 
-  // ══ TOAST ══
   let toastTimer = null;
   window.showToast = (msg, err = false) => {
     const t = document.getElementById('toast');
@@ -843,8 +872,8 @@ body { background:var(--black); color:var(--text); font-family:var(--font-b); fo
     toastTimer = setTimeout(() => t.classList.remove('show'), 2400);
   };
 
-  // ══ AUTO-REFRESH order ages ══
   setInterval(() => { if (myOrders.length) renderOrdersList(); }, 30000);
 </script>
 </body>
 </html>
+--- END OF FILE waiter.html ---
