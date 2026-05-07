@@ -48,6 +48,29 @@
   <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Satisfy&family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" integrity="sha512-iBBXm8fW90+nuLcSKlbmrPcLa0OT92xO1BIsZ+ywDWZb9u6Vichqkruh6qJieA7/c0FjVn2ulfb0c9Knz/v+5A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
   <link rel="stylesheet" href="styles.css" />
+
+  <!-- ── Jerry Pizza: Firebase (same project as pos.html) ── -->
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/12.12.1/firebase-app.js";
+  import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/12.12.1/firebase-firestore.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyBG-J0dzxS70Fr7-VPf1SQ8Fiq0fRzNAq8",
+    authDomain: "jerry-pos.firebaseapp.com",
+    projectId: "jerry-pos",
+    storageBucket: "jerry-pos.firebasestorage.app",
+    messagingSenderId: "771100017615",
+    appId: "1:771100017615:web:ae7342c89b3b697cdd48ba"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const db = getFirestore(app);
+  window._db = db;
+  window._collection = collection;
+  window._addDoc = addDoc;
+  window._fbReady = true;
+  document.dispatchEvent(new Event('fbReady'));
+</script>
 </head>
 <body>
 
