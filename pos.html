@@ -577,7 +577,7 @@ function placeOrder() {
     const phone = document.getElementById('del-phone').value.trim();
     const address = document.getElementById('del-address').value.trim();
     if (!name || !phone || !address) { showToast('Fill customer name, phone & address!', true); return; }
-    order.customerName = name; order.customerPhone = phone; order.deliveryAddress = address;
+    order.customer = name; order.phone = phone; order.address = address;
   }
   
   if (window._fbReady) {
@@ -628,11 +628,11 @@ function renderKDS() {
       const time = new Date(o.createdAt).toLocaleTimeString('en-PK', {hour:'2-digit', minute:'2-digit', hour12:true});
       const nextBtn = o.status === 'new' ? `<button class="oc-action to-prep" onclick="updateStatus('${o.id}','preparing')">→ Prepare</button>` : o.status === 'preparing' ? `<button class="oc-action to-ready" onclick="updateStatus('${o.id}','ready')">✓ Ready</button>` : o.status === 'ready' ? `<button class="oc-action to-done" onclick="updateStatus('${o.id}','done')">🎉 Done</button>` : '';
       const typeIcon = {dine:'🍽',take:'🥡',del:'🛵'}[o.type] || '🍽';
-      const deliveryInfo = o.type === 'del' && (o.customerName || o.customerPhone || o.deliveryAddress) 
+      const deliveryInfo = o.type === 'del' && (o.customer || o.phone || o.address) 
         ? `<div class="oc-delivery">
-            ${o.customerName ? `👤 <strong>${o.customerName}</strong><br>` : ''}
-            ${o.customerPhone ? `📞 ${o.customerPhone}<br>` : ''}
-            ${o.deliveryAddress ? `📍 ${o.deliveryAddress}` : ''}
+            ${o.customer ? `👤 <strong>${o.customer}</strong><br>` : ''}
+            ${o.phone ? `📞 ${o.phone}<br>` : ''}
+            ${o.address ? `📍 ${o.address}` : ''}
           </div>` : '';
       return `<div class="order-card ${o.status}">
         <div class="oc-header"><div><div class="oc-num">#${num}</div><div class="oc-type">${typeIcon} ${o.type?.toUpperCase()} · ${o.source || ''}</div></div><span class="oc-badge ${o.status}">${statusLabel}</span></div>
