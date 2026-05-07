@@ -8,7 +8,7 @@
 
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/12.12.1/firebase-app.js";
-  import { getFirestore, collection, addDoc, onSnapshot, doc, updateDoc } from "https://www.gstatic.com/firebasejs/12.12.1/firebase-firestore.js";
+  import { getFirestore, collection, addDoc, onSnapshot, doc, updateDoc, getDocs, query, where } from "https://www.gstatic.com/firebasejs/12.12.1/firebase-firestore.js";
 
   const firebaseConfig = {
     apiKey: "AIzaSyBG-J0dzxS70Fr7-VPf1SQ8Fiq0fRzNAq8",
@@ -28,6 +28,9 @@
   window._onSnapshot = onSnapshot;
   window._doc = doc;
   window._updateDoc = updateDoc;
+  window._getDocs = getDocs;
+  window._query = query;
+  window._where = where;
 
   window._fbReady = true;
   document.dispatchEvent(new Event('fbReady'));
@@ -121,6 +124,7 @@ html, body { height: 100%; overflow: hidden; background: var(--black); color: va
 .del-input:focus { outline: none; border-color: var(--red); }
 .del-input::placeholder { color: var(--muted); font-weight: 600; }
 .oc-delivery { font-size: 12px; color: var(--muted); margin-bottom: 10px; line-height: 1.8; border-bottom: 1px solid var(--border); padding-bottom: 10px; }
+.oc-action.cancel { background: transparent; border: 1px solid var(--border); color: var(--red); font-size: 12px; padding: 8px 12px; }
 
 .cart-items { flex: 1; overflow-y: auto; padding: 12px; }
 .cart-items::-webkit-scrollbar { width: 4px; }
@@ -414,7 +418,6 @@ html, body { height: 100%; overflow: hidden; background: var(--black); color: va
 
 <!-- Original JS integrated below -->
 <script>
-const PINS = ['1234', '0000', '4321'];
 const MENU =[
   { id:'p1', name:"Jerry's Special", cat:'Pizza', emoji:'🍕', desc:'Stuffed edge', sizes:[{label:'Small 7"',price:680},{label:'Medium 10"',price:980},{label:'Large 14"',price:1350}] },
   { id:'p2', name:'Bubble Cheese Stuffer', cat:'Pizza', emoji:'🍕', desc:'Stuffed edge', sizes:[{label:'Small 7"',price:720},{label:'Medium 10"',price:1050},{label:'Large 14"',price:1450}] },
@@ -466,14 +469,35 @@ let pinVal = ''; let cart =[]; let orderType = 'dine'; let orderSrc = 'Counter';
 function pinKey(k) { if (pinVal.length >= 4) return; pinVal += k; updatePinDisplay(); }
 function pinDel() { pinVal = pinVal.slice(0, -1); updatePinDisplay(); }
 function updatePinDisplay() { document.getElementById('pin-display').textContent = pinVal.padEnd(4, '_'); }
-function pinSubmit() {
-  if (PINS.includes(pinVal)) {
-    document.getElementById('pin-screen').style.display = 'none';
-    document.getElementById('app').classList.add('visible');
-    startClock(); initFirebase();
-  } else {
-    document.getElementById('pin-error').textContent = 'Wrong PIN. Try again.';
-    pinVal = ''; updatePinDisplay(); setTimeout(() => { document.getElementById('pin-error').textContent = ''; }, 2000);
+async function pinSubmit() {
+  if (pinVal.length < 4) return;
+  const errEl = document.getElementById('pin-error');
+  errEl.textContent = 'Checking...';
+  try {
+    if (window._fbReady) {
+      const snap = await window._getDocs(
+        window._query(window._collection(window._db, 'users'), window._where('pin', '==', pinVal))
+      );
+      if (!snap.empty) {
+        const user = snap.docs[0].data();
+        errEl.textContent = '';
+        document.getElementById('pin-screen').style.display = 'none';
+        document.getElementById('app').classList.add('visible');
+        document.querySelector('.topbar-logo').innerHTML = `🍕 JERRY<span>${user.name || 'ADMIN'}</span>`;
+        startClock(); initFirebase();
+      } else {
+        errEl.textContent = 'Wrong PIN. Try again.';
+        pinVal = ''; updatePinDisplay();
+        setTimeout(() => { errEl.textContent = ''; }, 2000);
+      }
+    } else {
+      errEl.textContent = 'Firebase not ready. Retry.';
+      pinVal = ''; updatePinDisplay();
+    }
+  } catch(e) {
+    errEl.textContent = 'Connection error. Try again.';
+    pinVal = ''; updatePinDisplay();
+    console.error(e);
   }
 }
 function lockApp() { pinVal = ''; updatePinDisplay(); document.getElementById('pin-screen').style.display = 'flex'; document.getElementById('app').classList.remove('visible'); window.scrollTo(0,0); }
@@ -579,7 +603,6 @@ function placeOrder() {
     if (!name || !phone || !address) { showToast('Fill customer name, phone & address!', true); return; }
     order.customer = name; order.phone = phone; order.address = address;
   }
-  
   if (window._fbReady) {
     window._addDoc(window._collection(window._db, 'orders'), order).then(() => { 
       showToast('✓ Order placed!'); clearCart(); clearDeliveryFields();
@@ -587,12 +610,24 @@ function placeOrder() {
     }).catch(err => { showToast('Firebase error!', true); console.error(err); });
   } else {
     order.id = 'ORD-' + Date.now(); allOrders.unshift(order); 
-    showToast('✓ Order placed (demo)!'); clearCart(); clearDeliveryFields(); document.getElementById('cart-side').classList.remove('mobile-open'); renderKDS(); switchTab('orders');
+    showToast('✓ Order placed (demo)!'); clearCart(); clearDeliveryFields();
+    document.getElementById('cart-side').classList.remove('mobile-open'); renderKDS(); switchTab('orders');
   }
 }
 function clearDeliveryFields() {
   ['del-name','del-phone','del-address'].forEach(id => document.getElementById(id).value = '');
   document.getElementById('delivery-fields').classList.remove('show');
+}
+function cancelOrder(id) {
+  if (!confirm('Cancel this order?')) return;
+  if (window._db) {
+    window._updateDoc(window._doc(window._db, 'orders', id), { status: 'archived' });
+    showToast('Order cancelled');
+  } else {
+    const idx = allOrders.findIndex(o => o.id === id);
+    if (idx > -1) { allOrders.splice(idx, 1); renderKDS(); }
+    showToast('Order cancelled');
+  }
 }
 
 function initFirebase() { if (!window._fbReady) { document.addEventListener('fbReady', () => listenOrders()); } else { listenOrders(); } }
@@ -628,18 +663,19 @@ function renderKDS() {
       const time = new Date(o.createdAt).toLocaleTimeString('en-PK', {hour:'2-digit', minute:'2-digit', hour12:true});
       const nextBtn = o.status === 'new' ? `<button class="oc-action to-prep" onclick="updateStatus('${o.id}','preparing')">→ Prepare</button>` : o.status === 'preparing' ? `<button class="oc-action to-ready" onclick="updateStatus('${o.id}','ready')">✓ Ready</button>` : o.status === 'ready' ? `<button class="oc-action to-done" onclick="updateStatus('${o.id}','done')">🎉 Done</button>` : '';
       const typeIcon = {dine:'🍽',take:'🥡',del:'🛵'}[o.type] || '🍽';
-      const deliveryInfo = o.type === 'del' && (o.customer || o.phone || o.address) 
+      const deliveryInfo = o.type === 'del' && (o.customer || o.phone || o.address)
         ? `<div class="oc-delivery">
             ${o.customer ? `👤 <strong>${o.customer}</strong><br>` : ''}
             ${o.phone ? `📞 ${o.phone}<br>` : ''}
             ${o.address ? `📍 ${o.address}` : ''}
           </div>` : '';
+      const cancelBtn = o.status !== 'done' ? `<button class="oc-action cancel" onclick="cancelOrder('${o.id}')">✕ Cancel</button>` : '';
       return `<div class="order-card ${o.status}">
         <div class="oc-header"><div><div class="oc-num">#${num}</div><div class="oc-type">${typeIcon} ${o.type?.toUpperCase()} · ${o.source || ''}</div></div><span class="oc-badge ${o.status}">${statusLabel}</span></div>
         ${deliveryInfo}
         <div class="oc-items">${(o.items||[]).map(it => `<div class="oc-item-line"><span>${it.qty}× ${it.name}${it.sub?' ('+it.sub+')':''}</span><span>Rs.${it.price*it.qty}</span></div>`).join('')}</div>
         <div class="oc-total">Total: Rs. ${o.total}</div>
-        <div class="oc-footer"><span class="oc-time">${time}</span>${nextBtn}</div>
+        <div class="oc-footer"><span class="oc-time">${time}</span>${cancelBtn}${nextBtn}</div>
       </div>`;
     }).join('');
   }
