@@ -127,20 +127,18 @@ async function checkoutToWhatsApp() {
     alert("Order Submitted! Please confirm on WhatsApp.");
 }
 
-
-/* ✅ REPLACE THE BOTTOM OF APP.JS WITH THIS */
 // Page Renders (Removed Slider logic to prevent conflict with index.html)
 function renderFullMenu() {
     const container = document.getElementById('full-menu-container');
     if (!container || typeof MENU_DATA === 'undefined') return;
     container.innerHTML = '';
     const categories = [
-        { key: 'bestPizzas', title: '🔥 Signature Stuffed-Edge Pizzas', type: 'pizza' },
+        { key: 'bestPizzas', title: '🍕 Signature Pizzas', type: 'pizza' },
         { key: 'regularPizzas', title: '🍕 Classic Pizzas', type: 'pizza' },
         { key: 'burgers', title: '🍔 Burgers', type: 'simple' },
-        { key: 'wingsAndNuggets', title: '🍗 Wings & Nuggets', type: 'wings' },
+        { key: 'wingsAndNuggets', title: '🍗 Wings', type: 'wings' },
         { key: 'pasta', title: '🍝 Pasta', type: 'pasta' },
-        { key: 'chipsAndDips', title: '🍟 Chips & Dips', type: 'chips' },
+        { key: 'chipsAndDips', title: '🍟 Fries', type: 'chips' },
         { key: 'drinksAndIceCream', title: '🥤 Drinks', type: 'simple' }
     ];
     categories.forEach(cat => {
