@@ -109,10 +109,13 @@
     <h3>YOUR CART</h3>
     <span class="close-cart" onclick="toggleCartDrawer()" aria-label="Close cart"><i class="fa-solid fa-xmark"></i></span>
   </div>
-  <ul class="cart-items" id="cart-items-list"></ul>
-  <div id="cart-empty-msg" class="cart-empty">
-    <i class="fa-solid fa-pizza-slice" style="font-size:2rem; color:var(--muted); display:block; margin-bottom:12px;"></i>
-    Your cart is empty.<br>Add something delicious!
+
+  <div class="cart-body">
+    <ul class="cart-items" id="cart-items-list"></ul>
+    <div id="cart-empty-msg" class="cart-empty">
+      <i class="fa-solid fa-pizza-slice" style="font-size:2rem; color:var(--muted); display:block; margin-bottom:12px;"></i>
+      Your cart is empty.<br>Add something delicious!
+    </div>
   </div>
   <div class="cart-footer">
     <div class="cart-total" id="cart-total-row" style="display:none;">
