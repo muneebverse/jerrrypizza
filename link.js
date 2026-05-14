@@ -25,3 +25,33 @@ function applySocialLinks() {
 
 // Run the function as soon as the page loads
 document.addEventListener('DOMContentLoaded', applySocialLinks);
+
+// Function to push website orders to the shared 'orders' collection
+async function placeWebsiteOrder(cartData, customerInfo) {
+    const order = {
+        items: cartData.map(item => ({
+            name: item.name,
+            sub: item.sub || '',
+            qty: item.qty,
+            price: item.price
+        })),
+        total: cartData.reduce((sum, item) => sum + (item.price * item.qty), 0),
+        type: 'delivery', // Default for website
+        source: 'Website',
+        status: 'new',
+        customer: customerInfo.name,
+        phone: customerInfo.phone,
+        address: customerInfo.address,
+        createdAt: Date.now(),
+        date: new Date().toLocaleDateString('en-PK')
+    };
+
+    try {
+        // Use the global db instance initialized in your scripts
+        await window._addDoc(window._collection(window._db, 'orders'), order);
+        return { success: true };
+    } catch (error) {
+        console.error("Order placement failed:", error);
+        return { success: false };
+    }
+}
