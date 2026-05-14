@@ -134,14 +134,15 @@ function changeSlide(dir) {
     currentSlide = (currentSlide + dir + PIZZA_SLIDES.length) % PIZZA_SLIDES.length; 
     renderSlide(currentSlide); 
 }
-function goToSlide(index) { currentSlide = index; renderSlide(currentSlide); }
 
+/* ✅ REPLACE THE BOTTOM OF APP.JS WITH THIS */
+// Page Renders (Removed Slider logic to prevent conflict with index.html)
 function renderFullMenu() {
     const container = document.getElementById('full-menu-container');
     if (!container || typeof MENU_DATA === 'undefined') return;
     container.innerHTML = '';
     const categories = [
-        { key: 'bestPizzas', title: '🔥 Signature Pizzas', type: 'pizza' },
+        { key: 'bestPizzas', title: '🍕 Signature Pizzas', type: 'pizza' },
         { key: 'regularPizzas', title: '🍕 Classic Pizzas', type: 'pizza' },
         { key: 'burgers', title: '🍔 Burgers', type: 'simple' },
         { key: 'wingsAndNuggets', title: '🍗 Wings', type: 'wings' },
@@ -181,11 +182,18 @@ function renderDeals() {
         </div>`).join('');
 }
 
-document.addEventListener('DOMContentLoaded', () => {
+// Fixed DOM Load Timing
+function initApp() {
     if (document.getElementById('full-menu-container')) renderFullMenu();
     if (document.getElementById('deals-grid') || document.getElementById('deals-container')) renderDeals();
     renderCart();
-});
+}
+
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initApp);
+} else {
+    initApp();
+}
 
 // Ensure global access
 window.addToCart = addToCart;
