@@ -590,12 +590,14 @@ button { border: none; background: none; font-family: inherit; cursor: pointer; 
 }
 
 .deal-card {
-  background: linear-gradient(135deg, var(--bg-card) 0%, rgba(232,25,10,0.08) 100%);
-  border: 1px solid rgba(232,25,10,0.25);
-  border-radius: var(--radius);
-  padding: 20px 22px;
-  display: flex; align-items: flex-start; gap: 14px;
-  transition: transform .3s, border-color .3s;
+  background: var(--bg-card);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 12px;
+  padding: 16px;
+  display: flex;
+  gap: 16px;
+  transition: all 0.3s;
+  flex-shrink: 0;
 }
 .deal-card:hover { transform: translateY(-5px); border-color: var(--gold); }
 
@@ -836,7 +838,30 @@ button { border: none; background: none; font-family: inherit; cursor: pointer; 
   .cart-drawer { width: 100%; }
   .slider-arrow { display: none; }
   .menu-grid { grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); }
-  .deals-grid { grid-template-columns: 1fr; }
+  .deals-grid { 
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+@media (max-width: 768px) {
+  .deals-grid {
+    display: flex;
+    flex-direction: row;
+    gap: 16px;
+    overflow-x: auto;
+    overflow-y: hidden;
+    -webkit-overflow-scrolling: touch;
+    padding: 16px 0;
+    scroll-behavior: smooth;
+    scroll-snap-type: x mandatory;
+  }
+  
+  .deals-grid .deal-card {
+    flex: 0 0 280px;
+    scroll-snap-align: start;
+  }
+}
   .reviews-grid { grid-template-columns: 1fr; }
 }
 
@@ -867,4 +892,21 @@ button { border: none; background: none; font-family: inherit; cursor: pointer; 
   object-fit: cover;
   flex-shrink: 0;
   border: 1px solid rgba(255,255,255,0.1);
+}
+/* Size buttons for pizzas */
+.size-btn {
+  background: var(--red);
+  color: var(--white);
+  border: 1px solid var(--red);
+  border-radius: 6px;
+  padding: 6px 12px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.size-btn:hover {
+  background: var(--gold);
+  border-color: var(--gold);
+  color: var(--black);
 }
