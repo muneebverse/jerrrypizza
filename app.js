@@ -105,28 +105,61 @@ function renderCart() {
 }
 
 async function checkoutToWhatsApp() {
-    const name = document.getElementById('cust-name')?.value.trim();
-    const phone = document.getElementById('cust-phone')?.value.trim();
-    const address = document.getElementById('cust-address')?.value.trim();
+    const name = document.getElementById('cust-name')?.value.trim();
+    const phone = document.getElementById('cust-phone')?.value.trim();
+    const address = document.getElementById('cust-address')?.value.trim();
 
-    if (!name || !phone || !address) return alert('Please fill in Name, Phone, and Address.');
-    if (cart.length === 0) return;
+    if (!name || !phone || !address) return alert('Please fill in Name, Phone, and Address.');
+    if (cart.length === 0) return;
 
-    let total = getCartTotal();
-    let orderText = `*New Order - Jerry Pizza*\n\n*Name:* ${name}\n*Phone:* ${phone}\n*Address:* ${address}\n\n*Items:*\n`;
-    cart.forEach(item => orderText += `- ${item.qty}x ${item.name} (Rs. ${item.price * item.qty})\n`);
-    orderText += `\n*Total: Rs. ${total}*`;
+    const total = getCartTotal();
+    const todayStr = new Date().toLocaleDateString('en-PK');
 
-    if (window._fbReady) {
-        try { await window._addDoc(window._collection(window._db, 'orders'), { customer: name, phone, address, items: cart, total, status: 'new', createdAt: Date.now(), source: 'Website' }); } 
-        catch (e) { console.error(e); }
-    }
+    // Prepare the order object exactly how the POS (pos1.html) expects it
+    const firebaseOrder = {
+        customer: name,
+        phone: phone,
+        address: address,
+        items: cart.map(item => ({
+            name: item.name,
+            qty: item.qty,
+            price: item.price,
+            sub: "" // Website orders use empty sub-size by default
+        })),
+        total: total,
+        status: 'new', // POS will show this in the 'New' column
+        type: 'del',   // Triggers the delivery icon on the dashboard
+        source: 'Website',
+        createdAt: Date.now(),
+        date: todayStr 
+    };
 
-    window.open(`https://wa.me/923143636434?text=${encodeURIComponent(orderText)}`, '_blank');
-    cart = []; saveCart(); renderCart(); closeAll();
-    alert("Order Submitted! Please confirm on WhatsApp.");
+    // Push to Firebase if initialized
+    if (window._fbReady) {
+        try {
+            await window._addDoc(window._collection(window._db, 'orders'), firebaseOrder);
+            console.log("Order successfully pushed to POS Dashboard");
+        } catch (e) {
+            console.error("Firebase database error:", e);
+        }
+    } else {
+        console.warn("Firebase not ready. Order only sending to WhatsApp.");
+    }
+
+    // Existing WhatsApp logic
+    let orderText = `*New Order - Jerry Pizza*\n\n*Name:* ${name}\n*Phone:* ${phone}\n*Address:* ${address}\n\n*Items:*\n`;
+    cart.forEach(item => orderText += `- ${item.qty}x ${item.name} (Rs. ${item.price * item.qty})\n`);
+    orderText += `\n*Total: Rs. ${total}*`;
+
+    window.open(`https://wa.me/923143636434?text=${encodeURIComponent(orderText)}`, '_blank');
+    
+    // Clear cart and UI
+    cart = []; 
+    saveCart(); 
+    renderCart(); 
+    closeAll();
+    alert("Order Submitted! Please confirm on WhatsApp.");
 }
-
 // Page Renders (Removed Slider logic to prevent conflict with index.html)
 function renderFullMenu() {
     const container = document.getElementById('full-menu-container');
