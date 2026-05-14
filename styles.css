@@ -920,3 +920,51 @@ button { border: none; background: none; font-family: inherit; cursor: pointer; 
   border-color: var(--gold);
   color: var(--black);
 }
+
+/* ============================================================
+   DESKTOP OPTIMIZATIONS (Fixed Stretching & Layout)
+   ============================================================ */
+@media (min-width: 1024px) {
+  /* Prevent cards from stretching too wide on massive screens */
+  .menu-grid {
+    grid-template-columns: repeat(3, 1fr); /* Clean 3 columns */
+    gap: 30px;
+  }
+
+  /* If you want 4 columns on very large screens */
+  @media (min-width: 1440px) {
+    .menu-grid {
+      grid-template-columns: repeat(4, 1fr);
+    }
+  }
+
+  /* Fix Hero Section for Desktop */
+  .hero-inner {
+    grid-template-columns: 1.2fr 0.8fr; /* Gives text more room than the image */
+    text-align: left;
+    padding-top: 0;
+  }
+
+  .hero-text {
+    padding-right: 50px;
+  }
+
+  /* Make sure the feature zigzag is perfectly aligned */
+  .feature-row {
+    grid-template-columns: 1fr 1fr;
+    gap: 100px;
+    padding: 40px 0;
+  }
+
+  /* Center the container properly */
+  .container {
+    padding: 0 40px;
+  }
+}
+
+/* Fix for the POS/Waiter Header if it feels cramped */
+@media (min-width: 1024px) {
+  .header-actions {
+    gap: 24px;
+  }
+}
