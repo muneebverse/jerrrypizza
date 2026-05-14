@@ -425,7 +425,12 @@ function buildBestSellers() {
   if (typeof MENU_DATA === 'undefined') return;
   const grid = document.getElementById('top-items-grid');
   if (!grid) return;
-  grid.innerHTML = MENU_DATA.bestPizzas.map(pizza => `
+  
+  grid.innerHTML = MENU_DATA.bestPizzas.map(pizza => {
+    // This line protects the code from breaking if a pizza name has an apostrophe (')
+    const safeName = pizza.name.replace(/'/g, "\\'");
+    
+    return `
     <div class="menu-card">
       <div class="card-img">
         <img src="${pizza.img}" alt="${pizza.name} stuffed pizza – Jerry Pizza Sahiwal" loading="lazy" width="300" height="200" />
@@ -437,14 +442,15 @@ function buildBestSellers() {
         <div class="card-footer">
           <div class="card-price" style="font-size:0.85rem;">From <span class="big-price" style="display:block;">Rs. ${pizza.sizes.S}</span></div>
           <div class="pizza-size-selector">
-            <button class="size-btn" onclick="addToCart('${pizza.name} (S)',${pizza.sizes.S})">S</button>
-            <button class="size-btn" onclick="addToCart('${pizza.name} (M)',${pizza.sizes.M})">M</button>
-            <button class="size-btn" onclick="addToCart('${pizza.name} (L)',${pizza.sizes.L})">L</button>
-            <button class="size-btn" onclick="addToCart('${pizza.name} (XL)',${pizza.sizes.XL})">XL</button>
+            <button class="size-btn" onclick="addToCart('${safeName} (S)',${pizza.sizes.S})">S</button>
+            <button class="size-btn" onclick="addToCart('${safeName} (M)',${pizza.sizes.M})">M</button>
+            <button class="size-btn" onclick="addToCart('${safeName} (L)',${pizza.sizes.L})">L</button>
+            <button class="size-btn" onclick="addToCart('${safeName} (XL)',${pizza.sizes.XL})">XL</button>
           </div>
         </div>
       </div>
-    </div>`).join('');
+    </div>`;
+  }).join('');
 }
 
 function buildDealsPreview() {
