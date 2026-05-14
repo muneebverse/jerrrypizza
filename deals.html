@@ -84,9 +84,9 @@
     <span class="close-cart" onclick="toggleCartDrawer()" aria-label="Close cart"><i class="fa-solid fa-xmark"></i></span>
   </div>
   
-  <!-- MISSING CART BODY WRAPPER ADDED HERE FOR SCROLLING -->
+  <!-- WRAPPER ADDED FOR SCROLLING -->
   <div class="cart-body">
-    <ul class="cart-items" id="cart-items-list" style="list-style:none; padding:0; margin:0; display:flex; flex-direction:column; gap:10px;"></ul>
+    <ul class="cart-items" id="cart-items-list" style="display:flex; flex-direction:column; gap:12px;"></ul>
     <div id="cart-empty-msg" class="cart-empty">
       <i class="fa-solid fa-pizza-slice" style="font-size:2rem; color:var(--muted); display:block; margin-bottom:12px;"></i>
       Your cart is empty.
@@ -103,7 +103,6 @@
       <input type="tel" id="cust-phone" placeholder="Phone Number" required autocomplete="tel">
       <textarea id="cust-address" placeholder="Delivery Address" rows="2" required></textarea>
     </div>
-    <!-- FIXED BUTTON: Ensure deals.html calls checkoutToWhatsApp() -->
     <button class="btn btn-primary" style="width:100%;justify-content:center;" id="checkout-btn" onclick="checkoutToWhatsApp()">
       <i class="fa-brands fa-whatsapp"></i> Place Order via WhatsApp
     </button>
