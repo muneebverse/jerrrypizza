@@ -133,6 +133,21 @@ function injectGridCards(grid, items) {
     let sizeNote = item.note ? `<br><small style="font-size:0.75rem; color:var(--gold);">${item.note}</small>` : "";
     let imgSrc = item.img || "https://images.unsplash.com/photo-1513104890138-7c749659a591?w=500&q=80"; 
     let desc = item.desc || "";
+    
+    // Check if item has sizes (pizza)
+    let buttonHtml = '';
+    if (item.sizes) {
+      buttonHtml = `
+        <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+          <button class="size-btn" onclick="addToCart('${item.name} (S)', ${item.sizes.S})" style="padding: 6px 12px; font-size: 0.75rem;">S</button>
+          <button class="size-btn" onclick="addToCart('${item.name} (M)', ${item.sizes.M})" style="padding: 6px 12px; font-size: 0.75rem;">M</button>
+          <button class="size-btn" onclick="addToCart('${item.name} (L)', ${item.sizes.L})" style="padding: 6px 12px; font-size: 0.75rem;">L</button>
+          <button class="size-btn" onclick="addToCart('${item.name} (XL)', ${item.sizes.XL})" style="padding: 6px 12px; font-size: 0.75rem;">XL</button>
+        </div>
+      `;
+    } else {
+      buttonHtml = `<button class="add-btn" onclick="addToCart('${item.name}', ${displayPrice})"><i class="fa-solid fa-plus"></i></button>`;
+    }
 
     grid.innerHTML += `
       <div class="menu-card">
@@ -144,7 +159,7 @@ function injectGridCards(grid, items) {
             <span class="card-price">From Rs. ${displayPrice}</span>
             ${sizeNote}
           </div>
-          <button class="add-btn" onclick="addToCart('${item.name}', ${displayPrice})"><i class="fa-solid fa-plus"></i></button>
+          ${buttonHtml}
         </div>
       </div>
     `;
@@ -265,20 +280,14 @@ function renderCart() {
   if (checkoutForm) checkoutForm.style.display = 'flex';
   if (checkoutBtn) checkoutBtn.style.display = 'block';
 
-  let cartCounts = {};
-  cart.forEach(item => {
-    let key = item.name;
-    if (!cartCounts[key]) cartCounts[key] = { ...item, qty: 0 };
-    cartCounts[key].qty += 1;
+  // Show EACH item individually with remove button for that specific item
+  cart.forEach((item, index) => {
     total += parseInt(item.price);
-  });
-
-  Object.entries(cartCounts).forEach(([name, data], i) => {
     listEl.innerHTML += `
       <li class="cart-item">
-        <span class="cart-item-name">${name}</span>
-        <span class="cart-item-price">Rs. ${data.price}</span>
-        <span class="cart-item-remove" onclick="removeAllFromCart('${name}')"><i class="fa-solid fa-xmark"></i></span>
+        <span class="cart-item-name">${item.name}</span>
+        <span class="cart-item-price">Rs. ${item.price}</span>
+        <span class="cart-item-remove" onclick="removeFromCart(${index})"><i class="fa-solid fa-xmark"></i></span>
       </li>
     `;
   });
