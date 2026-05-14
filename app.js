@@ -142,7 +142,6 @@ function removeFromCart(index) {
     }
 }
 
-
 function getCartTotal() {
     return cart.reduce((total, item) => total + (item.price * (item.qty || 1)), 0);
 }
@@ -172,7 +171,7 @@ function closeAll() {
 // --- 6. RENDERING FUNCTIONS ---
 
 /**
- * Enhanced Cart Renderer (Clean UI with X button)
+ * Enhanced Cart Renderer (Clean UI with locked X button layout)
  */
 function renderCart() {
     const list = document.getElementById('cart-items-list');
@@ -205,12 +204,19 @@ function renderCart() {
             const qty = item.qty || 1;
             const li = document.createElement('li');
             li.className = 'cart-item';
+            
+            // Explicit Flexbox layout to prevent the X from getting squished
+            li.style.cssText = 'display: flex; justify-content: space-between; align-items: center; padding: 10px 0; border-bottom: 1px solid rgba(255,255,255,0.1); width: 100%;';
+            
             li.innerHTML = `
-                <span class="cart-item-name">
-                    ${qty > 1 ? `<span style="color:var(--gold); font-weight:800; margin-right:6px;">${qty}x</span>` : ''}${item.name}
-                </span>
-                <span class="cart-item-price">Rs. ${item.price * qty}</span>
-                <span class="cart-item-remove" onclick="removeFromCart(${i})" style="cursor:pointer; padding:5px;"><i class="fa-solid fa-xmark"></i></span>
+                <div style="flex: 1; padding-right: 10px; line-height: 1.3;">
+                    ${qty > 1 ? `<span style="color:var(--gold, #f4c150); font-weight:800; margin-right:6px;">${qty}x</span>` : ''}
+                    <span class="cart-item-name" style="word-break: break-word;">${item.name}</span>
+                </div>
+                <div style="display: flex; align-items: center; gap: 15px; flex-shrink: 0;">
+                    <span class="cart-item-price" style="white-space: nowrap; font-weight: bold;">Rs. ${item.price * qty}</span>
+                    <span class="cart-item-remove" onclick="removeFromCart(${i})" style="cursor:pointer; color: var(--red, #e4002b); font-size: 1.2rem; display: flex; align-items: center; justify-content: center; padding: 5px;"><i class="fa-solid fa-xmark"></i></span>
+                </div>
             `;
             list.appendChild(li);
         });
@@ -219,6 +225,7 @@ function renderCart() {
         if (totalPriceEl) totalPriceEl.textContent = `Rs. ${total}`;
     }
 }
+
 /**
  * Full Menu Renderer with Size Selectors
  */
@@ -279,7 +286,7 @@ function renderFullMenu() {
 }
 
 /**
- * Deals Page Renderer (Removed Number Bar)
+ * Deals Page Renderer
  */
 function renderDeals() {
     const container = document.getElementById('deals-container') || document.getElementById('deals-grid');
@@ -306,7 +313,6 @@ function renderDeals() {
         container.appendChild(card);
     });
 }
-
 
 // --- 7. CHECKOUT LOGIC ---
 
