@@ -142,17 +142,6 @@ function removeFromCart(index) {
     }
 }
 
-function updateCartItemQty(index, newQty) {
-    if (newQty < 1) {
-        removeFromCart(index);
-        return;
-    }
-    if (index >= 0 && index < cart.length) {
-        cart[index].qty = newQty;
-        saveCart();
-        renderCart();
-    }
-}
 
 function getCartTotal() {
     return cart.reduce((total, item) => total + (item.price * (item.qty || 1)), 0);
@@ -183,7 +172,7 @@ function closeAll() {
 // --- 6. RENDERING FUNCTIONS ---
 
 /**
- * Enhanced Cart Renderer with Quantity Controls
+ * Enhanced Cart Renderer (Clean UI with X button)
  */
 function renderCart() {
     const list = document.getElementById('cart-items-list');
@@ -217,21 +206,12 @@ function renderCart() {
             const li = document.createElement('li');
             li.className = 'cart-item';
             li.innerHTML = `
-                <div class="cart-item-content">
-                    <div class="cart-item-info">
-                        <span class="cart-item-name">${item.name}</span>
-                        <span class="cart-item-price">Rs. ${item.price}</span>
-                    </div>
-                    <div class="cart-item-qty-controls">
-                        <button class="qty-btn" onclick="updateCartItemQty(${i}, ${qty - 1})">−</button>
-                        <input type="number" class="qty-input" value="${qty}" readonly>
-                        <button class="qty-btn" onclick="updateCartItemQty(${i}, ${qty + 1})">+</button>
-                    </div>
-                    <div class="cart-item-footer">
-                        <span class="cart-item-total">Rs. ${item.price * qty}</span>
-                        <button class="cart-item-remove" onclick="removeFromCart(${i})"><i class="fa-solid fa-xmark"></i></button>
-                    </div>
-                </div>`;
+                <span class="cart-item-name">
+                    ${qty > 1 ? `<span style="color:var(--gold); font-weight:800; margin-right:6px;">${qty}x</span>` : ''}${item.name}
+                </span>
+                <span class="cart-item-price">Rs. ${item.price * qty}</span>
+                <span class="cart-item-remove" onclick="removeFromCart(${i})" style="cursor:pointer; padding:5px;"><i class="fa-solid fa-xmark"></i></span>
+            `;
             list.appendChild(li);
         });
         
@@ -239,7 +219,6 @@ function renderCart() {
         if (totalPriceEl) totalPriceEl.textContent = `Rs. ${total}`;
     }
 }
-
 /**
  * Full Menu Renderer with Size Selectors
  */
@@ -300,7 +279,7 @@ function renderFullMenu() {
 }
 
 /**
- * Deals Page Renderer with Qty Selector
+ * Deals Page Renderer (Removed Number Bar)
  */
 function renderDeals() {
     const container = document.getElementById('deals-container') || document.getElementById('deals-grid');
@@ -312,28 +291,22 @@ function renderDeals() {
         card.className = 'deal-card';
         card.innerHTML = `
             <img src="${deal.img}" class="deal-thumb" alt="${deal.name}">
-            <div class="deal-info">
-                <h4>${deal.name}</h4>
-                <p>${deal.desc}</p>
-                <div class="deal-price">Rs. ${deal.price}</div>
-                <div class="deal-qty-selector">
-                    <button class="qty-btn" onclick="updateDealQty('deal-qty-${index}', -1)">-</button>
-                    <input id="deal-qty-${index}" type="number" class="qty-input-small" value="1" readonly>
-                    <button class="qty-btn" onclick="updateDealQty('deal-qty-${index}', 1)">+</button>
+            <div class="deal-info" style="display:flex; flex-direction:column; justify-content:space-between; width:100%;">
+                <div>
+                    <h4 style="margin-bottom:4px;">${deal.name}</h4>
+                    <p style="font-size:0.85rem; color:var(--muted); line-height:1.4; margin-bottom:8px;">${deal.desc}</p>
                 </div>
-                <button class="btn btn-primary" style="width:100%" onclick="addToCart('${deal.name}', ${deal.price}, parseInt(document.getElementById('deal-qty-${index}').value))">
-                    Add to Cart
-                </button>
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-top:auto;">
+                    <div class="deal-price" style="font-size:1.3rem;">Rs. ${deal.price}</div>
+                    <button class="btn btn-red" style="padding:8px 16px; font-size:0.8rem;" onclick="addToCart('${deal.name}', ${deal.price}, 1)">
+                        Add <i class="fa-solid fa-plus"></i>
+                    </button>
+                </div>
             </div>`;
         container.appendChild(card);
     });
 }
 
-function updateDealQty(inputId, change) {
-    const input = document.getElementById(inputId);
-    let val = parseInt(input.value) || 1;
-    input.value = Math.max(1, Math.min(20, val + change));
-}
 
 // --- 7. CHECKOUT LOGIC ---
 
