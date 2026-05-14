@@ -118,11 +118,16 @@
     <h3>YOUR CART</h3>
     <span class="close-cart" onclick="toggleCartDrawer()" aria-label="Close cart"><i class="fa-solid fa-xmark"></i></span>
   </div>
-  <ul class="cart-items" id="cart-items-list"></ul>
-  <div id="cart-empty-msg" class="cart-empty">
-    <i class="fa-solid fa-pizza-slice" style="font-size:2rem; color:var(--muted); display:block; margin-bottom:12px;"></i>
-    Your cart is empty.<br>Add something delicious!
+  
+  <!-- MISSING CART BODY WRAPPER ADDED HERE FOR SCROLLING -->
+  <div class="cart-body">
+    <ul class="cart-items" id="cart-items-list" style="list-style:none; padding:0; margin:0; display:flex; flex-direction:column; gap:10px;"></ul>
+    <div id="cart-empty-msg" class="cart-empty">
+      <i class="fa-solid fa-pizza-slice" style="font-size:2rem; color:var(--muted); display:block; margin-bottom:12px;"></i>
+      Your cart is empty.
+    </div>
   </div>
+
   <div class="cart-footer">
     <div class="cart-total" id="cart-total-row" style="display:none;">
       <span>Total</span>
@@ -131,8 +136,9 @@
     <div class="checkout-form" id="checkout-form" style="display:none;">
       <input type="text" id="cust-name" placeholder="Your Name" required autocomplete="name">
       <input type="tel" id="cust-phone" placeholder="Phone Number" required autocomplete="tel">
-      <textarea id="cust-address" placeholder="Delivery Address" rows="2" required autocomplete="street-address"></textarea>
+      <textarea id="cust-address" placeholder="Delivery Address" rows="2" required></textarea>
     </div>
+    <!-- FIXED BUTTON: Ensure deals.html calls checkoutToWhatsApp() -->
     <button class="btn btn-primary" style="width:100%;justify-content:center;" id="checkout-btn" onclick="checkoutToWhatsApp()">
       <i class="fa-brands fa-whatsapp"></i> Place Order via WhatsApp
     </button>
