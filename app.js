@@ -1,145 +1,36 @@
-// ═══════════════════════════════════════════════════════════════════════════════
-// JERRY PIZZA - ULTIMATE UNIFIED APP.JS
-// ═══════════════════════════════════════════════════════════════════════════════
+// =========================================================
+// JERRY PIZZA - GLOBAL APP.JS 
+// =========================================================
 
-// --- 1. CART STATE & PERSISTENCE ---
 let cart = [];
 try {
-    const saved = localStorage.getItem('jerry_cart');
-    if (saved) cart = JSON.parse(saved);
-} catch (e) { 
-    cart = []; 
-}
+    if (localStorage.getItem('jerry_cart')) {
+        cart = JSON.parse(localStorage.getItem('jerry_cart'));
+    }
+} catch (e) { cart = []; }
 
-/**
- * Save cart to local storage for persistence across page refreshes
- */
 function saveCart() {
-    try {
-        localStorage.setItem('jerry_cart', JSON.stringify(cart));
-    } catch (e) {
-        console.warn('LocalStorage not available');
-    }
+    localStorage.setItem('jerry_cart', JSON.stringify(cart));
 }
 
-// --- 2. PIZZA SLIDER LOGIC (For Homepage) ---
-let currentSlide = 0;
-
-function initPizzaSlider() {
-    if (typeof PIZZA_SLIDES === 'undefined' || !document.getElementById("slider-img")) return;
-    updateSliderUI(PIZZA_SLIDES[currentSlide]);
-}
-
-function updateSliderUI(slideData) {
-    const img = document.getElementById("slider-img");
-    const title = document.getElementById("slider-title");
-    const desc = document.getElementById("slider-desc");
-    if (!img || !title || !desc) return;
-    
-    img.classList.remove("slide-in-right");
-    void img.offsetWidth; // Trigger reflow
-    img.classList.add("slide-in-right");
-    img.src = slideData.img;
-    title.textContent = slideData.name;
-    desc.textContent = slideData.desc;
-}
-
-window.nextSlide = function() {
-    if (typeof PIZZA_SLIDES === 'undefined') return;
-    currentSlide = (currentSlide + 1) % PIZZA_SLIDES.length;
-    updateSliderUI(PIZZA_SLIDES[currentSlide]);
-};
-
-window.prevSlide = function() {
-    if (typeof PIZZA_SLIDES === 'undefined') return;
-    currentSlide = (currentSlide - 1 + PIZZA_SLIDES.length) % PIZZA_SLIDES.length;
-    updateSliderUI(PIZZA_SLIDES[currentSlide]);
-};
-
-// --- 3. HOMEPAGE QUICK MENU FILTERING ---
-window.filterMenu = function(category, btnElement) {
-    if (btnElement) {
-        document.querySelectorAll('.pill').forEach(btn => btn.classList.remove('active'));
-        btnElement.classList.add('active');
-    }
-    const grid = document.getElementById("homepage-menu-grid");
-    if (!grid || typeof MENU_DATA === 'undefined') return;
-    
-    grid.innerHTML = "";
-    let itemsToRender = [];
-    
-    if (category === 'all') {
-        itemsToRender = [
-            ...MENU_DATA.bestPizzas.slice(0, 4),
-            ...MENU_DATA.burgers.slice(0, 2),
-            ...MENU_DATA.wrapsAndFries.slice(0, 2)
-        ];
-    } else {
-        itemsToRender = MENU_DATA[category] || [];
-    }
-    injectGridCards(grid, itemsToRender);
-};
-
-function injectGridCards(grid, items) {
-    items.forEach(item => {
-        let displayPrice = item.price || item.sizes?.S || 'N/A';
-        let imgSrc = item.img || "https://images.unsplash.com/photo-1513104890138-7c749659a591?w=500&q=80";
-        
-        let buttonHtml = '';
-        if (item.sizes) {
-            buttonHtml = `
-                <div class="pizza-size-selector" style="display:flex;gap:4px;">
-                    <button class="size-btn-mini" onclick="addToCart('${item.name} (S)',${item.sizes.S})">S</button>
-                    <button class="size-btn-mini" onclick="addToCart('${item.name} (M)',${item.sizes.M})">M</button>
-                    <button class="size-btn-mini" onclick="addToCart('${item.name} (L)',${item.sizes.L})">L</button>
-                </div>`;
-        } else {
-            buttonHtml = `<button class="add-btn" onclick="addToCart('${item.name}',${displayPrice})"><i class="fa-solid fa-plus"></i></button>`;
-        }
-
-        grid.innerHTML += `
-            <div class="menu-card">
-                <img src="${imgSrc}" class="card-img" alt="${item.name}" loading="lazy">
-                <h3 class="card-title">${item.name}</h3>
-                <div class="card-footer">
-                    <span class="card-price">Rs. ${displayPrice}</span>
-                    ${buttonHtml}
-                </div>
-            </div>`;
-    });
-}
-
-// --- 4. CORE CART MANAGEMENT ---
-
-/**
- * Add item to cart with quantity
- */
 function addToCart(name, price, qty = 1) {
-    if (qty < 1) return;
-    
     const existingItem = cart.find(item => item.name === name && item.price === price);
-    
     if (existingItem) {
         existingItem.qty = (existingItem.qty || 1) + qty;
     } else {
         cart.push({ name, price: parseInt(price), qty });
     }
-    
     saveCart();
     renderCart();
     
-    // Auto-open cart drawer
-    if (!document.getElementById('cart-drawer')?.classList.contains('open')) {
-        toggleCartDrawer();
-    }
+    const drawer = document.getElementById('cart-drawer');
+    if (drawer && !drawer.classList.contains('open')) toggleCartDrawer();
 }
 
 function removeFromCart(index) {
-    if (index >= 0 && index < cart.length) {
-        cart.splice(index, 1);
-        saveCart();
-        renderCart();
-    }
+    cart.splice(index, 1);
+    saveCart();
+    renderCart();
 }
 
 function getCartTotal() {
@@ -149,8 +40,6 @@ function getCartTotal() {
 function getCartCount() {
     return cart.reduce((count, item) => count + (item.qty || 1), 0);
 }
-
-// --- 5. UI CONTROLS ---
 
 function toggleCartDrawer() {
     document.getElementById('cart-drawer')?.classList.toggle('open');
@@ -168,11 +57,6 @@ function closeAll() {
     document.getElementById('overlay')?.classList.remove('active');
 }
 
-// --- 6. RENDERING FUNCTIONS ---
-
-/**
- * Enhanced Cart Renderer (Clean UI with locked X button layout)
- */
 function renderCart() {
     const list = document.getElementById('cart-items-list');
     const empty = document.getElementById('cart-empty-msg');
@@ -181,203 +65,132 @@ function renderCart() {
     const checkoutBtn = document.getElementById('checkout-btn');
     const checkoutForm = document.getElementById('checkout-form');
     
-    const total = getCartTotal();
-    const count = getCartCount();
-    
-    if (badge) badge.textContent = count;
+    if (badge) badge.textContent = getCartCount();
     if (!list) return;
 
     list.innerHTML = '';
     
     if (cart.length === 0) {
-        if (empty) empty.style.display = 'block';
-        if (totalRow) totalRow.style.display = 'none';
-        if (checkoutBtn) checkoutBtn.style.display = 'none';
-        if (checkoutForm) checkoutForm.style.display = 'none';
+        if(empty) empty.style.display = 'block';
+        if(totalRow) totalRow.style.display = 'none';
+        if(checkoutBtn) checkoutBtn.style.display = 'none';
+        if(checkoutForm) checkoutForm.style.display = 'none';
     } else {
-        if (empty) empty.style.display = 'none';
-        if (totalRow) totalRow.style.display = 'flex';
-        if (checkoutBtn) checkoutBtn.style.display = 'block';
-        if (checkoutForm) checkoutForm.style.display = 'flex';
+        if(empty) empty.style.display = 'none';
+        if(totalRow) totalRow.style.display = 'flex';
+        if(checkoutBtn) checkoutBtn.style.display = 'block';
+        if(checkoutForm) checkoutForm.style.display = 'flex';
         
         cart.forEach((item, i) => {
             const qty = item.qty || 1;
             const li = document.createElement('li');
             li.className = 'cart-item';
-            
-            // Explicit Flexbox layout to prevent the X from getting squished
-            li.style.cssText = 'display: flex; justify-content: space-between; align-items: center; padding: 10px 0; border-bottom: 1px solid rgba(255,255,255,0.1); width: 100%;';
-            
+            // Force Layout so X is never hidden
+            li.style.cssText = 'display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid #333; padding:10px 0;';
             li.innerHTML = `
-                <div style="flex: 1; padding-right: 10px; line-height: 1.3;">
-                    ${qty > 1 ? `<span style="color:var(--gold, #f4c150); font-weight:800; margin-right:6px;">${qty}x</span>` : ''}
-                    <span class="cart-item-name" style="word-break: break-word;">${item.name}</span>
+                <div style="flex:1; padding-right:10px;">
+                    ${qty > 1 ? `<span style="color:var(--gold); font-weight:800; margin-right:6px;">${qty}x</span>` : ''}
+                    <span class="cart-item-name">${item.name}</span>
                 </div>
-                <div style="display: flex; align-items: center; gap: 15px; flex-shrink: 0;">
-                    <span class="cart-item-price" style="white-space: nowrap; font-weight: bold;">Rs. ${item.price * qty}</span>
-                    <span class="cart-item-remove" onclick="removeFromCart(${i})" style="cursor:pointer; color: var(--red, #e4002b); font-size: 1.2rem; display: flex; align-items: center; justify-content: center; padding: 5px;"><i class="fa-solid fa-xmark"></i></span>
+                <div style="display:flex; align-items:center; gap:15px;">
+                    <span class="cart-item-price" style="font-weight:bold;">Rs. ${item.price * qty}</span>
+                    <button onclick="removeFromCart(${i})" style="background:none; border:none; color:var(--red); font-size:1.2rem; cursor:pointer;"><i class="fa-solid fa-xmark"></i></button>
                 </div>
             `;
             list.appendChild(li);
         });
-        
         const totalPriceEl = document.getElementById('cart-total-price');
-        if (totalPriceEl) totalPriceEl.textContent = `Rs. ${total}`;
+        if (totalPriceEl) totalPriceEl.textContent = `Rs. ${getCartTotal()}`;
     }
 }
-
-/**
- * Full Menu Renderer with Size Selectors
- */
-function renderFullMenu() {
-    const container = document.getElementById('full-menu-container');
-    if (!container || typeof MENU_DATA === 'undefined') return;
-    container.innerHTML = '';
-
-    const categories = [
-        { key: 'bestPizzas', title: '🔥 Signature Stuffed-Edge Pizzas', type: 'pizza' },
-        { key: 'regularPizzas', title: '🍕 Classic Pizzas', type: 'pizza' },
-        { key: 'burgers', title: '🍔 Burgers', type: 'simple' },
-        { key: 'wingsAndNuggets', title: '🍗 Wings & Nuggets', type: 'wings' },
-        { key: 'pasta', title: '🍝 Pasta', type: 'pasta' },
-        { key: 'chipsAndDips', title: '🍟 Chips & Dips', type: 'chips' },
-        { key: 'drinksAndIceCream', title: '🥤 Drinks', type: 'simple' }
-    ];
-
-    categories.forEach(cat => {
-        const data = MENU_DATA[cat.key];
-        if (!data || data.length === 0) return;
-
-        const section = document.createElement('div');
-        section.className = 'menu-section-wrapper';
-        section.innerHTML = `
-            <div class="section-header text-center anim-fade-up">
-                <h2>${cat.title}</h2>
-                <div class="gold-divider"></div>
-            </div>
-            <div class="menu-grid" id="grid-${cat.key}"></div>`;
-        container.appendChild(section);
-
-        const grid = document.getElementById(`grid-${cat.key}`);
-        data.forEach(item => {
-            let addBtn = '';
-            if (cat.type === 'pizza' && item.sizes) {
-                addBtn = `
-                    <div class="pizza-size-selector">
-                        <button class="size-btn" onclick="addToCart('${item.name} (S)',${item.sizes.S})">S</button>
-                        <button class="size-btn" onclick="addToCart('${item.name} (M)',${item.sizes.M})">M</button>
-                        <button class="size-btn" onclick="addToCart('${item.name} (L)',${item.sizes.L})">L</button>
-                    </div>`;
-            } else {
-                let price = item.price || item.price5pc || item.priceHalf || item.priceS;
-                addBtn = `<button class="btn btn-red" onclick="addToCart('${item.name}',${price})">Add +</button>`;
-            }
-
-            grid.innerHTML += `
-                <div class="menu-card">
-                    <img src="${item.img || ''}" class="card-img" alt="${item.name}">
-                    <div class="card-body">
-                        <h4>${item.name}</h4>
-                        <div class="card-footer">${addBtn}</div>
-                    </div>
-                </div>`;
-        });
-    });
-}
-
-/**
- * Deals Page Renderer
- */
-function renderDeals() {
-    const container = document.getElementById('deals-container') || document.getElementById('deals-grid');
-    if (!container || typeof MENU_DATA === 'undefined' || !MENU_DATA.deals) return;
-    container.innerHTML = '';
-
-    MENU_DATA.deals.forEach((deal, index) => {
-        const card = document.createElement('div');
-        card.className = 'deal-card';
-        card.innerHTML = `
-            <img src="${deal.img}" class="deal-thumb" alt="${deal.name}">
-            <div class="deal-info" style="display:flex; flex-direction:column; justify-content:space-between; width:100%;">
-                <div>
-                    <h4 style="margin-bottom:4px;">${deal.name}</h4>
-                    <p style="font-size:0.85rem; color:var(--muted); line-height:1.4; margin-bottom:8px;">${deal.desc}</p>
-                </div>
-                <div style="display:flex; justify-content:space-between; align-items:center; margin-top:auto;">
-                    <div class="deal-price" style="font-size:1.3rem;">Rs. ${deal.price}</div>
-                    <button class="btn btn-red" style="padding:8px 16px; font-size:0.8rem;" onclick="addToCart('${deal.name}', ${deal.price}, 1)">
-                        Add <i class="fa-solid fa-plus"></i>
-                    </button>
-                </div>
-            </div>`;
-        container.appendChild(card);
-    });
-}
-
-// --- 7. CHECKOUT LOGIC ---
 
 async function checkoutToWhatsApp() {
     const name = document.getElementById('cust-name')?.value.trim();
     const phone = document.getElementById('cust-phone')?.value.trim();
     const address = document.getElementById('cust-address')?.value.trim();
 
-    if (!name || !phone || !address) {
-        alert('Please fill in Name, Phone, and Address.');
-        return;
-    }
-
+    if (!name || !phone || !address) return alert('Please fill in Name, Phone, and Address.');
     if (cart.length === 0) return;
 
     let total = getCartTotal();
-    let orderText = `*New Order - Jerry Pizza*\n\n`;
-    orderText += `*Name:* ${name}\n*Phone:* ${phone}\n*Address:* ${address}\n\n*Items:*\n`;
-
-    cart.forEach(item => {
-        orderText += `- ${item.qty}x ${item.name} (Rs. ${item.price * item.qty})\n`;
-    });
-
+    let orderText = `*New Order - Jerry Pizza*\n\n*Name:* ${name}\n*Phone:* ${phone}\n*Address:* ${address}\n\n*Items:*\n`;
+    cart.forEach(item => orderText += `- ${item.qty}x ${item.name} (Rs. ${item.price * item.qty})\n`);
     orderText += `\n*Total: Rs. ${total}*`;
 
-    // Save to Firestore if Firebase is loaded
     if (window._fbReady) {
-        const orderData = { 
-            customer: name, phone, address, 
-            items: cart, total, status: 'new', 
-            createdAt: Date.now(), source: 'Website' 
-        };
-        try { await window._addDoc(window._collection(window._db, 'orders'), orderData); } 
-        catch (e) { console.error("Firebase Error", e); }
+        try { await window._addDoc(window._collection(window._db, 'orders'), { customer: name, phone, address, items: cart, total, status: 'new', createdAt: Date.now(), source: 'Website' }); } 
+        catch (e) { console.error(e); }
     }
 
     window.open(`https://wa.me/923143636434?text=${encodeURIComponent(orderText)}`, '_blank');
-    
-    cart = [];
-    saveCart();
-    renderCart();
-    closeAll();
+    cart = []; saveCart(); renderCart(); closeAll();
     alert("Order Submitted! Please confirm on WhatsApp.");
 }
 
-// --- 8. INITIALIZATION ---
+// Slider and Page Renders
+let currentSlide = 0;
+function changeSlide(dir) { 
+    if (typeof PIZZA_SLIDES === 'undefined') return;
+    currentSlide = (currentSlide + dir + PIZZA_SLIDES.length) % PIZZA_SLIDES.length; 
+    renderSlide(currentSlide); 
+}
+function goToSlide(index) { currentSlide = index; renderSlide(currentSlide); }
+
+function renderFullMenu() {
+    const container = document.getElementById('full-menu-container');
+    if (!container || typeof MENU_DATA === 'undefined') return;
+    container.innerHTML = '';
+    const categories = [
+        { key: 'bestPizzas', title: '🔥 Signature Pizzas', type: 'pizza' },
+        { key: 'regularPizzas', title: '🍕 Classic Pizzas', type: 'pizza' },
+        { key: 'burgers', title: '🍔 Burgers', type: 'simple' },
+        { key: 'wingsAndNuggets', title: '🍗 Wings', type: 'wings' },
+        { key: 'pasta', title: '🍝 Pasta', type: 'pasta' },
+        { key: 'chipsAndDips', title: '🍟 Fries', type: 'chips' },
+        { key: 'drinksAndIceCream', title: '🥤 Drinks', type: 'simple' }
+    ];
+    categories.forEach(cat => {
+        if (!MENU_DATA[cat.key]) return;
+        const section = document.createElement('div');
+        section.className = 'menu-section-wrapper';
+        section.innerHTML = `<div class="section-header text-center"><h2>${cat.title}</h2><div class="gold-divider"></div></div><div class="menu-grid" id="grid-${cat.key}"></div>`;
+        container.appendChild(section);
+        const grid = document.getElementById(`grid-${cat.key}`);
+        MENU_DATA[cat.key].forEach(item => {
+            let addBtn = cat.type === 'pizza' && item.sizes
+                ? `<div class="pizza-size-selector"><button class="size-btn" onclick="addToCart('${item.name} (S)',${item.sizes.S})">S</button><button class="size-btn" onclick="addToCart('${item.name} (M)',${item.sizes.M})">M</button><button class="size-btn" onclick="addToCart('${item.name} (L)',${item.sizes.L})">L</button></div>`
+                : `<button class="btn btn-red" onclick="addToCart('${item.name}',${item.price || item.sizes?.S || item.sizes?.Half || item.sizes?.['5pc']})">Add +</button>`;
+            grid.innerHTML += `<div class="menu-card"><img src="${item.img || ''}" class="card-img" alt="${item.name}"><div class="card-body"><h4>${item.name}</h4><div class="card-footer">${addBtn}</div></div></div>`;
+        });
+    });
+}
+
+function renderDeals() {
+    const grid = document.getElementById('deals-grid') || document.getElementById('deals-container');
+    if (!grid || typeof MENU_DATA === 'undefined') return;
+    grid.innerHTML = MENU_DATA.deals.map(deal => `
+        <div class="deal-card">
+            <img src="${deal.img}" class="deal-thumb" alt="${deal.name}">
+            <div class="deal-info" style="display:flex; flex-direction:column; justify-content:space-between; height:100%;">
+                <div><h4 style="color:var(--gold);">${deal.name}</h4><p style="font-size:0.85rem; color:var(--muted); margin:8px 0;">${deal.desc}</p></div>
+                <div style="display:flex; justify-content:space-between; align-items:center;">
+                    <div class="deal-price" style="font-size:1.2rem;">Rs. ${deal.price}</div>
+                    <button class="btn btn-red" style="padding:6px 12px; font-size:0.8rem;" onclick="addToCart('${deal.name}',${deal.price})">Add <i class="fa-solid fa-plus"></i></button>
+                </div>
+            </div>
+        </div>`).join('');
+}
 
 document.addEventListener('DOMContentLoaded', () => {
-    initPizzaSlider();
-    
-    if (document.getElementById('homepage-menu-grid')) {
-        filterMenu('all', document.querySelector('.pill.active'));
-    }
-    if (document.getElementById('full-menu-container')) {
-        renderFullMenu();
-    }
-    if (document.getElementById('deals-container') || document.getElementById('deals-grid')) {
-        renderDeals();
-    }
-
+    if (document.getElementById('full-menu-container')) renderFullMenu();
+    if (document.getElementById('deals-grid') || document.getElementById('deals-container')) renderDeals();
     renderCart();
-    
-    // Intersection Observer for scroll animations
-    const observer = new IntersectionObserver(entries => {
-        entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
-    }, { threshold: 0.1 });
-    document.querySelectorAll('.anim-fade-up').forEach(el => observer.observe(el));
 });
+
+// Ensure global access
+window.addToCart = addToCart;
+window.removeFromCart = removeFromCart;
+window.toggleCartDrawer = toggleCartDrawer;
+window.toggleNav = toggleNav;
+window.closeAll = closeAll;
+window.checkoutToWhatsApp = checkoutToWhatsApp;
