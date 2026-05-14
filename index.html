@@ -118,16 +118,11 @@
     <h3>YOUR CART</h3>
     <span class="close-cart" onclick="toggleCartDrawer()" aria-label="Close cart"><i class="fa-solid fa-xmark"></i></span>
   </div>
-  
-  <!-- WRAPPER ADDED FOR SCROLLING -->
-  <div class="cart-body">
-    <ul class="cart-items" id="cart-items-list" style="display:flex; flex-direction:column; gap:12px;"></ul>
-    <div id="cart-empty-msg" class="cart-empty">
-      <i class="fa-solid fa-pizza-slice" style="font-size:2rem; color:var(--muted); display:block; margin-bottom:12px;"></i>
-      Your cart is empty.
-    </div>
+  <ul class="cart-items" id="cart-items-list"></ul>
+  <div id="cart-empty-msg" class="cart-empty">
+    <i class="fa-solid fa-pizza-slice" style="font-size:2rem; color:var(--muted); display:block; margin-bottom:12px;"></i>
+    Your cart is empty.<br>Add something delicious!
   </div>
-
   <div class="cart-footer">
     <div class="cart-total" id="cart-total-row" style="display:none;">
       <span>Total</span>
@@ -136,7 +131,7 @@
     <div class="checkout-form" id="checkout-form" style="display:none;">
       <input type="text" id="cust-name" placeholder="Your Name" required autocomplete="name">
       <input type="tel" id="cust-phone" placeholder="Phone Number" required autocomplete="tel">
-      <textarea id="cust-address" placeholder="Delivery Address" rows="2" required></textarea>
+      <textarea id="cust-address" placeholder="Delivery Address" rows="2" required autocomplete="street-address"></textarea>
     </div>
     <button class="btn btn-primary" style="width:100%;justify-content:center;" id="checkout-btn" onclick="checkoutToWhatsApp()">
       <i class="fa-brands fa-whatsapp"></i> Place Order via WhatsApp
@@ -380,12 +375,88 @@ const REVIEWS = [
   { name: "Ahmad Shehzad Amir", initials: "AS", time: "2 years ago",   rating: 5, text: "Fantastic pizza place. Best in Sahiwal. Highly recommended for everyone." }
 ];
 
+function toggleCartDrawer() {
+  document.getElementById('cart-drawer').classList.toggle('open');
+  document.getElementById('overlay').classList.toggle('active');
+}
+function closeAll() {
+  document.getElementById('cart-drawer').classList.remove('open');
+  document.getElementById('nav-menu').classList.remove('open');
+  document.getElementById('overlay').classList.remove('active');
+}
+function toggleNav() {
+  document.getElementById('nav-menu').classList.toggle('open');
+  document.getElementById('overlay').classList.toggle('active');
+}
+function addToCart(name, price) {
+  cart.push({ name, price });
+  renderCart();
+  if (!document.getElementById('cart-drawer').classList.contains('open')) toggleCartDrawer();
+}
+function removeFromCart(i) { cart.splice(i, 1); renderCart(); }
+
+function renderCart() {
+  const list = document.getElementById('cart-items-list');
+  const empty = document.getElementById('cart-empty-msg');
+  const totalRow = document.getElementById('cart-total-row');
+  const checkoutBtn = document.getElementById('checkout-btn');
+  const checkoutForm = document.getElementById('checkout-form');
+  const badge = document.getElementById('global-cart-badge');
+  badge.textContent = cart.length;
+  list.innerHTML = '';
+  if (cart.length === 0) {
+    empty.style.display = 'block';
+    totalRow.style.display = 'none';
+    checkoutBtn.style.display = 'none';
+    checkoutForm.style.display = 'none';
+  } else {
+    empty.style.display = 'none';
+    totalRow.style.display = 'flex';
+    checkoutBtn.style.display = 'block';
+    checkoutForm.style.display = 'flex';
+    let total = 0;
+    cart.forEach((item, i) => {
+      total += item.price;
+      list.innerHTML += `<li class="cart-item">
+        <span class="cart-item-name">${item.name}</span>
+        <span class="cart-item-price">Rs. ${item.price}</span>
+        <span class="cart-item-remove" onclick="removeFromCart(${i})"><i class="fa-solid fa-xmark"></i></span>
+      </li>`;
+    });
+    document.getElementById('cart-total-price').textContent = `Rs. ${total}`;
+  }
+}
+
+// Helper functions for checkout
+function getCustomerName() {
+  return document.getElementById('cust-name')?.value.trim() || 'Website Customer';
+}
+function getCustomerPhone() {
+  return document.getElementById('cust-phone')?.value.trim() || '';
+}
+function getCustomerAddress() {
+  return document.getElementById('cust-address')?.value.trim() || '';
+}
+function getOrderNote() {
+  return '';
+}
+
+async function checkoutToWhatsApp() {
+  const rawName = document.getElementById('cust-name')?.value.trim();
+  const phone = getCustomerPhone();
+  const address = getCustomerAddress();
+
+  if (!rawName || !phone || !address) { 
+    alert("Please fill in your Name, Phone Number, and Delivery Address."); 
+    return; 
+  }
+
   const name = getCustomerName();
 
   let total = 0;
   let counts = {};
   cart.forEach(item => {
-    if (!counts[item.name]) counts[item.name] = { ...item, qty: 0 };
+    if (!counts[item.name]) counts[item.name] = { item, qty: 0 };
     counts[item.name].qty++;
     total += parseInt(item.price);
   });
@@ -477,9 +548,9 @@ function renderSlide(i) {
 
 function buildMarquee() {
   if (typeof MENU_DATA === 'undefined') return;
-  const names = [...MENU_DATA.bestPizzas.map(p=>p.name), ...MENU_DATA.regularPizzas.map(p=>p.name), ...MENU_DATA.burgers.map(b=>b.name)];
+  const names = [MENU_DATA.bestPizzas.map(p=>p.name), MENU_DATA.regularPizzas.map(p=>p.name), MENU_DATA.burgers.map(b=>b.name)];
   const track = document.getElementById('flavors-track');
-  track.innerHTML = [...names,...names].map(n => `<span class="flavor-item">${n.toUpperCase()}<span class="flavor-dot">•</span></span>`).join('');
+  track.innerHTML = [names,names].map(n => `<span class="flavor-item">${n.toUpperCase()}<span class="flavor-dot">•</span></span>`).join('');
 }
 
 function buildBestSellers() {
@@ -523,6 +594,12 @@ function buildReviews() {
   if (!grid) return;
   grid.innerHTML = REVIEWS.map(r => `
     <div class="review-card">
+      <h4>${r.name}</h4>
+      <p>${r.text}</p>
+    </div>`).join('');
+}
+
+<div class="review-card">
       <div class="review-header">
         <div class="review-avatar">${r.initials}</div>
         <div class="review-meta"><h4>${r.name}</h4><span>${r.time}</span></div>
