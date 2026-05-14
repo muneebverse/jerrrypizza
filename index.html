@@ -435,8 +435,13 @@ function buildBestSellers() {
         <h4>${pizza.name}</h4>
         <p>${pizza.desc}</p>
         <div class="card-footer">
-          <div class="card-price">From <span class="big-price">Rs. ${pizza.sizes.S}</span></div>
-          <button class="btn btn-red" style="padding:8px 16px;font-size:0.8rem;" onclick="addToCart('${pizza.name} (S)',${pizza.sizes.S})">Add <i class="fa-solid fa-plus"></i></button>
+          <div class="card-price" style="font-size:0.85rem;">From <span class="big-price" style="display:block;">Rs. ${pizza.sizes.S}</span></div>
+          <div class="pizza-size-selector">
+            <button class="size-btn" onclick="addToCart('${pizza.name} (S)',${pizza.sizes.S})">S</button>
+            <button class="size-btn" onclick="addToCart('${pizza.name} (M)',${pizza.sizes.M})">M</button>
+            <button class="size-btn" onclick="addToCart('${pizza.name} (L)',${pizza.sizes.L})">L</button>
+            <button class="size-btn" onclick="addToCart('${pizza.name} (XL)',${pizza.sizes.XL})">XL</button>
+          </div>
         </div>
       </div>
     </div>`).join('');
