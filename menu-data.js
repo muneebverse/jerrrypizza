@@ -214,3 +214,11 @@ const MENU_DATA = {
     { id: 21, name: "MUFTA DEAL", price: 2699, desc: "1 Large Pizza + 2 Junior Zinger Burgers + Small Macaroni + 5 Nuggets + 1.5 L Drink.", img: "assets/deal21.jpg" }
   ]
 };
+
+const MENU = [
+  { id:'p1', name:"Jerry's Special", cat:'Pizza', emoji:'🍕', desc:"Edge Filling with Chicken & Cheese", sizes:[{label:'Small',price:699},{label:'Medium',price:1230},{label:'Large',price:1850},{label:'XL',price:2349}] },
+  // ... copy all other items from your pos1.html MENU array here ...
+];
+
+// Export for use in other files if needed
+if (typeof module !== 'undefined') { module.exports = MENU; }
