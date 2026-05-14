@@ -694,35 +694,36 @@ function listenOrders() {
 
 function renderKDS() {
   const grid = document.getElementById('kds-grid');
-  const all =[...allOrders.filter(o => o.status !== 'done'), ...allOrders.filter(o => o.status === 'done')];
-  if (!all.length) { grid.innerHTML = '<div style="color:var(--muted);font-size:14px;padding:30px;grid-column:1/-1;text-align:center;">No orders yet today</div>'; }
-  else {
+  const all = [...allOrders.filter(o => o.status !== 'done'), ...allOrders.filter(o => o.status === 'done')];
+  
+  if (!all.length) {
+    grid.innerHTML = '<div style="color:var(--muted);text-align:center;">No orders yet today</div>';
+  } else {
     grid.innerHTML = all.map((o, i) => {
-      const num = String(allOrders.length - i).padStart(3, '0');
-      const statusLabel = { new:'NEW', preparing:'🔥 Preparing', ready:'✓ Ready', done:'🎉 Done' }[o.status] || o.status;
-      const time = new Date(o.createdAt).toLocaleTimeString('en-PK', {hour:'2-digit', minute:'2-digit', hour12:true});
-      const nextBtn = o.status === 'new' ? `<button class="oc-action to-prep" onclick="updateStatus('${o.id}','preparing')">→ Prepare</button>` : o.status === 'preparing' ? `<button class="oc-action to-ready" onclick="updateStatus('${o.id}','ready')">✓ Ready</button>` : o.status === 'ready' ? `<button class="oc-action to-done" onclick="updateStatus('${o.id}','done')">🎉 Done</button>` : '';
-      const typeIcon = {dine:'🍽',take:'🥡',del:'🛵'}[o.type] || '🍽';
-      const deliveryInfo = o.type === 'del' && (o.customer || o.phone || o.address)
-        ? `<div class="oc-delivery">
-            ${o.customer ? `👤 <strong>${o.customer}</strong><br>` : ''}
-            ${o.phone ? `📞 ${o.phone}<br>` : ''}
-            ${o.address ? `📍 ${o.address}` : ''}
-          </div>` : '';
-      const cancelBtn = o.status !== 'done' ? `<button class="oc-action cancel" onclick="cancelOrder('${o.id}')">✕ Cancel</button>` : '';
-      return `<div class="order-card ${o.status}">
-        <div class="oc-header"><div><div class="oc-num">#${num}</div><div class="oc-type">${typeIcon} ${o.type?.toUpperCase()} · ${o.source || ''}</div></div><span class="oc-badge ${o.status}">${statusLabel}</span></div>
-        ${deliveryInfo}
-        <div class="oc-items">${(o.items||[]).map(it => `<div class="oc-item-line"><span>${it.qty}× ${it.name}${it.sub?' ('+it.sub+')':''}</span><span>Rs.${it.price*it.qty}</span></div>`).join('')}</div>
-        <div class="oc-total">Total: Rs. ${o.total}</div>
-        <div class="oc-footer"><span class="oc-time">${time}</span>${cancelBtn}${nextBtn}</div>
-      </div>`;
+      const displayId = o.localId ? o.localId : '#' + String(allOrders.length - i).padStart(3, '0');
+      const waiterInfo = o.waiterName ? `<div style="color:var(--yellow); font-size:11px; font-weight:bold;">👤 WAITER: ${o.waiterName.toUpperCase()}</div>` : '';
+      
+      return `
+        <div class="order-card ${o.status}">
+          <div class="oc-header">
+            <div>
+              <div class="oc-num">${displayId}</div>
+              <div class="oc-type">${o.type?.toUpperCase()} · ${o.source || 'POS'}</div>
+              ${waiterInfo}
+            </div>
+            <span class="oc-badge ${o.status}">${o.status.toUpperCase()}</span>
+          </div>
+          <div class="oc-items">
+            ${(o.items||[]).map(it => `<div class="oc-item-line"><span>${it.qty}× ${it.name}</span><span>Rs.${it.price*it.qty}</span></div>`).join('')}
+          </div>
+          <div class="oc-total">Total: Rs. ${o.total}</div>
+          <div class="oc-footer">
+            <button class="oc-action to-prep" onclick="updateStatus('${o.id}','preparing')">→ Prepare</button>
+            <button class="oc-action to-ready" onclick="updateStatus('${o.id}','ready')">✓ Ready</button>
+          </div>
+        </div>`;
     }).join('');
   }
-  document.getElementById('stat-new').textContent = allOrders.filter(o => o.status === 'new').length;
-  document.getElementById('stat-prep').textContent = allOrders.filter(o => o.status === 'preparing').length;
-  document.getElementById('stat-ready').textContent = allOrders.filter(o => o.status === 'ready').length;
-  document.getElementById('stat-done').textContent = allOrders.filter(o => o.status === 'done').length;
 }
 function updateStatus(id, status) {
   if (window._db) { 
