@@ -844,11 +844,11 @@ button { border: none; background: none; font-family: inherit; cursor: pointer; 
   gap: 20px;
 }
 
-/* ── Deals carousel on mobile ── */
 @media (max-width: 768px) {
   .deals-grid {
     display: flex !important;
-    overflow-x: auto;
+    flex-direction: row !important; /* Forces horizontal scrolling */
+    overflow-x: auto !important;
     scroll-snap-type: x mandatory;
     -webkit-overflow-scrolling: touch;
     gap: 16px;
@@ -856,9 +856,10 @@ button { border: none; background: none; font-family: inherit; cursor: pointer; 
     scrollbar-width: none;
   }
   .deals-grid::-webkit-scrollbar { display: none; }
+  
   .deal-card {
-    flex: 0 0 80vw;
-    scroll-snap-align: start;
+    flex: 0 0 85vw !important; /* Forces card to stay full width while sliding */
+    scroll-snap-align: center;
     min-width: 280px;
   }
 }
