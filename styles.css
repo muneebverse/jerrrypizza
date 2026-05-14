@@ -793,11 +793,7 @@ button { border: none; background: none; font-family: inherit; cursor: pointer; 
   color: var(--muted); font-size: 0.78rem; font-weight: 600;
 }
 
-/* ===== MOBILE NAV ===== */
-.main-nav {
-  position: static;
-}
-
+/* ===== MOBILE NAV & RESPONSIVENESS ===== */
 @media (max-width: 768px) {
   .main-nav {
     display: none;
@@ -822,17 +818,13 @@ button { border: none; background: none; font-family: inherit; cursor: pointer; 
     display: block;
     padding: 18px 24px;
     text-align: center;
-    border-top: none;
     border-bottom: 1px solid rgba(255,255,255,0.08) !important;
     font-size: 1rem;
     color: var(--white) !important;
-    width: 100%;
-    letter-spacing: 1px;
   }
   .main-nav a:hover, .main-nav a.active {
     color: var(--gold) !important;
     background: rgba(245,197,24,0.06);
-    border-bottom-color: rgba(255,255,255,0.08) !important;
   }
 
   .hamburger { display: flex; }
@@ -841,10 +833,8 @@ button { border: none; background: none; font-family: inherit; cursor: pointer; 
   .hero-inner {
     grid-template-columns: 1fr;
     padding: 30px 20px;
-    min-height: auto;
-    padding-top: 30px;
-    gap: 30px;
     text-align: center;
+    gap: 30px;
   }
   .hero-subtitle { margin: 18px auto 28px; }
   .hero-btns { justify-content: center; }
@@ -858,113 +848,68 @@ button { border: none; background: none; font-family: inherit; cursor: pointer; 
   .feature-row:nth-child(even) .feature-image { order: 2; }
   .feature-img-circle { width: 260px; height: 260px; }
 
+  .menu-grid { grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); }
+  .deals-grid { display: flex; flex-direction: column; gap: 20px; }
+  .reviews-grid { grid-template-columns: 1fr; }
+  
   .footer-main { grid-template-columns: 1fr; gap: 36px; }
-  .contact-bar-inner { justify-content: center; text-align: center; }
-
   .cart-drawer { width: 100%; }
   .slider-arrow { display: none; }
-/* ✅ PASTE THIS CLEAN CODE INSTEAD */
-      .menu-grid { grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); }
-      
-      .deals-grid { 
-        display: flex;
-        flex-direction: column;
-        gap: 20px;
-      }
-      
-      .reviews-grid { grid-template-columns: 1fr; }
-    } /* This properly closes the max-width: 768px media query */
-
-@media (max-width: 480px) {
-  .hero-title { font-size: 2.5rem; }
-  .section-title { font-size: 1.8rem; }
-  .logo { font-size: 1.3rem; }
-  .contact-bar h2 { font-size: 1.5rem; }
-  .footer-main { gap: 24px; }
-  .contact-pills { gap: 8px; }
-  .contact-pill { padding: 8px 16px; font-size: 0.85rem; }
-}
-
-/* Logo Styling */
-.logo-img {
-  width: 48px;
-  height: 48px;
-  border-radius: 50%;
-  object-fit: cover;
-  border: 2px solid var(--red);
-}
-
-/* Deal Thumbnail Styling */
-.deal-thumb {
-  width: 90px;
-  height: 90px;
-  border-radius: 12px;
-  object-fit: cover;
-  flex-shrink: 0;
-  border: 1px solid rgba(255,255,255,0.1);
-}
-/* Size buttons for pizzas */
-.size-btn {
-  background: var(--red);
-  color: var(--white);
-  border: 1px solid var(--red);
-  border-radius: 6px;
-  padding: 6px 12px;
-  font-size: 0.75rem;
-  font-weight: 700;
-  cursor: pointer;
-  transition: all 0.2s;
-}
-.size-btn:hover {
-  background: var(--gold);
-  border-color: var(--gold);
-  color: var(--black);
-}
+} /* <--- THIS BRACE NOW CORRECTLY CLOSES ALL MOBILE STYLES */
 
 /* ============================================================
-   DESKTOP OPTIMIZATIONS (Fixed Stretching & Layout)
+   DESKTOP OPTIMIZATIONS (Outside of the Mobile Brace)
    ============================================================ */
 @media (min-width: 1024px) {
-  /* Prevent cards from stretching too wide on massive screens */
   .menu-grid {
-    grid-template-columns: repeat(3, 1fr); /* Clean 3 columns */
+    grid-template-columns: repeat(3, 1fr); 
     gap: 30px;
   }
 
-  /* If you want 4 columns on very large screens */
-  @media (min-width: 1440px) {
-    .menu-grid {
-      grid-template-columns: repeat(4, 1fr);
-    }
-  }
-
-  /* Fix Hero Section for Desktop */
   .hero-inner {
-    grid-template-columns: 1.2fr 0.8fr; /* Gives text more room than the image */
+    grid-template-columns: 1.2fr 0.8fr;
     text-align: left;
     padding-top: 0;
+    align-items: center;
   }
 
-  .hero-text {
-    padding-right: 50px;
-  }
-
-  /* Make sure the feature zigzag is perfectly aligned */
   .feature-row {
     grid-template-columns: 1fr 1fr;
     gap: 100px;
-    padding: 40px 0;
+    margin-bottom: 120px;
   }
 
-  /* Center the container properly */
   .container {
+    max-width: 1280px;
+    margin: 0 auto;
     padding: 0 40px;
   }
-}
 
-/* Fix for the POS/Waiter Header if it feels cramped */
-@media (min-width: 1024px) {
   .header-actions {
     gap: 24px;
   }
+}
+
+/* MISC STYLING */
+.logo-img {
+  width: 48px; height: 48px;
+  border-radius: 50%; object-fit: cover;
+  border: 2px solid var(--red);
+}
+
+.deal-thumb {
+  width: 90px; height: 90px;
+  border-radius: 12px; object-fit: cover;
+  flex-shrink: 0; border: 1px solid rgba(255,255,255,0.1);
+}
+
+.size-btn {
+  background: var(--red); color: var(--white);
+  border: 1px solid var(--red); border-radius: 6px;
+  padding: 6px 12px; font-size: 0.75rem; font-weight: 700;
+  cursor: pointer; transition: all 0.2s;
+}
+
+.size-btn:hover {
+  background: var(--gold); border-color: var(--gold); color: var(--black);
 }
