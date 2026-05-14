@@ -127,13 +127,6 @@ async function checkoutToWhatsApp() {
     alert("Order Submitted! Please confirm on WhatsApp.");
 }
 
-// Slider and Page Renders
-let currentSlide = 0;
-function changeSlide(dir) { 
-    if (typeof PIZZA_SLIDES === 'undefined') return;
-    currentSlide = (currentSlide + dir + PIZZA_SLIDES.length) % PIZZA_SLIDES.length; 
-    renderSlide(currentSlide); 
-}
 
 /* ✅ REPLACE THE BOTTOM OF APP.JS WITH THIS */
 // Page Renders (Removed Slider logic to prevent conflict with index.html)
