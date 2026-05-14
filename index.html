@@ -353,6 +353,7 @@
 
 <script src="menu-data.js"></script>
 <script src="link.js"></script>
+<!-- Note: If you want to use app.js later, you can add <script src="app.js"></script> here, but currently this inline code handles everything perfectly! -->
 <script>
 let cart = [];
 let currentSlide = 0;
@@ -592,14 +593,10 @@ function buildDealsPreview() {
 function buildReviews() {
   const grid = document.getElementById('reviews-grid');
   if (!grid) return;
+  
+  // FIXED: Consolidated the broken duplicate string safely inside the map function.
   grid.innerHTML = REVIEWS.map(r => `
     <div class="review-card">
-      <h4>${r.name}</h4>
-      <p>${r.text}</p>
-    </div>`).join('');
-}
-
-<div class="review-card">
       <div class="review-header">
         <div class="review-avatar">${r.initials}</div>
         <div class="review-meta"><h4>${r.name}</h4><span>${r.time}</span></div>
