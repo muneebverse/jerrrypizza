@@ -335,10 +335,21 @@
 
 <script src="menu-data.js"></script>
 <script src="link.js"></script>
-<script src="app.js"></script> <script>
-let currentSlide = 0; 
+<script src="app.js"></script><script>
+let cart = [];
+let currentSlide = 0;
 let sliderDir = 1;
 
+const PIZZA_IMGS = [
+  "https://images.unsplash.com/photo-1574071318508-1cdbab80d002?w=800&q=80",
+  "https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=800&q=80",
+  "https://images.unsplash.com/photo-1528137871618-79d2761e3fd5?w=800&q=80",
+  "https://images.unsplash.com/photo-1555072956-7758afb20e8f?w=800&q=80",
+  "https://images.unsplash.com/photo-1513104890138-7c749659a591?w=800&q=80",
+  "https://images.unsplash.com/photo-1571407970349-bc81e7e96d47?w=800&q=80"
+];
+
+/* ✅ THIS WAS MISSING: The data that tells the slider what to show */
 const PIZZA_SLIDES = [
   { name: "Jerry's Special", tagline: "Our Signature Masterpiece", desc: "Edge Filling with Chicken & Cheese. The ultimate Sahiwal favorite.", color: "#e8190a" },
   { name: "Yummy Malai Boti", tagline: "Creamy & Rich", desc: "Malai Boti Chicken, Cheese, and Sesame Seeds.", color: "#f5c518" },
@@ -356,6 +367,77 @@ const REVIEWS = [
   { name: "Ahmad Shehzad Amir", initials: "AS", time: "2 years ago",   rating: 5, text: "Fantastic pizza place. Best in Sahiwal. Highly recommended for everyone." }
 ];
 
+function toggleCartDrawer() {
+  document.getElementById('cart-drawer').classList.toggle('open');
+  document.getElementById('overlay').classList.toggle('active');
+}
+function closeAll() {
+  document.getElementById('cart-drawer').classList.remove('open');
+  document.getElementById('nav-menu').classList.remove('open');
+  document.getElementById('overlay').classList.remove('active');
+}
+function toggleNav() {
+  document.getElementById('nav-menu').classList.toggle('open');
+  document.getElementById('overlay').classList.toggle('active');
+}
+function addToCart(name, price) {
+  cart.push({ name, price });
+  renderCart();
+  if (!document.getElementById('cart-drawer').classList.contains('open')) toggleCartDrawer();
+}
+function removeFromCart(i) { cart.splice(i, 1); renderCart(); }
+
+function renderCart() {
+  const list = document.getElementById('cart-items-list');
+  const empty = document.getElementById('cart-empty-msg');
+  const totalRow = document.getElementById('cart-total-row');
+  const checkoutBtn = document.getElementById('checkout-btn');
+  const checkoutForm = document.getElementById('checkout-form');
+  const badge = document.getElementById('global-cart-badge');
+  badge.textContent = cart.length;
+  list.innerHTML = '';
+  if (cart.length === 0) {
+    empty.style.display = 'block';
+    totalRow.style.display = 'none';
+    checkoutBtn.style.display = 'none';
+    checkoutForm.style.display = 'none';
+  } else {
+    empty.style.display = 'none';
+    totalRow.style.display = 'flex';
+    checkoutBtn.style.display = 'block';
+    checkoutForm.style.display = 'flex';
+    let total = 0;
+    cart.forEach((item, i) => {
+      total += parseInt(item.price);
+      list.innerHTML += `<li class="cart-item">
+        <span class="cart-item-name">${item.name}</span>
+        <span class="cart-item-price">Rs. ${item.price}</span>
+        <span class="cart-item-remove" onclick="removeFromCart(${i})"><i class="fa-solid fa-xmark"></i></span>
+      </li>`;
+    });
+    document.getElementById('cart-total-price').textContent = `Rs. ${total}`;
+  }
+}
+
+function processCheckout() {
+  const name    = document.getElementById('cust-name')?.value.trim()    || '';
+  const phone   = document.getElementById('cust-phone')?.value.trim()   || '';
+  const address = document.getElementById('cust-address')?.value.trim() || '';
+  if (!name || !phone || !address) { alert("Please fill in your Name, Phone Number, and Delivery Address."); return; }
+  let orderText = `*New Order - Jerry Pizza*\n\n*Customer:*\nName: ${name}\nPhone: ${phone}\nAddress: ${address}\n\n*Items:*\n`;
+  let total = 0;
+  let counts = {};
+  cart.forEach(item => {
+    if (!counts[item.name]) counts[item.name] = { ...item, qty: 0 };
+    counts[item.name].qty++;
+    total += parseInt(item.price);
+  });
+  Object.values(counts).forEach(item => { orderText += `- ${item.qty}x ${item.name} (Rs. ${item.price})\n`; });
+  orderText += `\n*Estimated Total: Rs. ${total}*\n_Confirm size/final price on call._`;
+  window.open(`https://wa.me/923143636434?text=${encodeURIComponent(orderText)}`, '_blank');
+  cart = []; renderCart(); toggleCartDrawer();
+}
+
 function initSlider() {
   if (typeof PIZZA_SLIDES === 'undefined') return;
   const container = document.getElementById('slider-dots');
@@ -370,21 +452,13 @@ function initSlider() {
   renderSlide(0);
   setInterval(() => changeSlide(1), 5000);
 }
-
 function updateDots() {
   document.querySelectorAll('.dot').forEach((d, i) => d.classList.toggle('active', i === currentSlide));
 }
-
-function changeSlide(dir) { 
-  if (typeof PIZZA_SLIDES === 'undefined') return;
-  sliderDir = dir; 
-  goToSlide((currentSlide + dir + PIZZA_SLIDES.length) % PIZZA_SLIDES.length); 
-}
-
+function changeSlide(dir) { sliderDir = dir; goToSlide((currentSlide + dir + PIZZA_SLIDES.length) % PIZZA_SLIDES.length); }
 function goToSlide(index) {
-  if (index === currentSlide || typeof PIZZA_SLIDES === 'undefined') return;
+  if (index === currentSlide) return;
   const frame = document.getElementById('pizza-frame');
-  if(!frame) return;
   const outClass = sliderDir > 0 ? 'slide-out-left' : 'slide-out-right';
   const inClass  = sliderDir > 0 ? 'slide-in-right'  : 'slide-in-left';
   frame.classList.add(outClass);
@@ -396,28 +470,24 @@ function goToSlide(index) {
     frame.addEventListener('animationend', () => frame.classList.remove(inClass), { once: true });
   }, { once: true });
 }
-
 function renderSlide(i) {
-  if (typeof PIZZA_SLIDES === 'undefined') return;
   const slide = PIZZA_SLIDES[i];
   const img = document.getElementById('pizza-hero-img');
-  if(img) {
-      img.src = PIZZA_IMGS[i];
-      img.alt = slide.name + ' – Jerry Pizza Sahiwal';
-  }
-  if(document.getElementById('pizza-slide-name')) document.getElementById('pizza-slide-name').textContent = slide.name;
-  if(document.getElementById('pizza-slide-tagline')) document.getElementById('pizza-slide-tagline').textContent = slide.tagline;
-  if(document.getElementById('pizza-slide-desc')) document.getElementById('pizza-slide-desc').textContent = slide.desc;
-  if(document.getElementById('hero-pizza-subtitle')) document.getElementById('hero-pizza-subtitle').textContent = slide.desc;
-  if(document.getElementById('slider-bg')) document.getElementById('slider-bg').style.background = `linear-gradient(135deg, ${slide.color || '#e4002b'}22 0%, #0a0a0a 60%)`;
+  img.src = PIZZA_IMGS[i];
+  img.alt = slide.name + ' – Jerry Pizza Sahiwal';
+  document.getElementById('pizza-slide-name').textContent    = slide.name;
+  document.getElementById('pizza-slide-tagline').textContent = slide.tagline;
+  document.getElementById('pizza-slide-desc').textContent    = slide.desc;
+  document.getElementById('hero-pizza-subtitle').textContent = slide.desc;
+  document.getElementById('slider-bg').style.background = `linear-gradient(135deg, ${slide.color}22 0%, #0a0a0a 60%)`;
   updateDots();
 }
 
 function buildMarquee() {
   if (typeof MENU_DATA === 'undefined') return;
-  const names = [MENU_DATA.bestPizzas.map(p=>p.name), MENU_DATA.regularPizzas.map(p=>p.name), MENU_DATA.burgers.map(b=>b.name)].flat();
+  const names = [...MENU_DATA.bestPizzas.map(p=>p.name), ...MENU_DATA.regularPizzas.map(p=>p.name), ...MENU_DATA.burgers.map(b=>b.name)];
   const track = document.getElementById('flavors-track');
-  if(track) track.innerHTML = [names,names].map(n => `<span class="flavor-item">${n.join('<span class="flavor-dot">•</span>').toUpperCase()}</span>`).join('');
+  track.innerHTML = [...names,...names].map(n => `<span class="flavor-item">${n.toUpperCase()}<span class="flavor-dot">•</span></span>`).join('');
 }
 
 function buildBestSellers() {
@@ -435,7 +505,7 @@ function buildBestSellers() {
         <p>${pizza.desc}</p>
         <div class="card-footer">
           <div class="card-price">From <span class="big-price">Rs. ${pizza.sizes.S}</span></div>
-          <button class="btn btn-red" style="padding:8px 16px;font-size:0.8rem;" onclick="addToCart('${pizza.name} (S)',${pizza.sizes.S}, 1)">Add <i class="fa-solid fa-plus"></i></button>
+          <button class="btn btn-red" style="padding:8px 16px;font-size:0.8rem;" onclick="addToCart('${pizza.name} (S)',${pizza.sizes.S})">Add <i class="fa-solid fa-plus"></i></button>
         </div>
       </div>
     </div>`).join('');
@@ -451,8 +521,7 @@ function buildDealsPreview() {
       <div class="deal-info">
         <h4 style="color:var(--gold);">${deal.name}</h4>
         <p style="font-size:0.8rem;color:var(--muted);margin:4px 0 8px;line-height:1.4;">${deal.desc}</p>
-        <div class="deal-price" style="font-size:1.2rem; margin-bottom:10px;">Rs. ${deal.price}/-</div>
-        <button class="btn btn-outline" style="width:100%; padding:8px; font-size:0.85rem;" onclick="addToCart('${deal.name}',${deal.price}, 1)">Add to Cart</button>
+        <div class="deal-price" style="font-size:1.2rem;">Rs. ${deal.price}/-</div>
       </div>
     </div>`).join('');
 }
@@ -464,10 +533,7 @@ function buildReviews() {
     <div class="review-card">
       <div class="review-header">
         <div class="review-avatar">${r.initials}</div>
-        <div class="review-meta">
-            <h4>${r.name}</h4>
-            <span>${r.time}</span>
-        </div>
+        <div class="review-meta"><h4>${r.name}</h4><span>${r.time}</span></div>
       </div>
       <div class="review-stars">${'⭐'.repeat(r.rating)}</div>
       <p class="review-text">"${r.text}"</p>
